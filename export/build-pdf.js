@@ -79,6 +79,7 @@ async function main() {
   for (const p of projects) for (const ph of p.photos) wanted.add(ph.src);
   for (const t of testimonials) if (t.image) wanted.add(t.image);
   if (cover) wanted.add(cover);
+  if (data.profile.photo) wanted.add(data.profile.photo);
 
   const stems = buildStemMap(wanted);
 
@@ -102,7 +103,6 @@ async function main() {
   const ctx = {
     img: (src) => (src && local.get(src)) || '',
     href: () => '#',
-    editable: false,
     srcset: false,
     tagLinks: false,
     // Both of these matter for pagination, not looks. Paged.js chunks by

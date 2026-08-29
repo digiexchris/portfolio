@@ -11,6 +11,10 @@ export function emptyPortfolio() {
       links: [], summary: '', photo: '',
     },
     skills: [],
+    // The Work page's own introduction. Separate from profile.summary, which
+    // is the About page: the front page needs to say what the work is, not
+    // repeat a biography.
+    home: { intro: '' },
     projects: [],
     testimonials: [],
     settings: {
@@ -76,6 +80,8 @@ export function normalise(raw) {
     .filter((l) => l.url);
   d.settings = { ...base.settings, ...(raw?.settings || {}) };
   d.settings.pdf = { ...base.settings.pdf, ...(raw?.settings?.pdf || {}) };
+  d.home = { ...base.home, ...(raw?.home || {}) };
+  d.home.intro = sanitiseHtml(d.home.intro);
   d.skills = asArray(d.skills).map((g) => ({
     group: str(g.group), items: asArray(g.items).map(str).filter(Boolean),
   }));
@@ -148,6 +154,27 @@ const VOID_TAGS = new Set(['br']);
 // Tags whose entire contents must go, not just the tag itself.
 const DROP_CONTENT = new Set(['script', 'style', 'iframe', 'object', 'embed', 'noscript']);
 
+// A valid HTML entity: named, decimal, or hex.
+const ENTITY = '#\\d+;|#x[0-9a-fA-F]+;|[a-zA-Z][a-zA-Z0-9]{1,31};';
+
+// Text between tags arrives ALREADY HTML-encoded, because it comes from
+// contenteditable's innerHTML. Escaping it again turns the browser's own
+// `&nbsp;` into a literal `&amp;nbsp;`, which renders as visible text and gains
+// another `amp;` on every save. So escape a bare `&`, but leave real entities
+// alone -- which also makes this function idempotent.
+function escapeHtmlText(s) {
+  return str(s)
+    .replace(new RegExp('&(?!' + ENTITY + ')', 'g'), '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+// contenteditable emits a non-breaking space whenever a typed space would
+// otherwise collapse -- at the end of a block, or beside another space. Nobody
+// writing a project writeup means one, and left in place they show up in the
+// exports, so they become ordinary spaces.
+const NBSP = new RegExp('\\u00A0|&nbsp;', 'g');
+
 export function sanitiseHtml(input) {
   const html = str(input);
   if (!html) return '';
@@ -157,8 +184,8 @@ export function sanitiseHtml(input) {
 
   while (i < html.length) {
     const lt = html.indexOf('<', i);
-    if (lt === -1) { out += escapeText(html.slice(i)); break; }
-    out += escapeText(html.slice(i, lt));
+    if (lt === -1) { out += escapeHtmlText(html.slice(i)); break; }
+    out += escapeHtmlText(html.slice(i, lt));
 
     // Skip comments wholesale.
     if (html.startsWith('<!--', lt)) {
@@ -176,7 +203,7 @@ export function sanitiseHtml(input) {
     }
 
     const gt = html.indexOf('>', lt);
-    if (gt === -1) { out += escapeText(html.slice(lt)); break; }
+    if (gt === -1) { out += escapeHtmlText(html.slice(lt)); break; }
 
     const raw = html.slice(lt + 1, gt).trim();
     const closing = raw.startsWith('/');
@@ -206,7 +233,33 @@ export function sanitiseHtml(input) {
     if (!VOID_TAGS.has(name) && !raw.endsWith('/')) openStack.push(name);
   }
   while (openStack.length) out += `</${openStack.pop()}>`;
-  return blockify(out.trim());
+  return blockify(tidySpace(repairOverEscaping(out).replace(NBSP, ' ')));
+}
+
+// Once a non-breaking space becomes an ordinary one it can sit beside a real
+// space, or against a block boundary, leaving runs the browser would collapse
+// anyway. Tidy them so the stored markup matches what is actually rendered.
+const BLOCK_EDGE = 'p|h2|h3|h4|li|blockquote|ul|ol';
+function tidySpace(html) {
+  return str(html)
+    .replace(/[ \t]{2,}/g, ' ')
+    .replace(new RegExp('(<(?:' + BLOCK_EDGE + ')>)[ \\t]+', 'g'), '$1')
+    .replace(new RegExp('[ \\t]+(</(?:' + BLOCK_EDGE + ')>)', 'g'), '$1')
+    .trim();
+}
+
+// Undo damage from the double-escaping bug above.
+//
+// A space typed in contenteditable became `&nbsp;`, which was escaped to
+// `&amp;nbsp;`, and every subsequent save added another `amp;`. The corruption
+// is mechanical, so it reverses exactly: unwind `&amp;` only where the chain
+// ends in a real entity. A lone `&amp;` -- someone writing "Smith & Sons" --
+// is not followed by one, so it is left untouched.
+export function repairOverEscaping(html) {
+  const chain = new RegExp('&amp;(?=(?:amp;)*(?:' + ENTITY + '))', 'g');
+  let out = str(html);
+  for (let i = 0; i < 12 && chain.test(out); i++) out = out.replace(chain, '&');
+  return out;
 }
 
 // Ensure the writeup is made of real block elements.
@@ -296,7 +349,7 @@ export const escapeAttr = (s) =>
 export function toPlainText(html, limit = 0) {
   const text = str(html)
     .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
+    .replace(/&nbsp;|\u00A0/g, ' ')
     .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"').replace(/&#39;/g, "'")
     .replace(/&amp;/g, '&')

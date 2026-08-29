@@ -15,8 +15,6 @@ export class Preview {
     this.store = store;
     this.view = 'screen';       // 'screen' | 'print'
     this.page = 'auto';         // 'auto' follows the sidebar; else a site page
-    this.inline = false;
-    this.onMounted = null;      // inline mode hooks in here
     this.onNavigate = null;     // clicking a link in the preview routes here
     this.onShortcut = null;     // key events inside the iframe route here
     this._pending = null;
@@ -31,7 +29,6 @@ export class Preview {
       // so the preview navigates like the real site instead of being inert.
       href: (kind, arg) =>
         kind === 'project' ? `#nav:project:${arg.slug}` : `#nav:${kind || 'index'}`,
-      editable: this.inline,
       tagLinks: false,
     });
   }
@@ -73,17 +70,6 @@ export class Preview {
         + '.pagedjs_page{background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.18)}'
         + '</style>';
     }
-    if (this.inline) {
-      out += '<style>'
-        + '[data-edit]{outline:1px dashed transparent;outline-offset:3px;border-radius:2px;transition:outline-color .12s}'
-        + '[data-edit]:hover{outline-color:rgba(180,83,31,.5);cursor:text}'
-        + '[data-edit]:focus{outline:2px solid var(--accent);outline-offset:3px;background:rgba(255,255,255,.6)}'
-        + '[data-edit]:empty::after{content:attr(data-empty);color:#a49b90;font-style:italic}'
-        + '.photo[data-photo]{position:relative}'
-        + '.photo[data-photo].dragging{opacity:.4}'
-        + '.photo[data-photo].drop-target img{outline:3px solid var(--accent);outline-offset:2px}'
-        + '</style>';
-    }
     return out;
   }
 
@@ -100,8 +86,8 @@ export class Preview {
       body: this.buildBody(),
     });
 
-    // Rewriting via document.write keeps the iframe same-origin, which is what
-    // lets inline mode attach editors to the rendered nodes.
+    // Rewriting via document.write keeps the iframe same-origin, so the editor
+    // can read back into it.
     const f = this.frame;
     const d = f.contentDocument;
     d.open();
@@ -110,9 +96,8 @@ export class Preview {
 
     // document.write() parses synchronously, so the DOM is ready here even
     // though stylesheets and scripts are still loading.
-    // In inline mode the caret lives in this document, so its key events never
-    // reach the editor window. Forward them, or Ctrl+S would do nothing while
-    // editing on the page.
+    // Key events inside this document never reach the editor window, so
+    // forward the shortcuts -- Ctrl+S must work with the preview focused.
     d.addEventListener('keydown', (e) => {
       if (e.ctrlKey || e.metaKey) this.onShortcut?.(e);
     });
@@ -123,7 +108,6 @@ export class Preview {
       const a = e.target.closest && e.target.closest('a');
       if (!a) return;
       e.preventDefault();
-      if (this.inline) return;                   // clicking text is for editing
       const m = /^#nav:([a-z]+)(?::(.+))?$/.exec(a.getAttribute('href') || '');
       if (m) this.onNavigate?.(m[1], m[2] ? decodeURIComponent(m[2]) : null);
     }, true);
@@ -132,7 +116,6 @@ export class Preview {
       this._runPaged(d);
     } else {
       d.documentElement.scrollTop = this._scroll;
-      this.onMounted?.(d);
     }
   }
 
@@ -142,7 +125,6 @@ export class Preview {
       script.src = '/vendor/paged.polyfill.js';
       script.onload = () => {
         d.documentElement.scrollTop = this._scroll;
-        this.onMounted?.(d);
       };
       script.onerror = () => {
         d.body.insertAdjacentHTML('afterbegin',
@@ -169,11 +151,6 @@ export class Preview {
     this.render();
   }
 
-  setInline(on) {
-    if (this.inline === on) return;
-    this.inline = on;
-    this.render();
-  }
 
   // Scroll the preview to the element for a given project.
   revealProject(slug) {

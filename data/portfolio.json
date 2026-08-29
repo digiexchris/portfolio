@@ -1,16 +1,19 @@
 {
   "version": 1,
   "profile": {
-    "name": "",
-    "tagline": "Machinist and mechanic",
-    "location": "",
-    "email": "",
+    "name": "Chris Chatelain",
+    "tagline": "",
+    "location": "Winnipeg, MB, Canada",
+    "email": "chris.chatelain@digiex.ca",
     "phone": "",
     "links": [],
-    "summary": "",
-    "photo": ""
+    "summary": "<p>I can fix or build almost anything. As a kid growing up in rural Alberta, I was exposed to repair of all kinds from an early age. Before I could drive, I was helping an Aircraft Maintenance Engineer at the Nanton Air Museum re-skin the right inboard wing section, holding the bucking bar where my small hands could reach. By 14 I was helping repair and drive tractors around the farm, and helping a welder repair agriculture equipment of all sizes.</p><p>My dad was a machinist, starting his career at Standard Aero in Winnipeg. He taught me how to maintain and repair everything. From changing the starter in the truck, to machining a gear to replace a broken one in the camper, I was continually hands-on at his elbow.<br><br>That love of machinery and building things continued throughout my life. I build and fix things for the joy of figuring out how something works. I've gained experience with machining, welding, metal casting, electronics, amateur radio and amplifier construction, and programming safety critical microcontrollers.<br><br>I'm a troubleshooter and problem solver by habit. During my career as a software engineer, I was known as the person that could figure out what was wrong with systems people didn't know existed. This problem solving drive has obvious advantages to my hobbies, and now as I navigate starting a career in aviation maintenance.</p>",
+    "photo": "beaver_head_12.jpg"
   },
   "skills": [],
+  "home": {
+    "intro": ""
+  },
   "projects": [
     {
       "id": "x2m3s54hqv1fi",
@@ -18,8 +21,8 @@
       "title": "1 Cubic Inch 4 stroke",
       "subtitle": "RC aircraft engine of my own design",
       "date": "February 2023",
-      "summary": "1 cubic inch double over head cam model aircraft engine featuring a \nsplash lubricated bottom end, shim-over-valve style valve adjustment, and a timing belt.",
-      "body": "<p>This is a 1 cubic inch displacement model aircraft engine of my design. It is a 4 stroke, and rare in the model aircraft world, I plan to make it double overhead cam. In a typical 4 stroke RC model engine the valve train uses rockers and pushrods and is driven off of a camshaft that is geared off of the crankshaft. Using Solid Edge, I designed this to be a shim-over-valve double overhead cam, and verified clearances, compression ratio, and valve and ignition timing with Solid Edge motion studies. It will have approximately a 9.1:1 compression ratio, and run on gasoline.</p><p>Another unusual thing in the RC engine world is an oil filled crank case. Usually, the bottom end is lubricated using the oil in the fuel by allowing blow by either without piston rings using a lapped fit, or with a single piston ring omitting an oil control ring. This engine has two compression rings and a rudimentary oil scraping ring.</p><p>It is about 60% complete. Next to build is the head and the valve train.</p>",
+      "summary": "1 cubic inch double over head cam model aircraft engine featuring a splash lubricated bottom end, shim-over-valve style valve adjustment, and a timing belt.",
+      "body": "<p>This is a 1 cubic inch displacement model aircraft engine of my design. It is a 4 stroke, and rare in the model aircraft world, I plan to make it double overhead cam. In a typical 4 stroke RC model engine the valve train uses rockers and pushrods and is driven off of a camshaft that is geared off of the crankshaft. Using Solid Edge, I designed this to be a shim-over-valve double overhead cam, and verified clearances, compression ratio, and valve and ignition timing with Solid Edge motion studies. It will have approximately a 9.1:1 compression ratio, and run on gasoline.</p><p>Another unusual thing in the RC engine world is an oil filled crank case. Usually, the bottom end is lubricated using the oil in the fuel by allowing blow by either without piston rings using a lapped fit, or with a single piston ring omitting an oil control ring. This engine has two compression rings and a rudimentary oil scraping ring.</p><p>It is about 60% complete. Next to build is the head and the valve train.<br><br>The horizontal milling machine with the vertical head makes it very easy to make both the crankcase and cylinder bores perpendicular, within the squareness of the mill. In a single setup I was able to use the horizontal spindle to bore the crankcase, and without changing the setup, use the vertical head to bore the cylinder for the cast iron cylinder liner to slip into.</p>",
       "tags": [
         "Engines",
         "Machining"
@@ -58,12 +61,6 @@
         },
         {
           "src": "1cu_piston.jpg",
-          "caption": "",
-          "alt": "",
-          "feature": false
-        },
-        {
-          "src": "1cu_plans.jpg",
           "caption": "",
           "alt": "",
           "feature": false
@@ -231,11 +228,11 @@
     {
       "id": "xte6ymp3jv1fj",
       "slug": "at-suspension",
-      "title": "AT Suspension",
-      "subtitle": "",
+      "title": "First Generation Africa Twin Suspension Issues",
+      "subtitle": "They say it's bad manufacturing, I think it's just dirt.",
       "date": "",
       "summary": "",
-      "body": "",
+      "body": "<p>The first generation Honda Africa Twin has been known to prematurely wear the coating off of the inside of the fork tubes, which usually results in high stiction. Having owned Honda products before, this sounded odd to me, and I wasn't having any symptoms.</p><p>Around 8,000km, the right fork seal began seeping noticeably. I dissassembled both tubes, and inspected for wear in the usual spots, but found none. The oil was gritty to the touch though. This made me think that the premature wear issues may actually be fork seal wiper issues, allowing dirt ingress. The dirt then wears out the fork tube coating.</p><p>I installed a set of upgraded fork seals that were known to perform extremely well in the dirt bike competition world, followed by a neoprene fork wiper. Normally one would need to disassemble the forks to install the neoprene tube on upside down forks, but I found a brand that used a cleverly located zipper to allow installing it while the suspension was still on the bike.</p><p>At 30,000km I disassembled the forks again for inspection, and noted that while the fork oil was dark as is usual after that amount of time, there was no detectable grit. The fork tubes were in perfect condition.</p><p>While my sample size is admitably small, I suspect what is happening is that dirt getting on the stanchion tubes is working it's way past the seals, contaminating the oil. The fork bushings then take that dirt and start lapping away the coating on the inside of the fork tubes. Catching a leaking fork seal early is critical to prevent this, in my opinion. The addition of a neoprene dirt wiper seems to have completely eliminated any dirt ingress.</p>",
       "tags": [],
       "specs": [],
       "photos": [
@@ -252,7 +249,7 @@
           "feature": false
         }
       ],
-      "published": false,
+      "published": true,
       "order": 7
     },
     {
@@ -262,7 +259,7 @@
       "subtitle": "Every 24,000 km we get to see some clever engineering",
       "date": "",
       "summary": "",
-      "body": "<p>The 24,000 kilometer service for the first generation Africa Twin involves checking the valve clearances. It sounds like a big job, but it's not too bad. At this point I am practiced enough that I can get access to the valve train in around 1.5 hours, after which it's easy to check.</p><p>The Africa Twin has a somewhat unique valve train for being a flagship model adventure bike. Rather than using a double over head cam like most big bikes, it uses a single camshaft over the intake valves only, using a typical shim-over-bucket type adjustment. The exhaust valves are driven off of rockers that ride on that same single camshaft using 4&amp;amp;nbsp; very nice cam follower bearings. The exhaust rockers feature similar adjustment screws that you'd see on a bike from many a yester-year. I think this is a pretty clever design. In most engines, the exhaust valve seats tend to wear and recede faster than the intake valve seats. It seems Honda left easy adjustability for the valves where you would expect there to need adjustment, and saved space on the intake valves where you typically don't ever need to adjust them.</p><p>On my specimen after 24,000km the valve clearances were well within spec. At 45,000 when I sold the bike, the exhaust valve clearance had only shrunk by 0.0005\". It seems this will be a very long lived engine with little actual adjustment needed. I wouldn't be surprised if we see later models start adopting 48,000 km valve clearance check intervals like we see in many automotive engines.</p><p>There is a trick to the front side fairing pieces: Slide them forwards! If you pry them sideways away from the bike you will break the forward two pins off. Pop the rear of the fairing loose from the tank, and push the fairing forwards to pop the front pins out of the front grommets.</p><p>Then the tank and air box need to come off. Take note of the drain tubes running from the left and right rear bottom corners of the air box, you'll need to reattach them when you put this all back together. They can be hard to see and can be easily missed.</p>",
+      "body": "<p>The 24,000 kilometer service for the first generation Africa Twin involves checking the valve clearances. It sounds like a big job, but it's not too bad. At this point I am practiced enough that I can get access to the valve train in around 1.5 hours, after which it's easy to check.</p><p>The Africa Twin has a somewhat unique valve train for being a flagship model adventure bike. Rather than using a double over head cam like most big bikes, it uses a single camshaft over the intake valves only, using a typical shim-over-bucket type adjustment. The exhaust valves are driven off of rockers that ride on that same single camshaft using 4 very nice cam follower bearings. The exhaust rockers feature similar adjustment screws that you'd see on a bike from many a yester-year. I think this is a pretty clever design. In most engines, the exhaust valve seats tend to wear and recede faster than the intake valve seats. It seems Honda left easy adjustability for the valves where you would expect there to need adjustment, and saved space on the intake valves where you typically don't ever need to adjust them.</p><p>On my specimen after 24,000km the valve clearances were well within spec. At 45,000 when I sold the bike, the exhaust valve clearance had only shrunk by 0.0005\". It seems this will be a very long lived engine with little actual adjustment needed. I wouldn't be surprised if we see later models start adopting 48,000 km valve clearance check intervals like we see in many automotive engines.</p><p>There is a trick to the front side fairing pieces: Slide them forwards! If you pry them sideways away from the bike you will break the forward two pins off. Pop the rear of the fairing loose from the tank, and push the fairing forwards to pop the front pins out of the front grommets.</p><p>Then the tank and air box need to come off. Take note of the drain tubes running from the left and right rear bottom corners of the air box, you'll need to reattach them when you put this all back together. They can be hard to see and can be easily missed.</p>",
       "tags": [
         "Engines",
         "Motorcycles"
@@ -336,11 +333,11 @@
     {
       "id": "xwsuausiuv1fj",
       "slug": "beaver-head",
-      "title": "Beaver Head",
+      "title": "Beaver MK2 Head",
       "subtitle": "",
       "date": "",
       "summary": "",
-      "body": "",
+      "body": "<p>My 1921 Denbig horizontal mill is a great machine. Compared to a turret mill the same size, it's way more rigid. I can take huge cuts without chatter with 1\" diameter endmills. I can take cuts so deep cast iron peels off with actual chips, instead of just dust. The major downside to the machine is the vertical head that I have for it does not have a quill feed. it makes repeated drilling operations awkward, and has limited clearance to the table.</p><p>I had been looking for milling heads from old Bridgeport machines with a plan to transplant it onto this Denbig, but nothing suitable or close enough to me came up. One day on Ebay, I found a used machinery dealer in Ontario that had this Beaver MK2 head sitting on a pallet, for very reasonable money. It provides a power down feed, 4 speeds, and designed to be easily maintained.<br><br>To mount the head to the Denbig, I decided to use the overarm bar. I shortened the overarm bar enough to fit on my lathe. Then I cut a fine thread at one end, and a taper at the other with a 1-13 threaded hole. Then I took the large slug of steel that the head came mounted to, and bored a tapered hole in it to fit the taper on the end of the overarm. A large bolt pulls the taper home tightly. The steel bar also has two 5/8\" hols in it.<br><br>The head mounts to the Denbig on the end of the overarm bar, then a lock ring was made to pull the overarm bar rearwards, tightening the mounting bar against the column of the mill. Then 2 5/8\" holes were drilled and tapped using the holes in the mounting bar. The two 5/8\" bolts and the overarm bar lock ring create a very rigid 3 point clamping setup.<br><br>The head was then completely stripped down to it's component pieces, all bearings were changed, everything was properly lubricated, and reassembled.<br><br>Using some guidance from professional spindle rebuilders, I used my lathe's toolpost grinder setup on the mill table and reground the taper on the spindle after installing new bearings, achieving a total indicated run out of less than 0.0002\".</p>",
       "tags": [],
       "specs": [],
       "photos": [
@@ -520,7 +517,7 @@
       "id": "xoblhbii7v1fj",
       "slug": "block-heater",
       "title": "Block Heater",
-      "subtitle": "",
+      "subtitle": "To the arctic circle and back",
       "date": "",
       "summary": "",
       "body": "",
@@ -1817,7 +1814,7 @@
     "pdf": {
       "paper": "Letter",
       "includeTestimonials": true,
-      "coverPhoto": ""
+      "coverPhoto": "1cu_assembled.jpg"
     }
   }
 }

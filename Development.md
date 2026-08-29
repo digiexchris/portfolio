@@ -77,14 +77,13 @@ templates the exporters use, so it cannot drift from what ships.
 
 | Tab | Edits | Appears as |
 |---|---|---|
-| **Work** | projects — title, summary, specs, writeup, photos | the site's index + one page each, and the PDF body |
+| **Work** | the page's own **intro text** (pinned at the top of the list), then projects — title, summary, specs, writeup, photos | the site's index + one page each, and the PDF body |
 | **Testimonials** | quote, attribution, optional scan of the note | `testimonials.html` and the PDF's testimonials section |
-| **Profile** | name, tagline, contact, About text, links, skills | `about.html` and the PDF's About page |
+| **Profile** | name, tagline, contact, About text, **photo**, links, skills | `about.html` and the PDF's About page |
 | **Settings** | site title, accent colour, paper size, cover photo | everywhere |
 
 **Toolbar toggles**
 
-- **Split / Inline** — form-plus-preview, or edit directly on the rendered page
 - **Screen / Print** — website rendering, or the real paginated PDF via Paged.js
 - **Editing / Gallery / About** — which page the preview shows
 
@@ -92,7 +91,7 @@ Links inside the preview navigate, and clicking a project card selects it in
 the sidebar.
 
 **Saving is manual.** Nothing is written until **Save** or `Ctrl+S`, including
-in inline mode (the shortcut is forwarded out of the preview iframe). Pending
+with the preview focused (the shortcut is forwarded out of the iframe). Pending
 edits show an orange Save button and a dot in the tab title, and leaving the
 page raises a confirmation.
 
@@ -100,7 +99,6 @@ page raises a confirmation.
 |---|---|
 | `Ctrl+S` | Save |
 | `Ctrl+Z` / `Ctrl+Shift+Z` | Undo / redo (80 steps) |
-| `Ctrl+E` | Toggle split / inline |
 | `Ctrl+B` `Ctrl+I` `Ctrl+K` | Bold, italic, link |
 
 ---
@@ -144,14 +142,17 @@ npm run check    # in another
 
 | Suite | Checks | Needs the server | Covers |
 |---|---|---|---|
-| `modelcheck.mjs` | 56 | no | sanitiser, paragraph handling, slugs, export filenames, render edge cases |
-| `verify.mjs` | 18 | yes | editing, merge, undo, inline mode, both exports, TOC page numbers |
-| `navcheck.mjs` | 13 | yes | preview navigation, the draft preview |
+| `modelcheck.mjs` | 70 | no | sanitiser, paragraph handling, slugs, export filenames, render edge cases |
+| `verify.mjs` | 17 | yes | editing, merge, undo, both exports, TOC page numbers |
+| `navcheck.mjs` | 12 | yes | preview navigation, the draft preview |
 | `savecheck.mjs` | 10 | yes | manual saving, the unsaved-changes guard |
 | `widthcheck.mjs` | 10 | yes | text and photo columns stay aligned, mobile |
 | `pagescheck.mjs` | 15 | no | `docs/` served as a Pages root: links resolve, no 404s, PDF fetchable |
+| `nbspcheck.mjs` | 8 | yes | typing in the real editor produces clean markup, stable across saves |
+| `aboutcheck.mjs` | 25 | yes | the About photo through preview/save/export; picker thumbnail geometry |
+| `workcheck.mjs` | 13 | yes | the Work intro is separate from the About text, and lands above the gallery |
 
-**122 checks in total.** They drive a real headless Chromium against the real
+**180 checks in total.** They drive a real headless Chromium against the real
 server, and each restores `data/portfolio.json` when it finishes — safe to run
 on real work. `verify.mjs` rebuilds `docs/` from the restored data rather than
 leaving a test build behind.
@@ -248,8 +249,9 @@ The table of contents already has its real page numbers.
 **Port 4321 in use.** `PORT=8080 npm start`.
 
 **The editor shows stale styling or behaviour.** Browser-side files are served
-without cache headers, but a hard reload (`Ctrl+Shift+R`) settles it. Server-side
-changes need `npm start` again.
+with `Cache-Control: no-cache`, so an ordinary reload picks up changes to
+anything under `editor/` or `shared/`. If something still looks stale, a hard
+reload (`Ctrl+Shift+R`) forces it. Server-side changes need `npm start` again.
 
 **Photos look wrong or a new one is missing.** Drop it in `media/` — the picker
 lists the folder on load, so reopen the editor. To force every derivative to be
@@ -258,6 +260,10 @@ rebuilt: `rm -rf .cache` (it is only a cache; the next build regenerates it).
 **Exports look out of date.** The builders read `data/portfolio.json` from disk,
 not the editor's in-memory state. Save first — the export buttons prompt if
 there are unsaved changes.
+
+The PDF is built separately from the site, so it can lag behind your writing;
+`build:site` warns when the `portfolio.pdf` it is copying into `docs/` is older
+than the data file. `npm run build` does both in the right order.
 
 **Something went wrong in the data file.** `data/backups/` holds a snapshot from
 before every save, newest last. Copy one over `data/portfolio.json` and restart

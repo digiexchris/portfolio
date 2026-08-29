@@ -37,28 +37,15 @@ photos, nothing missing.
 half-written entry can never end up in a PDF you send to an employer. Tick
 *Published* on a project when its writeup is done.
 
-### The two editing modes
-
-| Mode | What it is | Best for |
-|---|---|---|
-| **Split** | Fields on the left, the real rendered page on the right | Getting through many entries quickly |
-| **Inline** | The preview itself becomes editable — click any heading or paragraph and type in place, drag photos around on the page | Final polish and layout |
-
-Both modes drive the same document, and the rich-text editor is literally the
-same component mounted in two places. Toggle with the buttons at the top or
-`Ctrl+E`.
-
 **The Page control** decides what the preview shows: *Editing* follows the
 selected project, *Gallery* shows the site's front page, *About* the about
 page. Links inside the preview work — clicking a project card opens it and
 selects it in the sidebar, so you can browse the site the way a reader would
-without leaving the editor. (In inline mode clicking text edits it instead,
-since that is the point of inline mode.)
+without leaving the editor.
 
 The **Screen / Print** toggle switches the preview between the website
 rendering and the actual paginated PDF — page boxes, running heads, folios and
-all. Inline editing is screen-only, because in print view Paged.js clones
-content into page boxes and edits there would have nowhere to map back to.
+all.
 
 ### Merging projects
 
@@ -81,6 +68,23 @@ album. It is free-form label/value, so use whatever the job actually turned on:
     Machines    Denbigh horizontal mill, surface grinder
     Finish      32 Ra
 
+### The Work page
+
+The **Work** tab's list is pinned with a **Work page intro** row above the
+projects. That text sits above the gallery on the site's front page and says
+what the work is. It is deliberately separate from the About text — the front
+page should introduce the work, not repeat a biography.
+
+### The About page
+
+The **Profile** tab is the About page: name, tagline, contact details, a
+rich-text About, links, and skills groups. It also takes a **photo**, shown
+under the About text on the site and in the PDF's About section.
+
+Images cannot be placed *inside* the prose — the sanitiser allows no `<img>` in
+stored HTML, so a writeup is text, and photos are attached to the project or
+the About page rather than embedded mid-paragraph.
+
 ### Testimonials
 
 Each testimonial takes a quote, an attribution, and optionally a **scan or
@@ -95,7 +99,6 @@ linked to a project, which makes the site and PDF say what it refers to.
 |---|---|
 | `Ctrl+S` | Save (nothing saves on its own) |
 | `Ctrl+Z` / `Ctrl+Shift+Z` | Undo / redo |
-| `Ctrl+E` | Toggle split / inline |
 | `Ctrl+B` `Ctrl+I` `Ctrl+K` | Bold, italic, link |
 
 ---
@@ -177,7 +180,6 @@ npm run check      # in another — runs all five suites
 
 `verify.mjs` drives the real editor in a headless Chromium: it types into the
 form and checks the preview updates, merges projects and undoes the merge,
-switches to inline mode and confirms an on-page edit reaches the saved model,
 paginates the print preview, then exports both targets. For the PDF it reads
 the generated file back with Ghostscript and confirms **every contents entry's
 page number actually lands on that section** — the one thing worth never

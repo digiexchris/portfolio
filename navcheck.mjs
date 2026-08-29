@@ -64,16 +64,6 @@ await new Promise((r) => setTimeout(r, 900));
 const backOn = await p.evaluate(() => document.querySelector('[data-page].is-on')?.dataset.page);
 check('Editing returns the preview to the selected project', backOn === 'auto', String(backOn));
 
-// --- inline mode must still edit, not navigate ------------------------------
-await p.click('[data-mode="inline"]');
-await new Promise((r) => setTimeout(r, 1200));
-const inlineOk = await p.evaluate(() => {
-  const d = document.getElementById('preview-frame').contentDocument;
-  return d.querySelector('.project-title')?.isContentEditable === true;
-});
-check('inline mode still edits rather than navigating', inlineOk);
-await p.click('[data-mode="split"]');
-await new Promise((r) => setTimeout(r, 600));
 
 check('no JavaScript errors', errs.length === 0, errs.slice(0, 3).join(' | '));
 await p.screenshot({ path: '/tmp/nav.png' });

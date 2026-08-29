@@ -88,41 +88,15 @@ await new Promise((r) => setTimeout(r, 300));
 await p.click('#btn-bulk-publish');
 await new Promise((r) => setTimeout(r, 600));
 
-// Inline mode.
-await p.click('[data-mode="inline"]');
-await new Promise((r) => setTimeout(r, 1200));
-const inlineReady = await p.evaluate(() => {
-  const d = document.getElementById('preview-frame').contentDocument;
-  const t = d.querySelector('.project-title');
-  return { editable: t?.isContentEditable === true, hooks: d.querySelectorAll('[data-edit]').length };
-});
-check('inline mode makes the preview editable', inlineReady.editable, `${inlineReady.hooks} hooks`);
-
-// Edit inline and confirm it lands in the model.
+// Saving from inside the preview iframe: key events there never reach the
+// editor window on their own.
 await p.evaluate(() => {
   const d = document.getElementById('preview-frame').contentDocument;
-  const t = d.querySelector('.project-title');
-  t.focus(); t.textContent = 'Edited Inline';
-  t.dispatchEvent(new Event('blur'));
-});
-await new Promise((r) => setTimeout(r, 400));
-// Saving is manual. Press Ctrl+S from inside the preview iframe, exactly as
-// someone editing inline would, to prove the shortcut reaches the editor.
-const frame = p.frames().find((f) => f.url().includes('about:blank') || f !== p.mainFrame());
-await p.evaluate(() => {
-  const d = document.getElementById('preview-frame').contentDocument;
-  d.querySelector('.project-title')?.focus();
   d.dispatchEvent(new KeyboardEvent('keydown', { key: 's', ctrlKey: true, bubbles: true }));
 });
 await new Promise((r) => setTimeout(r, 1500));
-const savedTitle = await p.evaluate(async () => {
-  const r = await fetch('/api/portfolio'); const d = await r.json();
-  return d.projects.some((x) => x.title === 'Edited Inline');
-});
-check('an inline edit is written through to the model', savedTitle);
-
-await p.click('[data-mode="split"]');
-await new Promise((r) => setTimeout(r, 500));
+check('Ctrl+S works with the preview focused',
+  !/unsaved/i.test(await p.$eval('#status', (n) => n.textContent)));
 
 // Print preview.
 await p.click('[data-view="print"]');
@@ -200,7 +174,11 @@ check('every contents page number points at its section',
 fs.writeFileSync(DATA, backup);
 // docs/ is committed content, so it must not be left holding a test build --
 // nor simply deleted. Rebuild it from the restored data instead.
+// Rebuild BOTH: this suite exports a PDF from temporary test data, and
+// leaving that behind would publish the wrong document -- docs/portfolio.pdf
+// is committed.
+execFileSync('node', ['export/build-pdf.js'], { encoding: 'utf8' });
 execFileSync('node', ['export/build-site.js'], { encoding: 'utf8' });
-console.log('\nData file restored; docs/ rebuilt from it.');
+console.log('\nData file restored; docs/ and out/ rebuilt from it.');
 console.log(failures ? `\n${failures} CHECK(S) FAILED` : '\nAll checks passed.');
 process.exit(failures ? 1 : 0);

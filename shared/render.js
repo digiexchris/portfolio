@@ -5,7 +5,6 @@
 // Callers supply a `ctx` describing how to resolve URLs for their target:
 //   ctx.img(src, size)  -> URL for a photo at a size hint (thumb|full|print)
 //   ctx.href(kind, arg) -> URL for 'index' | 'project' | 'testimonials' | 'about'
-//   ctx.editable        -> emit data-edit-* hooks for inline editing
 //   ctx.srcset          -> emit responsive srcset (static site only)
 //   ctx.lazy            -> emit loading="lazy" (screen only; see below)
 //   ctx.projects        -> override which projects a page lists (draft preview)
@@ -28,18 +27,11 @@ export function previewCtx(overrides = {}) {
   return {
     img: (src) => '/media/' + encodeURI(src),
     href: () => '#',
-    editable: false,
     srcset: false,
     ...overrides,
   };
 }
 
-// Mark a node as inline-editable. Emits nothing unless ctx.editable is on, so
-// the exported HTML is never polluted with editor plumbing.
-function ed(ctx, path, kind = 'text') {
-  if (!ctx.editable) return '';
-  return ` data-edit="${attr(path)}" data-edit-kind="${attr(kind)}"`;
-}
 
 // `html` may be a thunk, so expensive branches stay lazy.
 // Which entries a page lists. Defaults to the published set, but a caller can
@@ -77,10 +69,9 @@ export function photoFigure(photo, ctx, { size = 'full', index = 0, path = '' } 
   } else {
     img = `<img src="${attr(src)}" alt="${attr(alt)}"${imgAttrs(ctx, photo.src)}>`;
   }
-  return `<figure class="photo" data-index="${index}"${ctx.editable && path ? ` data-photo="${attr(path)}"` : ''}>`
+  return `<figure class="photo" data-index="${index}">`
     + `<a class="photo-link" href="${attr(ctx.img(photo.src, 'full'))}" data-lightbox>${img}</a>`
-    + when(photo.caption || ctx.editable,
-        `<figcaption${ed(ctx, path + '.caption')}>${esc(photo.caption)}</figcaption>`)
+    + when(photo.caption, () => `<figcaption>${esc(photo.caption)}</figcaption>`)
     + '</figure>';
 }
 
@@ -101,8 +92,8 @@ export function specTable(project, ctx) {
   if (!project.specs.length) return '';
   return '<dl class="specs">'
     + join(project.specs, (s, i) =>
-        `<div class="spec"><dt${ed(ctx, `specs.${i}.label`)}>${esc(s.label)}</dt>`
-        + `<dd${ed(ctx, `specs.${i}.value`)}>${esc(s.value)}</dd></div>`)
+        `<div class="spec"><dt>${esc(s.label)}</dt>`
+        + `<dd>${esc(s.value)}</dd></div>`)
     + '</dl>';
 }
 
@@ -148,16 +139,15 @@ export function projectArticle(project, ctx, { heading = 'h1', showFeature = tru
   const feature = showFeature ? featurePhoto(project) : null;
   return `<article class="project" id="project-${attr(project.slug)}" data-project-id="${attr(project.id)}">`
     + '<header class="project-head">'
-    + `<${heading} class="project-title"${ed(ctx, 'title')}>${esc(project.title)}</${heading}>`
+    + `<${heading} class="project-title">${esc(project.title)}</${heading}>`
     + when(project.subtitle || project.date, projectMeta(project))
     + when(project.summary,
-        `<p class="lede"${ed(ctx, 'summary')}>${esc(project.summary)}</p>`)
+        `<p class="lede">${esc(project.summary)}</p>`)
     + tagList(project.tags, ctx, { link: !!ctx.tagLinks })
     + '</header>'
     + when(feature, () => `<div class="feature-photo">${photoFigure(feature, ctx, { size: 'full', index: project.photos.indexOf(feature), path: `photos.${project.photos.indexOf(feature)}` })}</div>`)
     + specTable(project, ctx)
-    + when(project.body || ctx.editable,
-        `<div class="body prose"${ed(ctx, 'body', 'rich')}>${project.body || ''}</div>`)
+    + when(project.body, () => `<div class="body prose">${project.body}</div>`)
     + photoGrid(project, ctx, { skipFeature: showFeature })
     + '</article>';
 }
@@ -171,7 +161,7 @@ export function testimonialCard(t, ctx, projectsById = new Map()) {
   return `<figure class="testimonial${t.featured ? ' featured' : ''}" data-testimonial-id="${attr(t.id)}">`
     + when(t.image, () => `<div class="testimonial-scan"><a href="${attr(ctx.img(t.image, 'full'))}" data-lightbox>`
         + `<img src="${attr(ctx.img(t.image, 'thumb'))}" alt="Note from ${attr(t.author || 'a client')}"${imgAttrs(ctx, t.image)}></a></div>`)
-    + `<blockquote class="quote"${ed(ctx, 'quote', 'rich')}>${t.quote || ''}</blockquote>`
+    + `<blockquote class="quote">${t.quote || ''}</blockquote>`
     + '<figcaption class="attribution">'
     + when(attribution.length, `<span class="who">${esc(attribution[0])}</span>`)
     + when(attribution[1], `<span class="role">${esc(attribution[1])}</span>`)
@@ -271,7 +261,8 @@ export function indexBody(data, ctx) {
     + '<section class="intro">'
     + `<h1>${esc(p.name || data.settings.siteTitle)}</h1>`
     + when(p.tagline, `<p class="tagline">${esc(p.tagline)}</p>`)
-    + when(p.summary, `<div class="prose intro-summary">${p.summary}</div>`)
+    // The Work page's own intro, not the About text.
+    + when(data.home.intro, () => `<div class="prose intro-summary">${data.home.intro}</div>`)
     + contactLine(p, ctx)
     + '</section>'
     + when(projects.length > 3, '<div class="controls">'
@@ -317,9 +308,13 @@ export function aboutBody(data, ctx) {
     + '<main class="wrap narrow"><section class="about">'
     + `<h1>${esc(p.name || 'About')}</h1>`
     + when(p.tagline, `<p class="tagline">${esc(p.tagline)}</p>`)
-    + when(p.photo, () => `<img class="portrait" src="${attr(ctx.img(p.photo, 'full'))}" alt="${attr(p.name)}"${imgAttrs(ctx, p.photo)}>`)
-    + when(p.summary, `<div class="prose">${p.summary}</div>`)
+    // Contact details sit directly under the name, so someone deciding whether
+    // to get in touch does not have to read to the end first.
     + contactLine(p, ctx)
+    + when(p.summary, () => `<div class="prose">${p.summary}</div>`)
+    // Below the text: images cannot live inside the prose, since the sanitiser
+    // allows no <img> in stored HTML.
+    + when(p.photo, () => `<figure class="portrait"><img src="${attr(ctx.img(p.photo, 'full'))}" alt="${attr(p.name)}"${imgAttrs(ctx, p.photo)}></figure>`)
     + '</section>'
     + skillsBlock(data, ctx)
     + '</main>'
@@ -349,9 +344,14 @@ export function printBody(data, ctx) {
     + join(p.links, (l) => `<span>${esc(l.url)}</span>`)
     + '</div></div></div>'
 
-    + when(p.summary || data.skills.length, '<section class="pdf-about">'
+    + when(p.summary || data.skills.length || p.photo, () => '<section class="pdf-about">'
         + '<h2 class="section-title">About</h2>'
-        + when(p.summary, `<div class="prose">${p.summary}</div>`)
+        // In print the photo leads, unlike the web page where it closes the
+        // section. An image cannot be split across pages, so placed after a
+        // full page of text it gets pushed whole onto the next one and lands
+        // there alone. Leading with it keeps the text flowing behind it.
+        + when(p.photo, () => `<figure class="portrait"><img src="${attr(ctx.img(p.photo, 'print'))}" alt=""${imgAttrs(ctx, p.photo)}></figure>`)
+        + when(p.summary, () => `<div class="prose">${p.summary}</div>`)
         + when(data.skills.length, '<div class="skill-groups">'
             + join(data.skills, (g) => `<div class="skill-group"><h3>${esc(g.group)}</h3><ul>`
                 + join(g.items, (it) => `<li>${esc(it)}</li>`) + '</ul></div>')

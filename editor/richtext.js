@@ -1,8 +1,5 @@
-// One contenteditable rich-text component, mounted in two places:
-//   - split mode: inside the form pane
-//   - inline mode: directly onto the live preview's own DOM node
-// Because both modes use this same component, inline editing costs a mount
-// target rather than a second editor implementation.
+// The contenteditable rich-text component used by every prose field in the
+// form pane: project writeups, testimonial quotes, and the About text.
 
 import { sanitiseHtml } from '../shared/model.js';
 
@@ -129,50 +126,3 @@ export function attachRichText(el, { value = '', onChange, onFocus, onBlur } = {
   };
 }
 
-// Plain single-line editable, for titles and captions in inline mode.
-export function attachPlainText(el, { value = '', onChange, multiline = false } = {}) {
-  el.contentEditable = 'true';
-  el.spellcheck = true;
-  el.classList.add('rt-editable', 'rt-plain');
-  if (el.textContent !== value) el.textContent = value;
-
-  let last = el.textContent;
-  const emit = () => {
-    const text = el.textContent.replace(/\s+/g, ' ').trim();
-    if (text === last) return;
-    last = text;
-    onChange?.(text);
-  };
-  const onKeydown = (e) => {
-    if (e.key === 'Enter' && !multiline) { e.preventDefault(); el.blur(); }
-    if (e.key === 'Escape') { el.textContent = last; el.blur(); }
-  };
-  const onPaste = (e) => {
-    e.preventDefault();
-    document.execCommand('insertText', false, e.clipboardData.getData('text/plain'));
-  };
-  const onBlurH = () => emit();
-
-  el.addEventListener('keydown', onKeydown);
-  el.addEventListener('paste', onPaste);
-  el.addEventListener('blur', onBlurH);
-  el.addEventListener('input', () => {});
-
-  return {
-    el,
-    flush: emit,
-    set(text) {
-      if (document.activeElement === el) return;
-      el.textContent = text || '';
-      last = el.textContent;
-    },
-    destroy() {
-      emit();
-      el.removeEventListener('keydown', onKeydown);
-      el.removeEventListener('paste', onPaste);
-      el.removeEventListener('blur', onBlurH);
-      el.contentEditable = 'false';
-      el.classList.remove('rt-editable', 'rt-plain');
-    },
-  };
-}

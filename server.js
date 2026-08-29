@@ -72,6 +72,10 @@ async function serveFile(res, file, { download = false } = {}) {
       'Content-Type': MIME[ext] || 'application/octet-stream',
       'Content-Length': stat.size,
       'Last-Modified': stat.mtime.toUTCString(),
+      // Revalidate every time. Without this the browser heuristically caches
+      // editor CSS and JS, so a change only appears after a hard refresh --
+      // and a stale stylesheet looks exactly like a styling bug.
+      'Cache-Control': 'no-cache',
     };
     if (download) headers['Content-Disposition'] = `attachment; filename="${path.basename(file)}"`;
     res.writeHead(200, headers);

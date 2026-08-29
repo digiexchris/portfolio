@@ -101,6 +101,19 @@ img { max-width: 100%; height: auto; }
   border-bottom: 1.5pt solid var(--accent);
 }
 
+.pdf-about figure.portrait { margin: 0 0 6mm; break-inside: avoid; }
+/* Full column width, matching the text. `contain` would letterbox a tall
+   photo and leave it visibly narrower than the paragraph above it, so the
+   height cap crops instead of shrinking the width. */
+.pdf-about figure.portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 85mm;
+  object-fit: cover;
+  border-radius: 1.5mm;
+}
+
 .pdf-about .skill-groups {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

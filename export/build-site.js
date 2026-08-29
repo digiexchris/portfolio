@@ -98,7 +98,16 @@ async function main() {
     await fs.mkdir(DIST, { recursive: true });
     await fs.copyFile(PDF_SOURCE, path.join(DIST, 'portfolio.pdf'));
     hasPdf = true;
-    console.log(`Included portfolio.pdf (${((await fs.stat(PDF_SOURCE)).size / 1048576).toFixed(1)} MB)`);
+    const pdfStat = await fs.stat(PDF_SOURCE);
+    console.log(`Included portfolio.pdf (${(pdfStat.size / 1048576).toFixed(1)} MB)`);
+
+    // The PDF is built separately, so it can lag behind the writing. Publishing
+    // a stale one is silent and lands in docs/, which is committed.
+    const dataStat = await fs.stat(path.join(ROOT, 'data', 'portfolio.json'));
+    if (pdfStat.mtimeMs < dataStat.mtimeMs - 1000) {
+      console.warn('  ! portfolio.pdf is older than data/portfolio.json —'
+        + ' run `npm run build:pdf` (or `npm run build`) so it matches your writing.');
+    }
   } else {
     console.log('No out/portfolio.pdf yet — run `npm run build:pdf` to include it.');
   }
@@ -139,7 +148,6 @@ async function main() {
         if (kind === 'pdf') return hasPdf ? up + 'portfolio.pdf' : '';
         return '#';
       },
-      editable: false,
       tagLinks: true,
       hasPdf,
       hasTestimonials: testimonials.length > 0,
@@ -182,7 +190,11 @@ async function main() {
   // --- pages ---------------------------------------------------------------
   await write('index.html', htmlDocument({
     title: siteName,
-    description: toPlainText(data.profile.summary, 160) || data.profile.tagline,
+    // The front page describes the work, so prefer its own intro over the
+    // biography on the About page.
+    description: toPlainText(data.home.intro, 160)
+      || data.profile.tagline
+      || toPlainText(data.profile.summary, 160),
     accent, head: head(0), body: banner + indexBody(data, ctxFor(0)) + lightboxMarkup(),
   }));
 

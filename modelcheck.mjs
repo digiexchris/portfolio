@@ -39,6 +39,37 @@ eq('tolerance survives', sanitiseHtml('held < 0.001" over 14 in'), '<p>held &lt;
 eq('both bounds survive', sanitiseHtml('flatness <0.0002 and >0.5'), '<p>flatness &lt;0.0002 and &gt;0.5</p>');
 eq('real markup still parses', sanitiseHtml('held <b>0.0005</b> TIR'), '<p>held <b>0.0005</b> TIR</p>');
 
+console.log('\n--- entities and non-breaking spaces ---');
+// contenteditable serialises a typed space as `&nbsp;` in innerHTML. Escaping
+// that as if it were plain text produced a literal `&amp;nbsp;` on screen, and
+// every save added another `amp;`.
+eq('browser nbsp becomes a space', sanitiseHtml('<p>held flat&nbsp;</p>'), '<p>held flat</p>');
+eq('a real U+00A0 too', sanitiseHtml('<p>4\u00A0cams</p>'), '<p>4 cams</p>');
+eq('nbsp mid-sentence', sanitiseHtml('<p>4&nbsp;very nice cams</p>'), '<p>4 very nice cams</p>');
+
+let repeated = '<p>held flat&nbsp;</p>';
+for (let i = 0; i < 6; i++) repeated = sanitiseHtml(repeated);
+eq('does not compound over saves', repeated, '<p>held flat</p>');
+
+// Existing damage reverses exactly, however deep.
+eq('repairs 1-deep damage', sanitiseHtml('<p>a&amp;nbsp;b</p>'), '<p>a b</p>');
+eq('repairs 5-deep damage',
+  sanitiseHtml('<p>using 4&amp;amp;amp;amp;amp;nbsp; very nice cams</p>'),
+  '<p>using 4 very nice cams</p>');
+
+// ...but a real ampersand is not an escaping artefact and must survive.
+eq('a typed ampersand survives', sanitiseHtml('<p>Smith &amp; Sons</p>'), '<p>Smith &amp; Sons</p>');
+eq('  and stays stable', sanitiseHtml(sanitiseHtml('<p>Smith &amp; Sons</p>')), '<p>Smith &amp; Sons</p>');
+eq('a bare ampersand escapes once', sanitiseHtml('<p>Smith & Sons</p>'), '<p>Smith &amp; Sons</p>');
+eq('  and does not double', sanitiseHtml(sanitiseHtml('<p>Smith & Sons</p>')), '<p>Smith &amp; Sons</p>');
+
+eq('quote entity preserved', sanitiseHtml('<p>0.001&quot; flat</p>'), '<p>0.001&quot; flat</p>');
+eq('numeric entity preserved', sanitiseHtml('<p>90&#176; corner</p>'), '<p>90&#176; corner</p>');
+eq('entity-obfuscated js url still blocked',
+  sanitiseHtml('<a href="&#106;avascript:x">t</a>'), '<p><a>t</a></p>');
+eq('escaped tolerance does not double',
+  sanitiseHtml(sanitiseHtml('held < 0.001 flat')), '<p>held &lt; 0.001 flat</p>');
+
 console.log('\n--- paragraph structure ---');
 // A contenteditable left alone yields <br><br> runs or <div> wrappers. Neither
 // carries block structure, so `.prose p` and the PDF's orphan/widow and

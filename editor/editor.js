@@ -4,7 +4,6 @@
 import { Store } from './store.js';
 import { Preview } from './preview.js';
 import { MediaPicker } from './media.js';
-import { enableInline, disableInline } from './inline.js';
 import { el, textField, checkField, richField, listField, repeatField } from './forms.js';
 import { featurePhoto, toPlainText } from '../shared/model.js';
 
@@ -14,8 +13,11 @@ const store = new Store();
 const preview = new Preview($('preview-frame'), store);
 const media = new MediaPicker(store);
 
+// Selecting this instead of a project id edits the Work page itself rather
+// than any one entry on it.
+const PAGE_ID = '__work-page__';
+
 const ui = {
-  mode: 'split',            // 'split' | 'inline'
   filter: '',
   checked: new Set(),       // multi-select for merge / bulk publish
 };
@@ -102,10 +104,7 @@ function syncSiteButtons() {
 let previewTimer = null;
 function schedulePreview() {
   clearTimeout(previewTimer);
-  previewTimer = setTimeout(() => {
-    preview.render();
-    if (ui.mode === 'inline') enableInline(preview, store);
-  }, 220);
+  previewTimer = setTimeout(() => preview.render(), 220);
 }
 
 function toast(msg, bad = false) {
@@ -120,9 +119,6 @@ function toast(msg, bad = false) {
 // --- topbar -----------------------------------------------------------------
 
 function wireTopbar() {
-  for (const b of document.querySelectorAll('[data-mode]')) {
-    b.addEventListener('click', () => setMode(b.dataset.mode));
-  }
   for (const b of document.querySelectorAll('[data-page]')) {
     b.addEventListener('click', () => {
       const page = b.dataset.page;
@@ -137,12 +133,6 @@ function wireTopbar() {
     b.addEventListener('click', () => {
       for (const o of document.querySelectorAll('[data-view]')) o.classList.toggle('is-on', o === b);
       preview.setView(b.dataset.view);
-      if (ui.mode === 'inline' && b.dataset.view === 'print') {
-        // Paged.js clones nodes into page boxes; editing those would not map
-        // back to the model, so inline editing is screen-only.
-        setMode('split');
-        toast('Inline editing is not available in print view');
-      }
     });
   }
   $('btn-save').addEventListener('click', async () => {
@@ -158,14 +148,6 @@ function wireTopbar() {
   });
 }
 
-function setMode(mode) {
-  ui.mode = mode;
-  for (const b of document.querySelectorAll('[data-mode]')) b.classList.toggle('is-on', b.dataset.mode === mode);
-  $('layout').classList.toggle('inline-mode', mode === 'inline');
-  preview.setInline(mode === 'inline');
-  if (mode === 'inline') enableInline(preview, store);
-  else disableInline();
-}
 
 // --- sidebar ----------------------------------------------------------------
 
@@ -237,6 +219,17 @@ function renderSidebar() {
 }
 
 function renderProjectList(list) {
+  // The Work page's own intro text, pinned above the entries that appear on it.
+  const pageRow = el('li', {
+    class: 'side-item is-page' + (store.selection.id === PAGE_ID ? ' is-on' : ''),
+    title: 'Text shown above the gallery on the Work page',
+    onclick: () => store.select('projects', PAGE_ID),
+  },
+    el('span', { class: 'page-icon', 'aria-hidden': 'true' }, '¶'),
+    el('span', { class: 'label' }, 'Work page intro'),
+    el('span', { class: 'dot' + (store.data.home.intro ? ' live' : '') }));
+  list.append(pageRow);
+
   const items = store.data.projects.filter((p) =>
     !ui.filter || p.title.toLowerCase().includes(ui.filter) || p.tags.join(' ').toLowerCase().includes(ui.filter));
 
@@ -314,10 +307,23 @@ function renderForm() {
   const pane = $('form-pane');
   pane.textContent = '';
   const s = store.selection.section;
-  if (s === 'projects') pane.append(projectForm());
+  if (s === 'projects' && store.selection.id === PAGE_ID) pane.append(workPageForm());
+  else if (s === 'projects') pane.append(projectForm());
   else if (s === 'testimonials') pane.append(testimonialForm());
   else if (s === 'profile') pane.append(profileForm());
   else pane.append(settingsForm());
+}
+
+function workPageForm() {
+  const frag = document.createDocumentFragment();
+  frag.append(el('h2', {}, 'Work page'));
+  frag.append(el('p', { class: 'hint', style: 'margin:-.6rem 0 1rem' },
+    'The front page of the site. This text sits above the gallery.'));
+  frag.append(richField('Intro', store.data.home, 'intro', store,
+    'A short introduction to the work — what you make, what you fix, what you want to be judged on.'));
+  frag.append(el('p', { class: 'hint' },
+    'Separate from the About text, which is on the Profile tab and appears on the About page.'));
+  return frag;
 }
 
 function projectForm() {
@@ -498,6 +504,35 @@ function profileForm() {
     textField('Phone', p, 'phone', store, { type: 'tel' })));
   frag.append(textField('Email', p, 'email', store, { type: 'email' }));
   frag.append(richField('About', p, 'summary', store, 'A short paragraph about your background and what you do.'));
+
+  // A photo for the About page. Images cannot go inside the prose -- the
+  // sanitiser allows no <img> in stored HTML -- so this renders beneath it.
+  const portrait = el('div', { class: 'photo-strip' });
+  const drawPortrait = () => {
+    portrait.textContent = '';
+    if (p.photo) {
+      portrait.append(el('div', { class: 'strip-item' },
+        el('img', { src: '/thumbs/' + encodeURI(p.photo), alt: '' }),
+        el('div', { class: 'strip-tools' },
+          el('button', {
+            onclick: () => { store.update(() => { p.photo = ''; }); drawPortrait(); },
+          }, 'Remove'))));
+    }
+    portrait.append(el('button', {
+      class: 'strip-add', type: 'button',
+      onclick: () => media.open({
+        title: 'Photo for the About page',
+        selected: p.photo ? [p.photo] : [],
+        single: true,
+        onToggle: (src, on) => { store.update(() => { p.photo = on ? src : ''; }); drawPortrait(); },
+      }),
+    }, p.photo ? 'Replace photo' : '+ Choose photo'));
+  };
+  drawPortrait();
+  frag.append(el('div', { class: 'field' },
+    el('span', { class: 'field-label' }, 'Photo'), portrait,
+    el('p', { class: 'hint' }, 'Shown under the About text on the site, and in the PDF. '
+      + 'Pick anything from the library — a shot of you at the machine works well.')));
   frag.append(repeatField('Links', p.links, store, [
     { key: 'label', placeholder: 'Label' },
     { key: 'url', placeholder: 'https://' },
@@ -634,8 +669,8 @@ async function runExport(what) {
 // --- shortcuts --------------------------------------------------------------
 
 // Keyboard shortcuts. Split out from the listener so the preview iframe can
-// share the same handler: in inline mode the caret lives inside that document,
-// and its key events never reach this window. Ctrl+S has to work there too.
+// share the same handler -- key events inside that document never reach this
+// window on their own.
 function handleShortcut(e) {
   const mod = e.ctrlKey || e.metaKey;
   if (!mod) return;
@@ -661,7 +696,6 @@ function handleShortcut(e) {
     if (!store.redo()) toast('Nothing to redo');
     return;
   }
-  if (k === 'e') { e.preventDefault(); setMode(ui.mode === 'split' ? 'inline' : 'split'); }
 }
 
 function wireShortcuts() {

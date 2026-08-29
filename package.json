@@ -13,7 +13,7 @@
     "vendor": "cp -f node_modules/pagedjs/dist/paged.polyfill.js vendor/",
     "verify": "node verify.mjs",
     "preview:site": "node export/build-site.js --drafts",
-    "check": "node modelcheck.mjs && node verify.mjs && node navcheck.mjs && node savecheck.mjs && node widthcheck.mjs && node pagescheck.mjs"
+    "check": "node modelcheck.mjs && node verify.mjs && node navcheck.mjs && node savecheck.mjs && node widthcheck.mjs && node pagescheck.mjs && node nbspcheck.mjs && node aboutcheck.mjs && node workcheck.mjs"
   },
   "dependencies": {
     "pagedjs": "0.4.3",
