@@ -1,0 +1,1823 @@
+{
+  "version": 1,
+  "profile": {
+    "name": "",
+    "tagline": "Machinist and mechanic",
+    "location": "",
+    "email": "",
+    "phone": "",
+    "links": [],
+    "summary": "",
+    "photo": ""
+  },
+  "skills": [],
+  "projects": [
+    {
+      "id": "x2m3s54hqv1fi",
+      "slug": "1cu-assembled",
+      "title": "1 Cubic Inch 4 stroke",
+      "subtitle": "RC aircraft engine of my own design",
+      "date": "February 2023",
+      "summary": "1 cubic inch double over head cam model aircraft engine featuring a \nsplash lubricated bottom end, shim-over-valve style valve adjustment, and a timing belt.",
+      "body": "<p>This is a 1 cubic inch displacement model aircraft engine of my design. It is a 4 stroke, and rare in the model aircraft world, I plan to make it double overhead cam. In a typical 4 stroke RC model engine the valve train uses rockers and pushrods and is driven off of a camshaft that is geared off of the crankshaft. Using Solid Edge, I designed this to be a shim-over-valve double overhead cam, and verified clearances, compression ratio, and valve and ignition timing with Solid Edge motion studies. It will have approximately a 9.1:1 compression ratio, and run on gasoline.</p><p>Another unusual thing in the RC engine world is an oil filled crank case. Usually, the bottom end is lubricated using the oil in the fuel by allowing blow by either without piston rings using a lapped fit, or with a single piston ring omitting an oil control ring. This engine has two compression rings and a rudimentary oil scraping ring.</p><p>It is about 60% complete. Next to build is the head and the valve train.</p>",
+      "tags": [
+        "Engines",
+        "Machining"
+      ],
+      "specs": [],
+      "photos": [
+        {
+          "src": "1cu_assembled.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "1cu_crank.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "1cu_crankcase.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "1cu_crankcase_1.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "1cu_model.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "1cu_piston.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "1cu_plans.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "boring_1cu_block.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": true,
+      "order": 0
+    },
+    {
+      "id": "xd75ceip6v1fj",
+      "slug": "2-cyl-rc-crankshaft",
+      "title": "2 Cyl RC Crankshaft",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "2_cyl_rc_crankshaft.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "2_cyl_rc_crankshaft_2.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 1
+    },
+    {
+      "id": "xq7zeqayjv1fj",
+      "slug": "2-stroke-cylinders",
+      "title": "2 Stroke Cylinders",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "2_stroke_cylinders.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 2
+    },
+    {
+      "id": "xkuqpo694v1fj",
+      "slug": "2in-boring-head",
+      "title": "2in Boring Head",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "2in_boring_head.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "2in_boring_head_dial.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 3
+    },
+    {
+      "id": "xejw7h4acv1fj",
+      "slug": "3rd-scale-cub",
+      "title": "3rd Scale Cub",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "3rd_scale_cub.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 4
+    },
+    {
+      "id": "x9nox6f1qv1fj",
+      "slug": "66-triumph",
+      "title": "66 Triumph",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "66_triumph.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 5
+    },
+    {
+      "id": "x85u6xkkhv1fj",
+      "slug": "antenna",
+      "title": "Antenna",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "antenna.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "anternna_tuner.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "anternna_tuner_cover.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 6
+    },
+    {
+      "id": "xte6ymp3jv1fj",
+      "slug": "at-suspension",
+      "title": "AT Suspension",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "AT_Suspension.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "AT_Suspension_scuffs.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 7
+    },
+    {
+      "id": "xg2rizvf0v1fj",
+      "slug": "at-valve-check",
+      "title": "2017 Africa Twin Valve Clearance Check",
+      "subtitle": "Every 24,000 km we get to see some clever engineering",
+      "date": "",
+      "summary": "",
+      "body": "<p>The 24,000 kilometer service for the first generation Africa Twin involves checking the valve clearances. It sounds like a big job, but it's not too bad. At this point I am practiced enough that I can get access to the valve train in around 1.5 hours, after which it's easy to check.</p><p>The Africa Twin has a somewhat unique valve train for being a flagship model adventure bike. Rather than using a double over head cam like most big bikes, it uses a single camshaft over the intake valves only, using a typical shim-over-bucket type adjustment. The exhaust valves are driven off of rockers that ride on that same single camshaft using 4&amp;amp;nbsp; very nice cam follower bearings. The exhaust rockers feature similar adjustment screws that you'd see on a bike from many a yester-year. I think this is a pretty clever design. In most engines, the exhaust valve seats tend to wear and recede faster than the intake valve seats. It seems Honda left easy adjustability for the valves where you would expect there to need adjustment, and saved space on the intake valves where you typically don't ever need to adjust them.</p><p>On my specimen after 24,000km the valve clearances were well within spec. At 45,000 when I sold the bike, the exhaust valve clearance had only shrunk by 0.0005\". It seems this will be a very long lived engine with little actual adjustment needed. I wouldn't be surprised if we see later models start adopting 48,000 km valve clearance check intervals like we see in many automotive engines.</p><p>There is a trick to the front side fairing pieces: Slide them forwards! If you pry them sideways away from the bike you will break the forward two pins off. Pop the rear of the fairing loose from the tank, and push the fairing forwards to pop the front pins out of the front grommets.</p><p>Then the tank and air box need to come off. Take note of the drain tubes running from the left and right rear bottom corners of the air box, you'll need to reattach them when you put this all back together. They can be hard to see and can be easily missed.</p>",
+      "tags": [
+        "Engines",
+        "Motorcycles"
+      ],
+      "specs": [],
+      "photos": [
+        {
+          "src": "at_valve_check_2.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "at_valve_check_1.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "at_valve_check_3.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": true,
+      "order": 8
+    },
+    {
+      "id": "xm3yd0cesv1fj",
+      "slug": "banjo-bolt",
+      "title": "Banjo Bolt",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "banjo_bolt.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 9
+    },
+    {
+      "id": "xlixp8ldrv1fj",
+      "slug": "bead-breaker",
+      "title": "Bead Breaker",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "bead_breaker.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 10
+    },
+    {
+      "id": "xwsuausiuv1fj",
+      "slug": "beaver-head",
+      "title": "Beaver Head",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "beaver_head.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "beaver_head_2.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_3.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_4.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_5.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_6.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_7.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_8.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_9.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_10.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_11.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_12.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_13.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_14.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_15.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_16.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_17.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_18.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_19.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_20.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "beaver_head_21.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 11
+    },
+    {
+      "id": "xgeuguzh8v1fj",
+      "slug": "beer-tap-handle",
+      "title": "Beer Tap Handle",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "beer_tap_handle.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 12
+    },
+    {
+      "id": "xyidvif9wv1fj",
+      "slug": "bike-lifting-tool",
+      "title": "Bike Lifting Tool",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "bike_lifting_tool.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 13
+    },
+    {
+      "id": "xoblhbii7v1fj",
+      "slug": "block-heater",
+      "title": "Block Heater",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "block_heater.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 14
+    },
+    {
+      "id": "x0qv8quuxv1fj",
+      "slug": "bolt-action-pen",
+      "title": "Bolt Action Pen",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "bolt_action_pen.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "bolt_action_pen_2.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 15
+    },
+    {
+      "id": "xxu5obelnv1fj",
+      "slug": "brake-caliper-repair",
+      "title": "Brake Caliper Repair",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "brake_caliper_repair.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 16
+    },
+    {
+      "id": "xotu8lbcxv1fj",
+      "slug": "camera-holster",
+      "title": "Camera Holster",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "camera_holster.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "camera_holster_2.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 17
+    },
+    {
+      "id": "xue8u0aycv1fj",
+      "slug": "cardo-trace-repair",
+      "title": "Cardo Trace Repair",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "cardo_trace_repair.png",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "cardo_trace_repair_2.png",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 18
+    },
+    {
+      "id": "xvqlegx0zv1fj",
+      "slug": "cb",
+      "title": "CB",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "cb650.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 19
+    },
+    {
+      "id": "xzu772shtv1fj",
+      "slug": "cb450x",
+      "title": "CB450X",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "cb450x.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "cb450x_disassembled.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 20
+    },
+    {
+      "id": "xf6k2e9qbv1fj",
+      "slug": "cb650-suspension",
+      "title": "CB650 Suspension",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "cb650_suspension.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 21
+    },
+    {
+      "id": "xvrffogxxv1fj",
+      "slug": "clasp-tool",
+      "title": "Clasp Tool",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "clasp_tool.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "clasp_tool_2.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 22
+    },
+    {
+      "id": "x6brkgmu4v1fj",
+      "slug": "coin",
+      "title": "Coin",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "coin.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "coin_2.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "coin_3.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 23
+    },
+    {
+      "id": "x25y4ov3wv1fj",
+      "slug": "collet-storage",
+      "title": "Collet Storage",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "collet_storage.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 24
+    },
+    {
+      "id": "xqh8bouacv1fj",
+      "slug": "cr450-to-cr650-stem",
+      "title": "CR450 To CR650 Stem",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "cr450_to_cr650_stem.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "cr450_to_cr650_stem_1.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 25
+    },
+    {
+      "id": "xhto8po6dv1fj",
+      "slug": "cr450-to-cr650-stem-1-complete",
+      "title": "CR450 To CR650 Stem 1 Complete",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "cr450_to_cr650_stem_1_complete.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 26
+    },
+    {
+      "id": "xio7ffrnrv1fj",
+      "slug": "cr450-to-cr650-stem-1-complete-upper",
+      "title": "CR450 To CR650 Stem 1 Complete Upper",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "cr450_to_cr650_stem_1_complete_upper.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 27
+    },
+    {
+      "id": "xbtv7mypxv1fj",
+      "slug": "cr450-to-cr650-stem-complete",
+      "title": "CR450 To CR650 Stem Complete",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "cr450_to_cr650_stem_complete.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 28
+    },
+    {
+      "id": "xzletpmhzv1fj",
+      "slug": "delta",
+      "title": "Delta",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "delta.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 29
+    },
+    {
+      "id": "xtbn25khxv1fj",
+      "slug": "document-normal-abnormal-wear",
+      "title": "Document Normal Abnormal Wear",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "document_normal_abnormal_wear.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 30
+    },
+    {
+      "id": "x4hay7zy9v1fj",
+      "slug": "electronics",
+      "title": "Electronics",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "electronics_1.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 31
+    },
+    {
+      "id": "xgh2huo62v1fj",
+      "slug": "face-mill",
+      "title": "Face Mill",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "face_mill_1.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "face_mill_2.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "face_mill_3.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "face_mill_4.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "face_mill_5.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "face_mill_6.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "face_mill_7.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 32
+    },
+    {
+      "id": "x7mw6hqh1v1fj",
+      "slug": "ham",
+      "title": "Ham",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "ham.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 33
+    },
+    {
+      "id": "xgx8slgbcv1fj",
+      "slug": "horizontal-mill",
+      "title": "Horizontal Mill",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "horizontal_mill.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "mill_stripped.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 34
+    },
+    {
+      "id": "xxqov9vriv1fj",
+      "slug": "iltis",
+      "title": "Iltis",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "Iltis.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 35
+    },
+    {
+      "id": "x63fkwcs5v1fj",
+      "slug": "joels-lathe",
+      "title": "Joels Lathe",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "joels_lathe.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 36
+    },
+    {
+      "id": "xw6665nywv1fj",
+      "slug": "klr-tensioner",
+      "title": "KLR Tensioner",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "klr_tensioner.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 37
+    },
+    {
+      "id": "xa8ug233ov1fj",
+      "slug": "klr-tires",
+      "title": "KLR Tires",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "klr_tires.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 38
+    },
+    {
+      "id": "xpq01dsigv1fj",
+      "slug": "klr-trailer",
+      "title": "KLR Trailer",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "klr_trailer.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "klr_trailer_2.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "klr_trailer_3.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 39
+    },
+    {
+      "id": "xpuphasgpv1fj",
+      "slug": "klr-valve-clearance-check",
+      "title": "KLR Valve Clearance Check",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "klr_valve_clearance_check.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 40
+    },
+    {
+      "id": "xe77nbzwjv1fj",
+      "slug": "klr650-balancer-chain",
+      "title": "KLR650 Balancer Chain",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "klr650_balancer_chain.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 41
+    },
+    {
+      "id": "xxb4wglvlv1fj",
+      "slug": "klr650-snow",
+      "title": "KLR650 Snow",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "klr650_snow.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 42
+    },
+    {
+      "id": "x5eaojmjxv1fj",
+      "slug": "landon-jeep",
+      "title": "Landon Jeep",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "landon_jeep.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 43
+    },
+    {
+      "id": "xj4h584fvv1fj",
+      "slug": "lathe-steady",
+      "title": "Lathe Steady",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "lathe_steady.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 44
+    },
+    {
+      "id": "xflkxn3nqv1fj",
+      "slug": "mill-handle",
+      "title": "Mill Handle",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "mill_handle.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 45
+    },
+    {
+      "id": "x6l5vrggvv1fj",
+      "slug": "nasa-library",
+      "title": "NASA Library",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "nasa_library.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 46
+    },
+    {
+      "id": "xfvnu3ezcv1fj",
+      "slug": "power-supply-mod",
+      "title": "Power Supply Mod",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "power_supply_mod.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 47
+    },
+    {
+      "id": "xd733nedav1fj",
+      "slug": "ranger-wheel-bearing",
+      "title": "Ranger Wheel Bearing",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "ranger_wheel_bearing.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "ranger_wheel_bearing_2.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 48
+    },
+    {
+      "id": "xj6rog1gcv1fj",
+      "slug": "rc-carb",
+      "title": "RC Carb",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "rc_carb.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 49
+    },
+    {
+      "id": "xvpsm8gaxv1fj",
+      "slug": "scraped-t-slot-plate",
+      "title": "Scraped T Slot Plate",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "scraped_t_slot_plate.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 50
+    },
+    {
+      "id": "xx82k8hf8v1fj",
+      "slug": "second-printer",
+      "title": "Second Printer",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "second_printer.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 51
+    },
+    {
+      "id": "x3c82ykpwv1fj",
+      "slug": "sewing-machine-repair",
+      "title": "Sewing Machine Repair",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "sewing_machine_repair.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 52
+    },
+    {
+      "id": "xah5ghr2zv1fj",
+      "slug": "shuttle-pendant",
+      "title": "Shuttle Pendant",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "shuttle_pendant.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 53
+    },
+    {
+      "id": "xkhc5chfov1fj",
+      "slug": "sine-table",
+      "title": "Sine Table",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "sine_table.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "sine_table_1.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "sine_table_2.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 54
+    },
+    {
+      "id": "xdd698yxkv1fj",
+      "slug": "stall-door",
+      "title": "Stall Door",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "stall_door.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 55
+    },
+    {
+      "id": "x5aidgho6v1fj",
+      "slug": "studded-mc-tires",
+      "title": "Studded MC Tires",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "studded_mc_tires.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "studded_mc_tires_2.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 56
+    },
+    {
+      "id": "xsk8qclttv1fj",
+      "slug": "surface-grinder",
+      "title": "Surface Grinder",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "surface_grinder.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "surface_grinder_1.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "surface_grinder_2.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 57
+    },
+    {
+      "id": "xap7pele3v1fj",
+      "slug": "t7-front-axle-wrench",
+      "title": "T7 Front Axle Wrench",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "t7_front_axle_wrench.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 58
+    },
+    {
+      "id": "x033pfwccv1fj",
+      "slug": "t7-dash",
+      "title": "T7 Dash",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "t7-dash_1.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "t7-dash_2.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "t7-dash_3.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "t7-dash_4.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "t7-dash_5.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 59
+    },
+    {
+      "id": "x86wgk4e7v1fj",
+      "slug": "tap-wrench",
+      "title": "Tap Wrench",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "tap_wrench_1.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "tap_wrench_2.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "tap_wrench_3.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 60
+    },
+    {
+      "id": "xz2a59kpdv1fj",
+      "slug": "toolmaker-vise",
+      "title": "Toolmaker Vise",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "toolmaker_vise_1.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 61
+    },
+    {
+      "id": "xqgt48w6iv1fj",
+      "slug": "toolpost",
+      "title": "Toolpost",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "toolpost.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 62
+    },
+    {
+      "id": "xgho20p1jv1fj",
+      "slug": "tw200",
+      "title": "TW200",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "tw200_1.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        },
+        {
+          "src": "tw200_hub_1.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "tw200_hub_2.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "tw200_hub_3.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "tw200_hub_4.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "tw200_hub_5.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "tw200_hub_tank_rack.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "tw200_initial_oil_filter_break_in.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        },
+        {
+          "src": "tw200_needle.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false
+        }
+      ],
+      "published": false,
+      "order": 63
+    },
+    {
+      "id": "xsym81q2iv1fj",
+      "slug": "yak",
+      "title": "Yak",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "yak54.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true
+        }
+      ],
+      "published": false,
+      "order": 64
+    }
+  ],
+  "testimonials": [],
+  "settings": {
+    "siteTitle": "Portfolio",
+    "accent": "#b4531f",
+    "pdf": {
+      "paper": "Letter",
+      "includeTestimonials": true,
+      "coverPhoto": ""
+    }
+  }
+}

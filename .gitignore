@@ -1,0 +1,51 @@
+# ---------------------------------------------------------------------------
+# Dependencies — restored with `npm install`
+# ---------------------------------------------------------------------------
+node_modules/
+
+# ---------------------------------------------------------------------------
+# Generated, and rebuildable from media/ + data/portfolio.json
+# ---------------------------------------------------------------------------
+
+# Resized image derivatives. Large, and regenerated on demand.
+.cache/
+
+# Draft preview: contains UNPUBLISHED work and is explicitly marked
+# "not for sending". This must never be committed or served.
+preview/
+
+# PDF build directory, including the intermediate print document.
+# The finished PDF is copied into docs/ by the site build, and that copy
+# is what gets committed and served.
+out/
+
+# ---------------------------------------------------------------------------
+# Local state
+# ---------------------------------------------------------------------------
+
+# A snapshot per save. A local safety net, not project history.
+data/backups/
+
+# ---------------------------------------------------------------------------
+# NOT ignored, deliberately:
+#
+#   media/   the 136 source photos — without these a clone has no content
+#   docs/    the exported site + portfolio.pdf, committed so GitHub Pages
+#            can serve it (Pages branch deploys only accept / or /docs)
+#   vendor/  paged.polyfill.js, so PDF export works without a network
+#   data/portfolio.json   your writing
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+# Noise
+# ---------------------------------------------------------------------------
+*.log
+npm-debug.log*
+.env
+.env.*
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/

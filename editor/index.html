@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio Editor</title>
+<link rel="stylesheet" href="/shared/styles/tokens.css">
+<link rel="stylesheet" href="/editor/editor.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>&#128295;</text></svg>">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <strong class="app-name">Portfolio</strong>
+    <span class="status" id="status">Loading…</span>
+  </div>
+
+  <div class="topbar-mid">
+    <div class="seg" role="group" aria-label="Editing mode">
+      <button class="seg-btn is-on" data-mode="split" title="Form and preview side by side">Split</button>
+      <button class="seg-btn" data-mode="inline" title="Edit directly on the page">Inline</button>
+    </div>
+    <div class="seg" role="group" aria-label="Preview style">
+      <button class="seg-btn is-on" data-view="screen">Screen</button>
+      <button class="seg-btn" data-view="print">Print</button>
+    </div>
+    <div class="seg" role="group" aria-label="Preview page">
+      <button class="seg-btn is-on" data-page="auto" title="Follow the selected project">Editing</button>
+      <button class="seg-btn" data-page="index" title="The site's front page">Gallery</button>
+      <button class="seg-btn" data-page="about" title="The About page">About</button>
+    </div>
+  </div>
+
+  <div class="topbar-right">
+    <button class="btn" id="btn-save" title="Save now (Ctrl+S)">Save</button>
+    <button class="btn" id="btn-preview-site" title="Build and open a local preview including drafts">Preview site</button>
+    <button class="btn" id="btn-export-site" title="Build the static HTML site (published work only)">Export site</button>
+    <button class="btn primary" id="btn-export-pdf" title="Build the PDF">Export PDF</button>
+  </div>
+</header>
+
+<div class="layout" id="layout">
+
+  <nav class="sidebar" id="sidebar">
+    <div class="side-tabs" role="tablist">
+      <button class="side-tab is-on" data-section="projects">Work</button>
+      <button class="side-tab" data-section="testimonials">Testimonials</button>
+      <button class="side-tab" data-section="profile">Profile</button>
+      <button class="side-tab" data-section="settings">Settings</button>
+    </div>
+
+    <div class="side-tools" id="side-tools">
+      <input type="search" id="side-search" class="side-search" placeholder="Filter…" aria-label="Filter list">
+      <button class="btn small" id="btn-add" title="Add new">+ New</button>
+    </div>
+
+    <div class="side-bulk" id="side-bulk" hidden>
+      <span id="bulk-count">0 selected</span>
+      <button class="btn small" id="btn-merge" title="Combine the selected projects into the first one">Merge</button>
+      <button class="btn small" id="btn-bulk-publish">Publish</button>
+      <button class="btn small" id="btn-bulk-clear">Clear</button>
+    </div>
+
+    <ul class="side-list" id="side-list"></ul>
+
+    <div class="side-foot" id="side-foot"></div>
+  </nav>
+
+  <main class="form-pane" id="form-pane"></main>
+
+  <section class="preview-pane" id="preview-pane">
+    <div class="preview-scroll" id="preview-scroll">
+      <iframe id="preview-frame" title="Live preview" src="about:blank"></iframe>
+    </div>
+  </section>
+
+</div>
+
+<div class="drawer" id="drawer" hidden>
+  <div class="drawer-head">
+    <strong id="drawer-title">Photos</strong>
+    <input type="search" id="media-search" class="side-search" placeholder="Filter photos…">
+    <label class="btn small" for="media-upload">Upload…</label>
+    <input type="file" id="media-upload" accept="image/*" multiple hidden>
+    <button class="btn small" id="drawer-close">Done</button>
+  </div>
+  <div class="media-grid" id="media-grid"></div>
+</div>
+
+<div class="console" id="console" hidden>
+  <div class="console-head">
+    <strong id="console-title">Export</strong>
+    <button class="btn small" id="console-open" hidden>Open folder</button>
+    <button class="btn small" id="console-close">Close</button>
+  </div>
+  <pre id="console-out"></pre>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script type="module" src="/editor/editor.js"></script>
+</body>
+</html>

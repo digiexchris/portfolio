@@ -1,0 +1,26 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Local WYSIWYG portfolio editor with static HTML and PDF export",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node scripts/seed.js",
+    "build:site": "node export/build-site.js",
+    "build:pdf": "node export/build-pdf.js",
+    "build": "node export/build-pdf.js && node export/build-site.js",
+    "vendor": "cp -f node_modules/pagedjs/dist/paged.polyfill.js vendor/",
+    "verify": "node verify.mjs",
+    "preview:site": "node export/build-site.js --drafts",
+    "check": "node modelcheck.mjs && node verify.mjs && node navcheck.mjs && node savecheck.mjs && node widthcheck.mjs && node pagescheck.mjs"
+  },
+  "dependencies": {
+    "pagedjs": "0.4.3",
+    "puppeteer-core": "25.9.0",
+    "sharp": "0.35.4"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

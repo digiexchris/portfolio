@@ -12,9 +12,12 @@ nothing missing. Nothing outside this directory is ever read or written.
 ## Running it
 
 ```bash
-npm install          # once
+npm ci               # once
 npm start            # then open http://127.0.0.1:4321/editor/
 ```
+
+For the full command reference, test suites, API and troubleshooting, see
+[Development.md](Development.md).
 
 The server binds to loopback only — nothing is exposed to the network.
 
