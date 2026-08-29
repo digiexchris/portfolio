@@ -21,7 +21,7 @@
       "title": "1 Cubic Inch 4 stroke",
       "subtitle": "RC aircraft engine of my own design",
       "date": "February 2023",
-      "summary": "1 cubic inch double over head cam model aircraft engine featuring a splash lubricated bottom end, shim-over-valve style valve adjustment, and a timing belt.",
+      "summary": "",
       "body": "<p>This is a 1 cubic inch displacement model aircraft engine of my design. It is a 4 stroke, and rare in the model aircraft world, I plan to make it double overhead cam. In a typical 4 stroke RC model engine the valve train uses rockers and pushrods and is driven off of a camshaft that is geared off of the crankshaft. Using Solid Edge, I designed this to be a shim-over-valve double overhead cam, and verified clearances, compression ratio, and valve and ignition timing with Solid Edge motion studies. It will have approximately a 9.1:1 compression ratio, and run on gasoline.</p><p>Another unusual thing in the RC engine world is an oil filled crank case. Usually, the bottom end is lubricated using the oil in the fuel by allowing blow by either without piston rings using a lapped fit, or with a single piston ring omitting an oil control ring. This engine has two compression rings and a rudimentary oil scraping ring.</p><p>It is about 60% complete. Next to build is the head and the valve train.<br><br>The horizontal milling machine with the vertical head makes it very easy to make both the crankcase and cylinder bores perpendicular, within the squareness of the mill. In a single setup I was able to use the horizontal spindle to bore the crankcase, and without changing the setup, use the vertical head to bore the cylinder for the cast iron cylinder liner to slip into.</p>",
       "tags": [
         "Engines",
