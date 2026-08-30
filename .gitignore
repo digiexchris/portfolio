@@ -31,7 +31,9 @@ data/backups/
 #
 #   media/   the 136 source photos — without these a clone has no content
 #   docs/    the exported site + portfolio.pdf, committed so GitHub Pages
-#            can serve it (Pages branch deploys only accept / or /docs)
+#            can serve it (Pages branch deploys only accept / or /docs).
+#            Includes CNAME and any other host control files.
+#   public/  optional; copied verbatim into docs/ on every build
 #   vendor/  paged.polyfill.js, so PDF export works without a network
 #   data/portfolio.json   your writing
 # ---------------------------------------------------------------------------

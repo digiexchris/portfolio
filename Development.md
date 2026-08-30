@@ -115,6 +115,20 @@ page raises a confirmation.
 `docs/` is the Pages source: set **Settings → Pages → Deploy from a branch →
 main → /docs**. It carries a `.nojekyll` so Pages serves the files verbatim.
 
+**Host control files survive the build.** `build:site` wipes the output folder,
+which would otherwise delete files it did not generate — most importantly
+`CNAME`, which GitHub writes into `docs/` when you set a custom domain in its
+UI, and whose loss silently unpoints the domain. These are moved aside and put
+back on every build:
+
+    CNAME   robots.txt   _headers   _redirects   .well-known/
+    google<token>.html   BingSiteAuth.xml
+
+Anything in an optional **`public/`** directory is also copied verbatim into the
+published folder, and takes precedence. That is the better home for files you
+add deliberately, since it is version-controlled and independent of whatever
+happens to survive in `docs/`.
+
 Only **published** projects reach `docs/` and the PDF. Drafts are skipped
 everywhere except `preview/`, so a half-written entry cannot end up in
 something you send.
@@ -147,12 +161,12 @@ npm run check    # in another
 | `navcheck.mjs` | 12 | yes | preview navigation, the draft preview |
 | `savecheck.mjs` | 10 | yes | manual saving, the unsaved-changes guard |
 | `widthcheck.mjs` | 10 | yes | text and photo columns stay aligned, mobile |
-| `pagescheck.mjs` | 15 | no | `docs/` served as a Pages root: links resolve, no 404s, PDF fetchable |
+| `pagescheck.mjs` | 20 | no | `docs/` served as a Pages root: links resolve, no 404s, PDF fetchable |
 | `nbspcheck.mjs` | 8 | yes | typing in the real editor produces clean markup, stable across saves |
 | `aboutcheck.mjs` | 25 | yes | the About photo through preview/save/export; picker thumbnail geometry |
 | `workcheck.mjs` | 13 | yes | the Work intro is separate from the About text, and lands above the gallery |
 
-**180 checks in total.** They drive a real headless Chromium against the real
+**185 checks in total.** They drive a real headless Chromium against the real
 server, and each restores `data/portfolio.json` when it finishes — safe to run
 on real work. `verify.mjs` rebuilds `docs/` from the restored data rather than
 leaving a test build behind.

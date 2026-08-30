@@ -26,6 +26,20 @@ const DRAFTS = process.argv.includes('--drafts');
 const DIST = path.join(ROOT, DRAFTS ? 'preview' : 'docs');
 const PDF_SOURCE = path.join(ROOT, 'out', 'portfolio.pdf');
 
+// Anything in public/ is copied verbatim into the published folder. That is
+// where files the host needs but this builder does not generate belong -- a
+// CNAME for a custom domain, robots.txt, an ownership-verification file.
+const PUBLIC_DIR = path.join(ROOT, 'public');
+
+// The build wipes the output folder, which would take those files with it.
+// GitHub writes CNAME straight into docs/ when a custom domain is set in its
+// web UI, so they can arrive without ever passing through public/ -- losing one
+// silently unpoints the domain.
+const PRESERVE = [
+  /^CNAME$/i, /^robots\.txt$/i, /^_headers$/, /^_redirects$/,
+  /^\.well-known$/, /^google[0-9a-z]+\.html$/i, /^BingSiteAuth\.xml$/i,
+];
+
 const t0 = Date.now();
 
 async function main() {
@@ -51,8 +65,13 @@ async function main() {
     console.log(`Exporting ${projects.length} projects, ${testimonials.length} testimonials`);
   }
 
+  const rescued = await rescueHostFiles(DIST);
   await fs.rm(DIST, { recursive: true, force: true });
   await fs.mkdir(path.join(DIST, 'assets'), { recursive: true });
+  await restoreHostFiles(DIST, rescued);
+  const published = await copyPublic(DIST);
+  const kept = [...new Set([...rescued, ...published])];
+  if (kept.length) console.log(`Kept host files: ${kept.join(', ')}`);
 
   const pipe = new ImagePipeline({
     mediaRoot: MEDIA_ROOT,
@@ -239,6 +258,43 @@ async function main() {
   console.log(DRAFTS
     ? `Review at http://127.0.0.1:4321/${dir}/index.html — drafts included, so do not send this folder.`
     : `Open ${dir}/index.html directly in a browser, or upload the folder as-is.`);
+}
+
+// Move host control files out of the way of the wipe, and back afterwards.
+const STAGING = path.join(ROOT, '.cache', 'preserve');
+
+async function rescueHostFiles(dir) {
+  let entries = [];
+  try { entries = await fs.readdir(dir, { withFileTypes: true }); } catch { return []; }
+  await fs.rm(STAGING, { recursive: true, force: true });
+  const saved = [];
+  for (const e of entries) {
+    if (!PRESERVE.some((re) => re.test(e.name))) continue;
+    await fs.mkdir(STAGING, { recursive: true });
+    await fs.cp(path.join(dir, e.name), path.join(STAGING, e.name), { recursive: true });
+    saved.push(e.name);
+  }
+  return saved;
+}
+
+async function restoreHostFiles(dir, names) {
+  for (const name of names) {
+    await fs.cp(path.join(STAGING, name), path.join(dir, name), { recursive: true });
+  }
+  await fs.rm(STAGING, { recursive: true, force: true });
+}
+
+// public/ wins over anything rescued: it is the version under version control.
+async function copyPublic(dir) {
+  let entries = [];
+  try { entries = await fs.readdir(PUBLIC_DIR, { withFileTypes: true }); } catch { return []; }
+  const copied = [];
+  for (const e of entries) {
+    if (e.name.startsWith('.') && e.name !== '.well-known') continue;
+    await fs.cp(path.join(PUBLIC_DIR, e.name), path.join(dir, e.name), { recursive: true });
+    copied.push(e.name);
+  }
+  return copied;
 }
 
 // Lightbox container, appended once per page.
