@@ -33,43 +33,50 @@
           "src": "1cu_assembled.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "1cu_crank.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "1cu_crankcase.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "1cu_crankcase_1.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "1cu_model.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "1cu_piston.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "boring_1cu_block.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
       "published": true,
@@ -90,13 +97,15 @@
           "src": "2_cyl_rc_crankshaft.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "2_cyl_rc_crankshaft_2.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
       "published": false,
@@ -117,7 +126,8 @@
           "src": "2_stroke_cylinders.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
@@ -138,13 +148,15 @@
           "src": "2in_boring_head.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "2in_boring_head_dial.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
       "published": false,
@@ -165,7 +177,8 @@
           "src": "3rd_scale_cub.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
@@ -186,7 +199,8 @@
           "src": "66_triumph.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
@@ -207,19 +221,22 @@
           "src": "antenna.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "anternna_tuner.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "anternna_tuner_cover.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
       "published": false,
@@ -233,20 +250,25 @@
       "date": "",
       "summary": "",
       "body": "<p>The first generation Honda Africa Twin has been known to prematurely wear the coating off of the inside of the fork tubes, which usually results in high stiction. Having owned Honda products before, this sounded odd to me, and I wasn't having any symptoms.</p><p>Around 8,000km, the right fork seal began seeping noticeably. I dissassembled both tubes, and inspected for wear in the usual spots, but found none. The oil was gritty to the touch though. This made me think that the premature wear issues may actually be fork seal wiper issues, allowing dirt ingress. The dirt then wears out the fork tube coating.</p><p>I installed a set of upgraded fork seals that were known to perform extremely well in the dirt bike competition world, followed by a neoprene fork wiper. Normally one would need to disassemble the forks to install the neoprene tube on upside down forks, but I found a brand that used a cleverly located zipper to allow installing it while the suspension was still on the bike.</p><p>At 30,000km I disassembled the forks again for inspection, and noted that while the fork oil was dark as is usual after that amount of time, there was no detectable grit. The fork tubes were in perfect condition.</p><p>While my sample size is admitably small, I suspect what is happening is that dirt getting on the stanchion tubes is working it's way past the seals, contaminating the oil. The fork bushings then take that dirt and start lapping away the coating on the inside of the fork tubes. Catching a leaking fork seal early is critical to prevent this, in my opinion. The addition of a neoprene dirt wiper seems to have completely eliminated any dirt ingress.</p>",
-      "tags": [],
+      "tags": [
+        "Suspension",
+        "Motorcycles"
+      ],
       "specs": [],
       "photos": [
         {
           "src": "AT_Suspension.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "AT_Suspension_scuffs.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
       "published": true,
@@ -270,19 +292,22 @@
           "src": "at_valve_check_2.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "at_valve_check_1.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "at_valve_check_3.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
       "published": true,
@@ -303,7 +328,8 @@
           "src": "banjo_bolt.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
@@ -324,7 +350,8 @@
           "src": "bead_breaker.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
@@ -337,138 +364,161 @@
       "subtitle": "",
       "date": "",
       "summary": "",
-      "body": "<p>My 1921 Denbig horizontal mill is a great machine. Compared to a turret mill the same size, it's way more rigid. I can take huge cuts without chatter with 1\" diameter endmills. I can take cuts so deep cast iron peels off with actual chips, instead of just dust. The major downside to the machine is the vertical head that I have for it does not have a quill feed. it makes repeated drilling operations awkward, and has limited clearance to the table.</p><p>I had been looking for milling heads from old Bridgeport machines with a plan to transplant it onto this Denbig, but nothing suitable or close enough to me came up. One day on Ebay, I found a used machinery dealer in Ontario that had this Beaver MK2 head sitting on a pallet, for very reasonable money. It provides a power down feed, 4 speeds, and designed to be easily maintained.<br><br>To mount the head to the Denbig, I decided to use the overarm bar. I shortened the overarm bar enough to fit on my lathe. Then I cut a fine thread at one end, and a taper at the other with a 1-13 threaded hole. Then I took the large slug of steel that the head came mounted to, and bored a tapered hole in it to fit the taper on the end of the overarm. A large bolt pulls the taper home tightly. The steel bar also has two 5/8\" hols in it.<br><br>The head mounts to the Denbig on the end of the overarm bar, then a lock ring was made to pull the overarm bar rearwards, tightening the mounting bar against the column of the mill. Then 2 5/8\" holes were drilled and tapped using the holes in the mounting bar. The two 5/8\" bolts and the overarm bar lock ring create a very rigid 3 point clamping setup.<br><br>The head was then completely stripped down to it's component pieces, all bearings were changed, everything was properly lubricated, and reassembled.<br><br>Using some guidance from professional spindle rebuilders, I used my lathe's toolpost grinder setup on the mill table and reground the taper on the spindle after installing new bearings, achieving a total indicated run out of less than 0.0002\".</p>",
-      "tags": [],
+      "body": "<p>My 1921 Denbig horizontal mill is a great machine. Compared to a turret mill the same size, it's way more rigid. I can take huge cuts without chatter with 1\" diameter endmills. I can take cuts so deep cast iron peels off with actual chips, instead of just dust. The major downside to the machine is the vertical head that I have for it does not have a quill feed. it makes repeated drilling operations awkward, and has limited clearance to the table.</p><p>I had been looking for milling heads from old Bridgeport machines with a plan to transplant it onto this Denbig, but nothing suitable or close enough to me came up. One day on Ebay, I found a used machinery dealer in Ontario that had this Beaver MK2 head sitting on a pallet, for very reasonable money. It provides a power down feed, 4 speeds, and designed to be easily maintained.<br><br>It arrived in rough shape. It needed a lot of cleaning, repacking bearings, inspection, and repair. The spindle nose lock ring was cracked, the back gear selector detent had worn a track in casting, and the spindle bearings needed replacement. I machined a new spindle nose lock ring out of a piece of durabar cast iron, which closely matched the original lock ring. The detent took a bit of careful tig welding, but you can't tell the wear was there. To prevent it wearing in the future, I made a stainless steel plate that has the two detent holes in it as a much harder wear surface. The driven pulley was in bad shape as well, with several large dings and dents in it. It was causing a huge clattering noise that could be heard over hearing protection. I carefully bent the dents back into place, built up more surface with the tig welder, and re-machined the pulley grooves.<br><br>I eventually put a variable speed 3 phase motor on it, so I don't change gears often, but to finish off the aesthetics I re-etched a new spindle speed chart based off of the very faded original. I also replaced the missing quill handle with a large wheel welded out of two half circles I bent with a pipe bender. I much prefer it for maintaining feel when using small drills.<br><br>To mount the head to the Denbig, I decided to use the overarm bar. I shortened the overarm bar enough to fit on my lathe. Then I cut a fine thread at one end, and a taper at the other with a 1-13 threaded hole. Then I took the large slug of steel that the head came mounted to, and bored a tapered hole in it to fit the taper on the end of the overarm. A large bolt pulls the taper home tightly. The steel bar also has two 5/8\" hols in it.<br><br>The head mounts to the Denbig on the end of the overarm bar, then a lock ring was made to pull the overarm bar rearwards, tightening the mounting bar against the column of the mill. Then 2 5/8\" holes were drilled and tapped using the holes in the mounting bar. The two 5/8\" bolts and the overarm bar lock ring create a very rigid 3 point clamping setup.<br><br>The head was then completely stripped down to it's component pieces, all bearings were changed, everything was properly lubricated, and reassembled.<br><br>Using some guidance from professional spindle rebuilders, I used my lathe's toolpost grinder setup on the mill table and reground the taper on the spindle after installing new bearings, achieving a total indicated run out of less than 0.0002\".</p>",
+      "tags": [
+        "Machine Tools"
+      ],
       "specs": [],
       "photos": [
         {
           "src": "beaver_head.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "beaver_head_2.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_3.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_4.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_5.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_6.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_7.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_8.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_9.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_10.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_11.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_12.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_13.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_14.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_15.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_16.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_17.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_18.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_19.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_20.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "beaver_head_21.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
-      "published": false,
+      "published": true,
       "order": 11
     },
     {
@@ -486,7 +536,8 @@
           "src": "beer_tap_handle.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
@@ -507,7 +558,8 @@
           "src": "bike_lifting_tool.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
@@ -520,18 +572,21 @@
       "subtitle": "To the arctic circle and back",
       "date": "",
       "summary": "",
-      "body": "",
-      "tags": [],
+      "body": "<p>In years passed, I owned a Kawasaki KLR650 dual sport motorcycle. At the time I was living near Morris, MB and working in town. In Manitoba, we have fairly short riding seasons, so I investigated how I could keep riding throughout the winter using the gravel roads. I studded up a set of tires, slowly and incrementally experimented in save areas, and proved it's actually possible. I became known for it in the area.</p><p>One of the challenges was that the KLR650 would refuse to start around 0C (32f). There was lots of starter rpm, but the carb low end mixture from the factory was far too lean to start.</p><p>So I invented an inline coolant heater specifically for the KLR5650. It uses a screw (1\"-16 TPI) tractor block heater element in a housing designed to replace one of the bends in the lower coolant hose. The heater is self-limiting, so there's no danger of overheating anything.<br><br>It was so successful that my record is riding home from work at -37c (-34f).<br><br>Later that winter I sold one to Oliver Solaro, also known as bwokentoof on youtube. It enabled him to take his KLR to the arctic circle and back on an adventure he documented here <a href=\"https://www.youtube.com/watch?v=_kT3SV9sDUE\">https://www.youtube.com/watch?v=_kT3SV9sDUE</a></p>",
+      "tags": [
+        "Motorcycles"
+      ],
       "specs": [],
       "photos": [
         {
           "src": "block_heater.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
-      "published": false,
+      "published": true,
       "order": 14
     },
     {
@@ -549,13 +604,15 @@
           "src": "bolt_action_pen.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "bolt_action_pen_2.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
       "published": false,
@@ -576,7 +633,8 @@
           "src": "brake_caliper_repair.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
@@ -597,13 +655,15 @@
           "src": "camera_holster.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "camera_holster_2.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
       "published": false,
@@ -616,24 +676,28 @@
       "subtitle": "",
       "date": "",
       "summary": "",
-      "body": "",
-      "tags": [],
+      "body": "<p>A friend ripped the usb connector off of his Cardo PackTalk helmet communicator, and asked if I could try fixing it. This is one of those jobs that my stereoscopic microscope really pays off.</p><p><br></p><p>One of the traces was ripped completely off the board under the usb connector, so I had to reroute it using magnet wire from the opposite side of the board, sneaking it through a gap created by the factory separating the boards from the larger panel. It also appeared that there were cold solder joints under the hold down pads, which is probably why it originally failed.<br><br>It's back in service and working great!<br><br>For scale, C140 is a capacitor that is 2mm wide and 2mm long.</p>",
+      "tags": [
+        "Electronics"
+      ],
       "specs": [],
       "photos": [
         {
           "src": "cardo_trace_repair.png",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "cardo_trace_repair_2.png",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
-      "published": false,
+      "published": true,
       "order": 18
     },
     {
@@ -651,7 +715,8 @@
           "src": "cb650.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
@@ -672,13 +737,15 @@
           "src": "cb450x.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "cb450x_disassembled.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
       "published": false,
@@ -699,7 +766,8 @@
           "src": "cb650_suspension.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
@@ -709,27 +777,31 @@
       "id": "xvrffogxxv1fj",
       "slug": "clasp-tool",
       "title": "Clasp Tool",
-      "subtitle": "",
+      "subtitle": "Accessibility aids for the disabled",
       "date": "",
       "summary": "",
-      "body": "",
-      "tags": [],
+      "body": "<p>This is one of my proudest inventions.</p><p>My wife was a horse riding instructor since her teens, and developed Multiple Sclerosis in her 30's. During flareups, her hands had trouble operating the latches on clasps, the kind you find on dog leashes.<br><br>This is a simple tool made out of needle nose pliers with a few pins and a wire loop welded on at the right spot so that as you close the pliers, it pulls the latch back in one motion.</p>",
+      "tags": [
+        "Accessibility"
+      ],
       "specs": [],
       "photos": [
         {
           "src": "clasp_tool.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "clasp_tool_2.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
-      "published": false,
+      "published": true,
       "order": 22
     },
     {
@@ -739,30 +811,35 @@
       "subtitle": "",
       "date": "",
       "summary": "",
-      "body": "",
-      "tags": [],
+      "body": "<p>I was a software engineer in a previous life, working at Ubisoft on the game XDefiant.</p><p>When the game shut down, most of the team needed some time to grieve. We poured our heart and enthusiasm into the game.</p><p>I decided to take one of the game assets, the coin used in game, and cast some bronze copies to give to the team to help us remember all of the amazing things we accomplished along the way.</p><p>The pattern was drawn by me in Solid Edge, 3d printed, and cast by me in aluminum bronze for the gold colour.</p>",
+      "tags": [
+        "Casting"
+      ],
       "specs": [],
       "photos": [
         {
           "src": "coin.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "coin_2.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "coin_3.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
-      "published": false,
+      "published": true,
       "order": 23
     },
     {
@@ -780,7 +857,8 @@
           "src": "collet_storage.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
@@ -793,88 +871,51 @@
       "subtitle": "",
       "date": "",
       "summary": "",
-      "body": "",
-      "tags": [],
+      "body": "<p>A member of the ADVRider Manitoba motorcycle group approached me for help with a suspension conversion for his CR650 dual sport motorcycle. He needed a new steering stem machined to adapt the triple trees to his bike's bearings.</p><p>I suggested 7075 for strength and pull-out resistance on the threads, and he ordered some. I asked that he provide the CR450 and CR650 steering stems, and both the old and new triple trees, so I could match dimensions without knowing the originally engineered tolerance band for either.</p><p>The fit in the lower triple tree is a shrink fit, and requires about 200C to make it so you can drop the stem into it with just light finger pressure.</p>",
+      "tags": [
+        "Suspension",
+        "Motorcycles"
+      ],
       "specs": [],
       "photos": [
         {
           "src": "cr450_to_cr650_stem.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "cr450_to_cr650_stem_1.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
-        }
-      ],
-      "published": false,
-      "order": 25
-    },
-    {
-      "id": "xhto8po6dv1fj",
-      "slug": "cr450-to-cr650-stem-1-complete",
-      "title": "CR450 To CR650 Stem 1 Complete",
-      "subtitle": "",
-      "date": "",
-      "summary": "",
-      "body": "",
-      "tags": [],
-      "specs": [],
-      "photos": [
+          "feature": false,
+          "pdf": true
+        },
         {
           "src": "cr450_to_cr650_stem_1_complete.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
-        }
-      ],
-      "published": false,
-      "order": 26
-    },
-    {
-      "id": "xio7ffrnrv1fj",
-      "slug": "cr450-to-cr650-stem-1-complete-upper",
-      "title": "CR450 To CR650 Stem 1 Complete Upper",
-      "subtitle": "",
-      "date": "",
-      "summary": "",
-      "body": "",
-      "tags": [],
-      "specs": [],
-      "photos": [
+          "feature": false,
+          "pdf": true
+        },
         {
           "src": "cr450_to_cr650_stem_1_complete_upper.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
-        }
-      ],
-      "published": false,
-      "order": 27
-    },
-    {
-      "id": "xbtv7mypxv1fj",
-      "slug": "cr450-to-cr650-stem-complete",
-      "title": "CR450 To CR650 Stem Complete",
-      "subtitle": "",
-      "date": "",
-      "summary": "",
-      "body": "",
-      "tags": [],
-      "specs": [],
-      "photos": [
+          "feature": false,
+          "pdf": true
+        },
         {
           "src": "cr450_to_cr650_stem_complete.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": false,
+          "pdf": true
         }
       ],
-      "published": false,
-      "order": 28
+      "published": true,
+      "order": 25
     },
     {
       "id": "xzletpmhzv1fj",
@@ -891,11 +932,12 @@
           "src": "delta.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 29
+      "order": 26
     },
     {
       "id": "xtbn25khxv1fj",
@@ -912,11 +954,12 @@
           "src": "document_normal_abnormal_wear.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 30
+      "order": 27
     },
     {
       "id": "x4hay7zy9v1fj",
@@ -933,11 +976,12 @@
           "src": "electronics_1.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 31
+      "order": 28
     },
     {
       "id": "xgh2huo62v1fj",
@@ -954,47 +998,54 @@
           "src": "face_mill_1.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "face_mill_2.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "face_mill_3.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "face_mill_4.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "face_mill_5.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "face_mill_6.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "face_mill_7.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 32
+      "order": 29
     },
     {
       "id": "x7mw6hqh1v1fj",
@@ -1011,11 +1062,12 @@
           "src": "ham.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 33
+      "order": 30
     },
     {
       "id": "xgx8slgbcv1fj",
@@ -1032,38 +1084,43 @@
           "src": "horizontal_mill.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "mill_stripped.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 34
+      "order": 31
     },
     {
       "id": "xxqov9vriv1fj",
       "slug": "iltis",
       "title": "Iltis",
-      "subtitle": "",
+      "subtitle": "For the love of Made In Canada military hardware",
       "date": "",
       "summary": "",
-      "body": "",
-      "tags": [],
+      "body": "<p>This was my 1983 Bombardier Iltis. They were used by the Canadian Forces from the early 70's until they were phased out during the Afghanistan conflict. It was licensed by Bombardier from Volkswagen, who had just started producing them from the German military, along with a 12v civilian version. The 4x4 system was entirely contained within the transmission, and was the precursor to the Audi Quattro. They proved it by winning the 1979 Paris to Dakar rally using a Volkswagen Iltis.</p><p>I was working at Wes-T-Rans, and across the street at a used car dealer sat 4 of these, in running and safetied condition. I excitedly paid my $4000 and brought it home.</p><p>It has several interesting things to point out:</p><p>the suspension was leaf suspension, but the leaf ran width-wise from one steering knuckle, to a center mount in the middle of the frame, and to the other steering knuckle.<br>The ignition was completely waterproof and radio frequency immune<br>The CV joints could be removed without the wheel bearings falling apart. The hub had a retaining shaft running through the hub that the stub axle slid into, but the stub axle wasn't responsible for keeping the bearing together, like it is in most modern cars. That meant that with the diff locker and 4x4, you could break up to 6 cv joints before it could not move under it's own power anymore.<br>The oil pump drive shaft drives the distributor, so if the pump becomes jammed, the engine stops without damage from oil starvation<br>The frame is made from box section, and completely enclosed and air tight. It's incredibly stiff, and immune to rusting from the inside out. It's rumoured that the frame is filled with Argon.</p><p>The surplus parts market dried up quickly. I ended up having to convert the spark plug wires to modern wires, boots, and plugs. I became proficient at matching Volkswagen and Audi consumables like clutches and spark plugs that fit as well as learning military designations for lubricants and cross referencing with other military vehicles.</p>",
+      "tags": [
+        "Maintenance"
+      ],
       "specs": [],
       "photos": [
         {
           "src": "Iltis.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
-      "published": false,
-      "order": 35
+      "published": true,
+      "order": 32
     },
     {
       "id": "x63fkwcs5v1fj",
@@ -1080,11 +1137,12 @@
           "src": "joels_lathe.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 36
+      "order": 33
     },
     {
       "id": "xw6665nywv1fj",
@@ -1101,11 +1159,12 @@
           "src": "klr_tensioner.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 37
+      "order": 34
     },
     {
       "id": "xa8ug233ov1fj",
@@ -1122,11 +1181,12 @@
           "src": "klr_tires.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 38
+      "order": 35
     },
     {
       "id": "xpq01dsigv1fj",
@@ -1143,23 +1203,26 @@
           "src": "klr_trailer.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "klr_trailer_2.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "klr_trailer_3.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 39
+      "order": 36
     },
     {
       "id": "xpuphasgpv1fj",
@@ -1176,11 +1239,12 @@
           "src": "klr_valve_clearance_check.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 40
+      "order": 37
     },
     {
       "id": "xe77nbzwjv1fj",
@@ -1197,11 +1261,12 @@
           "src": "klr650_balancer_chain.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 41
+      "order": 38
     },
     {
       "id": "xxb4wglvlv1fj",
@@ -1218,11 +1283,12 @@
           "src": "klr650_snow.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 42
+      "order": 39
     },
     {
       "id": "x5eaojmjxv1fj",
@@ -1239,11 +1305,12 @@
           "src": "landon_jeep.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 43
+      "order": 40
     },
     {
       "id": "xj4h584fvv1fj",
@@ -1260,11 +1327,12 @@
           "src": "lathe_steady.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 44
+      "order": 41
     },
     {
       "id": "xflkxn3nqv1fj",
@@ -1281,11 +1349,12 @@
           "src": "mill_handle.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 45
+      "order": 42
     },
     {
       "id": "x6l5vrggvv1fj",
@@ -1302,11 +1371,12 @@
           "src": "nasa_library.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 46
+      "order": 43
     },
     {
       "id": "xfvnu3ezcv1fj",
@@ -1323,11 +1393,12 @@
           "src": "power_supply_mod.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 47
+      "order": 44
     },
     {
       "id": "xd733nedav1fj",
@@ -1336,25 +1407,29 @@
       "subtitle": "",
       "date": "",
       "summary": "",
-      "body": "",
-      "tags": [],
+      "body": "<p>Yeah, I don't know how it got that way either. I suspect the mechanic that replaced these bearings during the safety didn't apply the correct preload, or the previous owner had a spun bearing wrecking the press fit on the spindle.</p><p>After the roller moved, the inner race spun on the spindle and welded it on there. It was a tough fight getting the race off using a grinder and cold chisels, but it had to happen to be able to remove the spindle from the knuckle.</p>",
+      "tags": [
+        "Maintenance"
+      ],
       "specs": [],
       "photos": [
         {
           "src": "ranger_wheel_bearing.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "ranger_wheel_bearing_2.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
-      "published": false,
-      "order": 48
+      "published": true,
+      "order": 45
     },
     {
       "id": "xj6rog1gcv1fj",
@@ -1371,11 +1446,12 @@
           "src": "rc_carb.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 49
+      "order": 46
     },
     {
       "id": "xvpsm8gaxv1fj",
@@ -1392,11 +1468,12 @@
           "src": "scraped_t_slot_plate.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 50
+      "order": 47
     },
     {
       "id": "xx82k8hf8v1fj",
@@ -1413,11 +1490,12 @@
           "src": "second_printer.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 51
+      "order": 48
     },
     {
       "id": "x3c82ykpwv1fj",
@@ -1434,11 +1512,12 @@
           "src": "sewing_machine_repair.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 52
+      "order": 49
     },
     {
       "id": "xah5ghr2zv1fj",
@@ -1447,19 +1526,22 @@
       "subtitle": "",
       "date": "",
       "summary": "",
-      "body": "",
-      "tags": [],
+      "body": "<p>I challenged myself to 3d print at the very limits of what is possible. It took many tries with many settings adjustment, but I finally got a clean print with all of the tiny orbital manoeuvring thrusters correctly formed. It was based on NASA's own 3d model of the shuttle.</p><p>Painted using small drops of paint on the tip of needles under about 30x magnification.</p>",
+      "tags": [
+        "3d printing"
+      ],
       "specs": [],
       "photos": [
         {
           "src": "shuttle_pendant.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
-      "published": false,
-      "order": 53
+      "published": true,
+      "order": 50
     },
     {
       "id": "xkhc5chfov1fj",
@@ -1476,23 +1558,26 @@
           "src": "sine_table.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "sine_table_1.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "sine_table_2.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 54
+      "order": 51
     },
     {
       "id": "xdd698yxkv1fj",
@@ -1509,11 +1594,12 @@
           "src": "stall_door.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 55
+      "order": 52
     },
     {
       "id": "x5aidgho6v1fj",
@@ -1530,17 +1616,19 @@
           "src": "studded_mc_tires.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "studded_mc_tires_2.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 56
+      "order": 53
     },
     {
       "id": "xsk8qclttv1fj",
@@ -1557,23 +1645,26 @@
           "src": "surface_grinder.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "surface_grinder_1.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "surface_grinder_2.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 57
+      "order": 54
     },
     {
       "id": "xap7pele3v1fj",
@@ -1590,11 +1681,12 @@
           "src": "t7_front_axle_wrench.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 58
+      "order": 55
     },
     {
       "id": "x033pfwccv1fj",
@@ -1611,35 +1703,40 @@
           "src": "t7-dash_1.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "t7-dash_2.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "t7-dash_3.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "t7-dash_4.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "t7-dash_5.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 59
+      "order": 56
     },
     {
       "id": "x86wgk4e7v1fj",
@@ -1648,31 +1745,36 @@
       "subtitle": "",
       "date": "",
       "summary": "",
-      "body": "",
-      "tags": [],
+      "body": "<p>Yes, cheap tap wrenches are awful, so I made one.</p><p>It needed to:</p><ul><li>take 1/8\" up to 3/4\" taps</li><li>be strong enough to handle using a short pipe over the handle to increase leverage\"</li><li>fit inside the swing of my lathe</li><li>look good.</li></ul><p>I think it turned out great! I blued the moving end because the clearance with the shaft is so close it's at times hard to figure out which one is the one to turn!</p>",
+      "tags": [
+        "Hand Tools"
+      ],
       "specs": [],
       "photos": [
         {
           "src": "tap_wrench_1.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "tap_wrench_2.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "tap_wrench_3.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
-      "published": false,
-      "order": 60
+      "published": true,
+      "order": 57
     },
     {
       "id": "xz2a59kpdv1fj",
@@ -1689,11 +1791,12 @@
           "src": "toolmaker_vise_1.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 61
+      "order": 58
     },
     {
       "id": "xqgt48w6iv1fj",
@@ -1710,80 +1813,85 @@
           "src": "toolpost.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 62
+      "order": 59
     },
     {
       "id": "xgho20p1jv1fj",
       "slug": "tw200",
       "title": "TW200",
-      "subtitle": "",
+      "subtitle": "The most tractorly of bikes gets a more tractorly of a wheel",
       "date": "",
       "summary": "",
-      "body": "",
-      "tags": [],
+      "body": "<p>A friend and I both own this little dual sport. Nicknamed the goat by the community because it can climb any hill, and it's extremely easy to ride.</p><p><br></p><p>We ride in sand a lot, and the stock tires are not the best at that. Since this is a motorcycle spec rim, ATV tires don't fit perfectly. Motorcycle rims are slightly larger diameter than automotive and ATV rims. Many people put ATV tires on anyway, and use dangerous pressures to seat the bead. I decided to machine a pair of hubs for us in order to mount common light weight trailer rims that fit ATV tires well. The bearing preload I calculated is so good that the bearings in these hubs have long outlived the stock bearings in the stock hubs. It really does climb anything now.</p><p>There are a few other modifications I've made to the bike:</p><ul><li>lengthened the swingarm 2\" to provide better mud and rock clearance with the larger tire</li><li>moved the suspension pivot to raise the bike 1.5\" for my height</li><li>extended the forks 1.5\" to keep the steering angles correct</li><li>welded up a very light weight but strong aluminum luggage rack</li><li>machined a longer carb pilot mixture needle so I can adjust it just by reaching down under the carb. This lets me get the perfect mixture for the temperature of the day.</li></ul>",
+      "tags": [
+        "Motorcycles"
+      ],
       "specs": [],
       "photos": [
         {
           "src": "tw200_1.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         },
         {
           "src": "tw200_hub_1.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "tw200_hub_2.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "tw200_hub_3.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "tw200_hub_4.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "tw200_hub_5.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "tw200_hub_tank_rack.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
-        },
-        {
-          "src": "tw200_initial_oil_filter_break_in.jpg",
-          "caption": "",
-          "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         },
         {
           "src": "tw200_needle.jpg",
           "caption": "",
           "alt": "",
-          "feature": false
+          "feature": false,
+          "pdf": true
         }
       ],
-      "published": false,
-      "order": 63
+      "published": true,
+      "order": 60
     },
     {
       "id": "xsym81q2iv1fj",
@@ -1800,16 +1908,18 @@
           "src": "yak54.jpg",
           "caption": "",
           "alt": "",
-          "feature": true
+          "feature": true,
+          "pdf": true
         }
       ],
       "published": false,
-      "order": 64
+      "order": 61
     }
   ],
   "testimonials": [],
   "settings": {
     "siteTitle": "Portfolio",
+    "siteUrl": "https://digiex.ca",
     "accent": "#b4531f",
     "pdf": {
       "paper": "Letter",

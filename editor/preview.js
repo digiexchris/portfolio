@@ -121,6 +121,21 @@ export class Preview {
 
   async _runPaged(d) {
     try {
+      // The PDF gallery sizes each photo by its aspect ratio. The real build
+      // knows every file's dimensions; here they come from the loaded images,
+      // and must be in place before Paged.js measures anything.
+      const figs = [...d.querySelectorAll('.pdf-photos .photo')].filter((f) => !f.style.getPropertyValue('--r'));
+      await Promise.all(figs.map((f) => {
+        const img = f.querySelector('img');
+        if (!img) return null;
+        const set = () => {
+          if (img.naturalWidth && img.naturalHeight) f.style.setProperty('--r', (img.naturalWidth / img.naturalHeight).toFixed(4));
+        };
+        if (img.complete) return set();
+        return new Promise((res) => { img.addEventListener('load', () => { set(); res(); }, { once: true }); img.addEventListener('error', res, { once: true }); });
+      }));
+      if (this.frame.contentDocument !== d) return;   // re-rendered while waiting
+
       const script = d.createElement('script');
       script.src = '/vendor/paged.polyfill.js';
       script.onload = () => {

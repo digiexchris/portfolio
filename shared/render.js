@@ -19,6 +19,7 @@
 import {
   escapeText as esc, escapeAttr as attr, toPlainText,
   publishedProjects, publishedTestimonials, featurePhoto, allTags,
+  pdfPhotos, projectUrl,
 } from './model.js';
 
 // --- context helpers --------------------------------------------------------
@@ -56,7 +57,7 @@ const join = (arr, fn) => arr.map(fn).join('');
 
 // --- pieces -----------------------------------------------------------------
 
-export function photoFigure(photo, ctx, { size = 'full', index = 0, path = '' } = {}) {
+export function photoFigure(photo, ctx, { size = 'full', index = 0, path = '', ratio = 0 } = {}) {
   const alt = photo.alt || photo.caption || '';
   const src = ctx.img(photo.src, size);
   let img;
@@ -69,8 +70,11 @@ export function photoFigure(photo, ctx, { size = 'full', index = 0, path = '' } 
   } else {
     img = `<img src="${attr(src)}" alt="${attr(alt)}"${imgAttrs(ctx, photo.src)}>`;
   }
-  return `<figure class="photo" data-index="${index}">`
-    + `<a class="photo-link" href="${attr(ctx.img(photo.src, 'full'))}" data-lightbox>${img}</a>`
+  // --r is the aspect ratio, used by the PDF's photo rows (see printPhotoGrid).
+  return `<figure class="photo" data-index="${index}"${ratio ? ` style="--r:${ratio.toFixed(4)}"` : ''}>`
+    // No link in the PDF: it would point at a file on the build machine.
+    + (ctx.photoLinks === false ? img
+      : `<a class="photo-link" href="${attr(ctx.img(photo.src, 'full'))}" data-lightbox>${img}</a>`)
     + when(photo.caption, () => `<figcaption>${esc(photo.caption)}</figcaption>`)
     + '</figure>';
 }
@@ -86,6 +90,42 @@ export function photoGrid(project, ctx, { skipFeature = false, size = 'full' } =
     + join(photos, ({ p, i }) =>
         photoFigure(p, ctx, { size, index: i, path: `photos.${i}` }))
     + '</div>';
+}
+
+// PDF photo layout. Rows of two whose widths are shared in proportion to each
+// photo's aspect ratio (flex-grow = --r in print.css), so both photos in a row
+// come out the same height and the row fills the full width -- no dead space
+// under the shorter one. With an odd count, the FIRST photo takes a row to
+// itself at full width rather than the last one sitting alone in half a row.
+//
+// Ratios come from ctx.dims (the PDF build knows every emitted file's size).
+// The editor's print preview has no dims and fills --r in from the loaded
+// images before Paged.js runs; see preview.js.
+//
+// A large set starts on a fresh page, so the gallery is not split around the
+// bottom of the writeup.
+export const PDF_GALLERY_OWN_PAGE = 4;
+
+export function printPhotoGrid(project, ctx, { skipFeature = false } = {}) {
+  const feature = featurePhoto(project);
+  const photos = project.photos
+    .map((p, i) => ({ p, i }))
+    .filter(({ p }) => !(skipFeature && p === feature));
+  if (!photos.length) return '';
+  const ratio = (src) => {
+    const d = ctx.dims?.(src);
+    return d && d.width && d.height ? d.width / d.height : 0;
+  };
+  const fig = ({ p, i }) => photoFigure(p, ctx, { index: i, path: `photos.${i}`, ratio: ratio(p.src) });
+
+  const rows = [];
+  let rest = photos;
+  if (photos.length % 2) { rows.push(`<div class="photo-row solo">${fig(photos[0])}</div>`); rest = photos.slice(1); }
+  for (let k = 0; k < rest.length; k += 2) {
+    rows.push(`<div class="photo-row">${fig(rest[k])}${fig(rest[k + 1])}</div>`);
+  }
+  const cls = 'pdf-photos' + (photos.length > PDF_GALLERY_OWN_PAGE ? ' own-page' : '');
+  return `<div class="${cls}">${rows.join('')}</div>`;
 }
 
 export function specTable(project, ctx) {
@@ -135,7 +175,20 @@ export function projectCard(project, ctx) {
 
 // --- full project article (project page + PDF) ------------------------------
 
-export function projectArticle(project, ctx, { heading = 'h1', showFeature = true } = {}) {
+// The PDF's line above every project's writeup: a link to its page on the site,
+// which carries the full-size images, plus a count of any photos left out of
+// the PDF. Without a known site address there is nothing to link to.
+function morePhotosNote(hidden, url) {
+  const extra = !hidden ? ''
+    : (hidden === 1 ? 'One more photo of this project is online. ' : `${hidden} more photos of this project are online. `);
+  if (!url) return extra ? `<p class="more-photos">${extra.trim()}</p>` : '';
+  const shown = url.replace(/^https?:\/\//, '');
+  return '<p class="more-photos">'
+    + `${extra}Read the web version with full resolution images at <a href="${attr(url)}">${esc(shown)}</a>`
+    + '</p>';
+}
+
+export function projectArticle(project, ctx, { heading = 'h1', showFeature = true, beforeBody = '', print = false } = {}) {
   const feature = showFeature ? featurePhoto(project) : null;
   return `<article class="project" id="project-${attr(project.slug)}" data-project-id="${attr(project.id)}">`
     + '<header class="project-head">'
@@ -147,8 +200,9 @@ export function projectArticle(project, ctx, { heading = 'h1', showFeature = tru
     + '</header>'
     + when(feature, () => `<div class="feature-photo">${photoFigure(feature, ctx, { size: 'full', index: project.photos.indexOf(feature), path: `photos.${project.photos.indexOf(feature)}` })}</div>`)
     + specTable(project, ctx)
+    + beforeBody
     + when(project.body, () => `<div class="body prose">${project.body}</div>`)
-    + photoGrid(project, ctx, { skipFeature: showFeature })
+    + (print ? printPhotoGrid : photoGrid)(project, ctx, { skipFeature: showFeature })
     + '</article>';
 }
 
@@ -159,8 +213,12 @@ export function testimonialCard(t, ctx, projectsById = new Map()) {
   const attribution = [t.author, [t.role, t.company].filter(Boolean).join(', ')]
     .filter(Boolean);
   return `<figure class="testimonial${t.featured ? ' featured' : ''}" data-testimonial-id="${attr(t.id)}">`
-    + when(t.image, () => `<div class="testimonial-scan"><a href="${attr(ctx.img(t.image, 'full'))}" data-lightbox>`
-        + `<img src="${attr(ctx.img(t.image, 'thumb'))}" alt="Note from ${attr(t.author || 'a client')}"${imgAttrs(ctx, t.image)}></a></div>`)
+    + when(t.image, () => {
+        const img = `<img src="${attr(ctx.img(t.image, 'thumb'))}" alt="Note from ${attr(t.author || 'a client')}"${imgAttrs(ctx, t.image)}>`;
+        return '<div class="testimonial-scan">'
+          + (ctx.photoLinks === false ? img : `<a href="${attr(ctx.img(t.image, 'full'))}" data-lightbox>${img}</a>`)
+          + '</div>';
+      })
     + `<blockquote class="quote">${t.quote || ''}</blockquote>`
     + '<figcaption class="attribution">'
     + when(attribution.length, `<span class="who">${esc(attribution[0])}</span>`)
@@ -333,6 +391,7 @@ export function printBody(data, ctx) {
   const p = data.profile;
   const cover = data.settings.pdf.coverPhoto
     || (projects.length ? (featurePhoto(projects[0]) || {}).src : '');
+  const site = String(data.settings.siteUrl || ctx.siteUrl || '').replace(/\/+$/, '');
 
   return '<div class="pdf-cover">'
     + when(cover, () => `<div class="cover-photo"><img src="${attr(ctx.img(cover, 'print'))}" alt=""${imgAttrs(ctx, cover)}></div>`)
@@ -340,7 +399,10 @@ export function printBody(data, ctx) {
     + `<h1 class="cover-name">${esc(p.name || data.settings.siteTitle)}</h1>`
     + when(p.tagline, `<p class="cover-tagline">${esc(p.tagline)}</p>`)
     + '<div class="cover-contact">'
-    + join([p.location, p.email, p.phone].filter(Boolean), (b) => `<span>${esc(b)}</span>`)
+    + when(p.location, () => `<span>${esc(p.location)}</span>`)
+    + when(p.email, () => `<span>email: <a href="mailto:${attr(p.email)}">${esc(p.email)}</a></span>`)
+    + when(site, () => `<span>website: <a href="${attr(site)}">${esc(site.replace(/^https?:\/\//, ''))}</a></span>`)
+    + when(p.phone, () => `<span>${esc(p.phone)}</span>`)
     + join(p.links, (l) => `<span>${esc(l.url)}</span>`)
     + '</div></div></div>'
 
@@ -377,7 +439,18 @@ export function printBody(data, ctx) {
     + '</ol></section>'
 
     + '<section class="pdf-projects">'
-    + join(projects, (pr) => projectArticle(pr, ctx, { heading: 'h2' }))
+    // Only the photos ticked for the PDF; the rest are on the project's web
+    // page, and the article ends by saying so. The lead photo falls back to
+    // the first included one if the lead itself was left out.
+    + join(projects, (pr) => {
+        const photos = pdfPhotos(pr);
+        const url = projectUrl(data.settings.siteUrl || ctx.siteUrl, pr);
+        return projectArticle({ ...pr, photos }, ctx, {
+          heading: 'h2',
+          print: true,
+          beforeBody: morePhotosNote(pr.photos.length - photos.length, url),
+        });
+      })
     + '</section>'
 
     + when(testimonials.length,

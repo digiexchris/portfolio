@@ -376,8 +376,9 @@ function photoStrip(p) {
     });
     cap.addEventListener('blur', () => store.emit('change'));
 
+    const inPdf = ph.pdf !== false;
     const item = el('div', {
-      class: 'strip-item' + (ph.feature ? ' is-feature' : ''), draggable: 'true',
+      class: 'strip-item' + (ph.feature ? ' is-feature' : '') + (inPdf ? '' : ' no-pdf'), draggable: 'true',
     },
       el('img', { src: '/thumbs/' + encodeURI(ph.src), alt: ph.alt || '', loading: 'lazy', title: ph.src }),
       cap,
@@ -386,6 +387,13 @@ function photoStrip(p) {
           class: ph.feature ? 'on' : '', title: 'Use as the lead photo',
           onclick: () => store.update(() => { p.photos.forEach((x) => { x.feature = false; }); ph.feature = true; }),
         }, ph.feature ? '★ Lead' : '☆ Lead'),
+        el('button', {
+          class: inPdf ? 'on' : '',
+          title: inPdf ? 'In the PDF — click to leave it out (it stays on the website)'
+                       : 'Website only — click to include it in the PDF',
+          'aria-pressed': String(inPdf),
+          onclick: () => store.update(() => { ph.pdf = !inPdf; }),
+        }, inPdf ? '✓ PDF' : '✗ PDF'),
         el('button', {
           title: 'Remove from this project',
           onclick: () => store.update(() => {
@@ -431,7 +439,11 @@ function photoStrip(p) {
     }),
   }, '+ Add photos'));
 
-  return el('div', { class: 'field' }, el('span', { class: 'field-label' }, 'Photos'), grid);
+  const left = p.photos.filter((x) => x.pdf === false).length;
+  return el('div', { class: 'field' }, el('span', { class: 'field-label' }, 'Photos'), grid,
+    el('p', { class: 'hint' }, left
+      ? `${p.photos.length - left} of ${p.photos.length} in the PDF. The PDF ends this project with a link to the web page for the other ${left}.`
+      : 'All photos go in the PDF. Untick “PDF” on any you want on the website only.'));
 }
 
 function testimonialForm() {
@@ -578,6 +590,10 @@ function settingsForm() {
   const frag = document.createDocumentFragment();
   frag.append(el('h2', {}, 'Settings'));
   frag.append(textField('Site title', s, 'siteTitle', store, { hint: 'Used when no name is set.' }));
+  frag.append(textField('Site address', s, 'siteUrl', store, {
+    placeholder: 'https://example.com',
+    hint: 'Where the site is published. The PDF links here for photos left out of it. Blank uses docs/CNAME.',
+  }));
   frag.append(textField('Accent colour', s, 'accent', store, { type: 'color' }));
 
   const paper = el('select');

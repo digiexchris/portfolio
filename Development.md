@@ -11,7 +11,7 @@ For what the portfolio *is* and how to write in it, see [README.md](README.md).
 | | |
 |---|---|
 | **Node** | 20 or newer (`node --version`) |
-| **Chromium** | only for PDF export — `sudo apt install chromium` |
+| **Browser** | only for PDF export — Microsoft Edge on Windows 11 (built in), Chromium on Linux (`sudo apt install chromium`) |
 | **Everything else** | three npm packages, no build step, no framework |
 
 There is no bundler, transpiler or watch process. The editor is plain ES modules
@@ -254,7 +254,7 @@ curl -X POST localhost:4321/api/export/pdf             # build, streaming
 ## Troubleshooting
 
 **PDF export says no Chromium found.**
-`sudo apt install chromium`, or point at one you have:
+Linux: `sudo apt install chromium`. Windows: Microsoft Edge is used automatically. Or point at one you have:
 `CHROME_PATH=/path/to/chrome npm run build:pdf`. Until then,
 `node export/build-pdf.js --html-only` writes the fully paginated document to
 `out/print/index.html` — open it in any browser and use Print → Save as PDF.

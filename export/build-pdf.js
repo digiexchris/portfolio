@@ -15,7 +15,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
-import { normalise, publishedProjects, publishedTestimonials } from '../shared/model.js';
+import { normalise, publishedProjects, publishedTestimonials, pdfPhotos } from '../shared/model.js';
 import { htmlDocument, printBody } from '../shared/render.js';
 import sharp from 'sharp';
 import { ImagePipeline, PRINT_WIDTH, COVER_WIDTH, buildStemMap } from './images.js';
@@ -26,13 +26,30 @@ const OUT = path.join(ROOT, 'out');
 const WORK = path.join(OUT, 'print');
 
 const HTML_ONLY = process.argv.includes('--html-only');
+
+function cnameUrl() {
+  for (const dir of ['public', 'docs']) {
+    try {
+      const host = fsSync.readFileSync(path.join(ROOT, dir, 'CNAME'), 'utf8').trim().split(/\s+/)[0];
+      if (host) return 'https://' + host;
+    } catch {}
+  }
+  return '';
+}
 const t0 = Date.now();
 
 // Where a system Chromium usually lives. puppeteer-core ships no browser of
 // its own, which is deliberate: this uses the one already on the machine.
+// Windows: Microsoft Edge, which is Chromium-based and part of Windows 11.
+// Linux: Chromium. CHROME_PATH overrides either.
+const WIN_EDGE = [
+  process.env['ProgramFiles(x86)'], process.env.ProgramFiles, process.env.LOCALAPPDATA,
+].filter(Boolean).map((d) => path.join(d, 'Microsoft', 'Edge', 'Application', 'msedge.exe'));
+
 const CHROME_CANDIDATES = [
   process.env.CHROME_PATH,
   process.env.PUPPETEER_EXECUTABLE_PATH,
+  ...(process.platform === 'win32' ? WIN_EDGE : []),
   '/usr/bin/chromium',
   '/usr/bin/chromium-browser',
   '/usr/bin/google-chrome',
@@ -76,7 +93,7 @@ async function main() {
     || (projects[0].photos.find((p) => p.feature) || projects[0].photos[0] || {}).src || '';
 
   const wanted = new Set();
-  for (const p of projects) for (const ph of p.photos) wanted.add(ph.src);
+  for (const p of projects) for (const ph of pdfPhotos(p)) wanted.add(ph.src);
   for (const t of testimonials) if (t.image) wanted.add(t.image);
   if (cover) wanted.add(cover);
   if (data.profile.photo) wanted.add(data.profile.photo);
@@ -105,12 +122,16 @@ async function main() {
     href: () => '#',
     srcset: false,
     tagLinks: false,
+    photoLinks: false,
     // Both of these matter for pagination, not looks. Paged.js chunks by
     // moving nodes into off-screen page containers: a lazy image parked there
     // never loads, so its box never settles and pagination spins forever.
     // Explicit width/height then lets every page be measured in one pass.
     lazy: false,
     dims: (src) => dims.get(src),
+    // Fallback for the "more photos at…" links when Settings has no site
+    // address: the custom domain GitHub Pages serves docs/ under.
+    siteUrl: cnameUrl(),
   };
 
   const paper = data.settings.pdf.paper === 'A4' ? 'A4' : 'Letter';
@@ -150,15 +171,20 @@ async function main() {
   // --- print --------------------------------------------------------------
   const chrome = findChrome();
   if (!chrome) {
-    console.error('\nNo Chromium or Chrome found. Install one, then export again:');
-    console.error('    sudo apt install chromium');
-    console.error('\nOr point at an existing install:');
-    console.error('    CHROME_PATH=/path/to/chrome node export/build-pdf.js');
+    if (process.platform === 'win32') {
+      console.error('\nMicrosoft Edge was not found. Point at a Chromium-based browser:');
+      console.error('    $env:CHROME_PATH = "C:\\path\\to\\msedge.exe"; node export/build-pdf.js');
+    } else {
+      console.error('\nNo Chromium found. Install it, then export again:');
+      console.error('    sudo apt install chromium');
+      console.error('\nOr point at an existing install:');
+      console.error('    CHROME_PATH=/path/to/chromium node export/build-pdf.js');
+    }
     console.error(`\nIn the meantime the paginated document -- table of contents and all -- is ready at:\n  ${pageUrl}`);
     console.error('Open it in Firefox and use Print -> Save as PDF.');
     process.exit(1);
   }
-  console.log(`Chromium: ${chrome}`);
+  console.log(`Browser: ${chrome}`);
 
   const puppeteer = (await import('puppeteer-core')).default;
   const browser = await puppeteer.launch({

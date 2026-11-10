@@ -19,6 +19,9 @@ export function emptyPortfolio() {
     testimonials: [],
     settings: {
       siteTitle: 'Portfolio',
+      // Public address of the published site, e.g. https://example.com. The
+      // PDF links to it when a project has photos left out of the PDF.
+      siteUrl: '',
       accent: '#b4531f',
       pdf: { paper: 'Letter', includeTestimonials: true, coverPhoto: '' },
     },
@@ -79,6 +82,7 @@ export function normalise(raw) {
     .map((l) => ({ label: str(l.label), url: str(l.url) }))
     .filter((l) => l.url);
   d.settings = { ...base.settings, ...(raw?.settings || {}) };
+  d.settings.siteUrl = str(d.settings.siteUrl).trim().replace(/\/+$/, '');
   d.settings.pdf = { ...base.settings.pdf, ...(raw?.settings?.pdf || {}) };
   d.home = { ...base.home, ...(raw?.home || {}) };
   d.home.intro = sanitiseHtml(d.home.intro);
@@ -103,6 +107,8 @@ export function normalise(raw) {
       .map((ph) => ({
         src: str(ph.src), caption: str(ph.caption),
         alt: str(ph.alt), feature: !!ph.feature,
+        // Shown in the PDF unless explicitly left out. The site always shows all.
+        pdf: ph.pdf !== false,
       })),
     body: sanitiseHtml(p.body),
     summary: str(p.summary),
@@ -368,6 +374,19 @@ export function publishedProjects(data) {
 
 export function publishedTestimonials(data) {
   return data.testimonials.filter((t) => t.published).slice().sort((a, b) => a.order - b.order);
+}
+
+// The photos a project carries into the PDF. Some projects have too many to
+// print at a useful size; the rest stay on the website.
+export function pdfPhotos(project) {
+  return project.photos.filter((p) => p.pdf !== false);
+}
+
+// Absolute URL of a project's page on the published site, or '' when the
+// site address is unknown. Mirrors build-site.js's projects/<slug>.html.
+export function projectUrl(siteUrl, project) {
+  const base = String(siteUrl || '').trim().replace(/\/+$/, '');
+  return base ? `${base}/projects/${encodeURIComponent(project.slug)}.html` : '';
 }
 
 export function featurePhoto(project) {

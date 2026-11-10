@@ -197,7 +197,9 @@ legend { font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; co
 .strip-item img { width: 100%; height: 5.5rem; object-fit: cover; display: block; cursor: grab; background: var(--rule-2); }
 .strip-cap { width: 100%; border: 0; border-top: 1px solid var(--rule-2); padding: .3rem .4rem; font-size: .76rem; background: none; }
 .strip-cap:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-.strip-tools { display: flex; gap: 1px; padding: .2rem; border-top: 1px solid var(--rule-2); }
+/* Website-only photo: dimmed, so the PDF selection reads at a glance. */
+.strip-item.no-pdf img { opacity: .4; }
+.strip-tools { display: flex; flex-wrap: wrap; gap: 1px; padding: .2rem; border-top: 1px solid var(--rule-2); }
 .strip-tools button {
   flex: 1 1 auto; font-size: .68rem; padding: .15rem; cursor: pointer;
   border: 0; border-radius: 3px; background: none; color: var(--ink-3);

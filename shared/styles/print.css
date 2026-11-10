@@ -9,10 +9,10 @@
 
 @page {
   size: Letter;
-  /* Side margins are set so the type area equals the reading measure. Text and
-     photos then share one column, rather than the prose stopping short of the
-     photo above it. */
-  margin: 20mm 30mm 18mm;
+  /* Narrow side margins: photos are what this document is for, and every mm
+     here is image width. Text and photos share one column, rather than the
+     prose stopping short of the photo above it. */
+  margin: 20mm 18mm 18mm;
 
   @bottom-center {
     content: counter(page);
@@ -21,7 +21,9 @@
     margin-top: 6mm;
   }
   @top-center {
-    content: string(runhead, start);
+    /* first-except: blank on the page where the title itself appears, so a
+       project's opening page does not show its name twice. */
+    content: string(runhead, first-except);
     font: 8.5pt var(--sans);
     letter-spacing: .06em;
     text-transform: uppercase;
@@ -86,6 +88,7 @@ img { max-width: 100%; height: auto; }
 }
 .cover-tagline { font-size: 12pt; color: var(--ink-2); margin: 0 0 6mm; }
 .cover-contact { display: flex; flex-wrap: wrap; gap: 2mm 5mm; font-size: 9.5pt; color: var(--ink-3); }
+.cover-contact a { color: var(--ink-2); }
 
 /* --- front matter --------------------------------------------------------- */
 
@@ -203,7 +206,7 @@ img { max-width: 100%; height: auto; }
 }
 
 .feature-photo { margin: 0 0 5mm; break-inside: avoid; }
-.feature-photo img { width: 100%; height: auto; max-height: 130mm; object-fit: contain; border-radius: 1.5mm; }
+.feature-photo img { width: 100%; height: auto; max-height: 130mm; object-fit: contain; }
 
 .specs {
   display: grid;
@@ -254,8 +257,34 @@ img { max-width: 100%; height: auto; }
 }
 .photo-grid.one { grid-template-columns: 1fr; }
 .photo { margin: 0; break-inside: avoid; }
-.photo img { width: 100%; height: auto; max-height: 95mm; object-fit: contain; border-radius: 1mm; border: .5pt solid var(--rule); }
+.photo img { width: 100%; height: auto; max-height: 95mm; object-fit: contain; }
+
+/* The PDF gallery (printPhotoGrid in render.js). Each row is a flex line whose
+   items grow in proportion to their aspect ratio --r, from a zero basis: the
+   free width is shared out by ratio, so every photo in the row lands at the
+   same height and together they span the full column. */
+.pdf-photos { margin-top: 3mm; }
+.pdf-photos.own-page { break-before: page; }
+.photo-row {
+  display: flex;
+  gap: 2.5mm;
+  margin-bottom: 2.5mm;
+  break-inside: avoid;
+}
+.photo-row .photo { flex: var(--r, 1) 1 0; min-width: 0; }
+.photo-row .photo img { display: block; max-height: none; }
+/* The odd photo out leads the gallery at full width, capped in height so a
+   portrait does not swallow a page; it is centred if the cap bites. */
+.photo-row.solo .photo { flex: none; width: 100%; max-width: calc(150mm * var(--r, 10)); margin: 0 auto; }
 .photo figcaption { font-size: 8pt; color: var(--ink-3); margin-top: 1.2mm; line-height: 1.35; }
+
+/* Link to the web version, just above the writeup. */
+.more-photos {
+  margin: 0 0 5mm;
+  font-size: 9pt; font-style: italic; color: var(--ink-3);
+  break-after: avoid;
+}
+.more-photos a { color: var(--accent); text-decoration: underline; font-style: normal; }
 
 /* --- testimonials --------------------------------------------------------- */
 

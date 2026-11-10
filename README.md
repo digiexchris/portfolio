@@ -58,6 +58,16 @@ one. `Ctrl+Z` undoes it.
 Running `node scripts/seed.js --dry` prints a list of likely merge candidates
 without touching anything.
 
+### Photos in the PDF
+
+Every photo goes on the website. Projects with many photos print too small to
+see, so each photo in the strip has a **PDF** toggle: untick it and the photo
+stays on the web page only (it shows dimmed in the strip). The PDF then ends
+that project with "N more photos of this project at <link>", pointing to its
+page on the site. The link uses **Settings → Site address**, or `docs/CNAME`
+when that is blank. If the lead photo is left out, the first included photo
+leads in the PDF.
+
 ### Specs
 
 The specs table is what makes a writeup read as trade work rather than a photo
@@ -151,7 +161,8 @@ alone. [Paged.js](https://pagedjs.org) paginates the document in the DOM first
 and resolves every TOC entry to the page its project actually lands on;
 Chromium then prints the already-paginated result.
 
-It needs a system Chromium:
+It needs a Chromium-based browser. On Windows 11 it uses Microsoft Edge, which
+is already installed. On Linux, install Chromium:
 
 ```bash
 sudo apt install chromium
