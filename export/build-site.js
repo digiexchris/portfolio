@@ -7,6 +7,7 @@
 import fs from 'node:fs/promises';
 import fsSync from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 import { normalise, publishedProjects, publishedTestimonials, toPlainText } from '../shared/model.js';
@@ -131,6 +132,33 @@ async function main() {
     console.log('No out/portfolio.pdf yet — run `npm run build:pdf` to include it.');
   }
 
+  // --- assets --------------------------------------------------------------
+  // Written before the pages, because every reference to them is versioned
+  // from their content (below).
+  await fs.mkdir(path.join(DIST, 'assets'), { recursive: true });
+  for (const f of ['tokens.css', 'site.css']) {
+    await fs.copyFile(path.join(ROOT, 'shared', 'styles', f), path.join(DIST, 'assets', f));
+  }
+  await fs.writeFile(path.join(DIST, 'assets', 'site.js'), siteScript());
+
+  // --- cache busting --------------------------------------------------------
+  // GitHub Pages serves everything with a 10-minute max-age and no way to
+  // change it. Every CSS, JS, image and PDF reference therefore carries
+  // ?v=<content hash>: a file that changes gets a new URL, so browsers and
+  // the CDN fetch it fresh, while unchanged files keep their URL and stay
+  // cached. File names stay put, so docs/ diffs stay readable and file://
+  // still works (browsers ignore the query on local files).
+  const hashes = new Map();
+  const v = (rel) => {
+    if (!hashes.has(rel)) {
+      let h = '';
+      try { h = crypto.createHash('sha1').update(fsSync.readFileSync(path.join(DIST, rel))).digest('hex').slice(0, 10); } catch {}
+      hashes.set(rel, h);
+    }
+    const h = hashes.get(rel);
+    return h ? `${rel}?v=${h}` : rel;
+  };
+
   // --- render context -----------------------------------------------------
   // `depth` is how many directories deep the page being written is, so every
   // href and src comes out relative and the folder works from file://.
@@ -143,7 +171,7 @@ async function main() {
       const keys = Object.keys(e.widths).map(Number).sort((a, b) => a - b);
       const want = size === 'thumb' ? 480 : size === 'full' ? 2000 : 1200;
       const chosen = keys.find((k) => k >= want) ?? keys[keys.length - 1];
-      return up + e.widths[chosen];
+      return up + v(e.widths[chosen]);
     };
     return {
       img: pick,
@@ -153,8 +181,8 @@ async function main() {
         if (!e) return { fallback: pick(src, size), srcset: '', sizes: '' };
         const keys = Object.keys(e.widths).map(Number).sort((a, b) => a - b);
         return {
-          fallback: up + e.widths[keys[Math.min(1, keys.length - 1)]],
-          srcset: keys.map((k) => `${up}${e.widths[k]} ${k}w`).join(', '),
+          fallback: up + v(e.widths[keys[Math.min(1, keys.length - 1)]]),
+          srcset: keys.map((k) => `${up}${v(e.widths[k])} ${k}w`).join(', '),
           sizes: size === 'thumb' ? '(max-width: 700px) 100vw, 360px' : '(max-width: 900px) 100vw, 820px',
           width: e.dims?.width, height: e.dims?.height,
         };
@@ -164,7 +192,7 @@ async function main() {
         if (kind === 'testimonials') return up + 'testimonials.html';
         if (kind === 'about') return up + 'about.html';
         if (kind === 'project') return up + `projects/${arg.slug}.html`;
-        if (kind === 'pdf') return hasPdf ? up + 'portfolio.pdf' : '';
+        if (kind === 'pdf') return hasPdf ? up + v('portfolio.pdf') : '';
         return '#';
       },
       tagLinks: true,
@@ -178,8 +206,8 @@ async function main() {
 
   const head = (depth) => {
     const up = depth ? '../'.repeat(depth) : '';
-    return `<link rel="stylesheet" href="${up}assets/tokens.css">`
-      + `<link rel="stylesheet" href="${up}assets/site.css">`
+    return `<link rel="stylesheet" href="${up}${v('assets/tokens.css')}">`
+      + `<link rel="stylesheet" href="${up}${v('assets/site.css')}">`
       + (DRAFTS ? '<style>'
           + 'body{border-top:5px solid #b4531f}'
           + '.draft-banner{position:sticky;top:0;z-index:50;background:#b4531f;color:#fff;'
@@ -190,7 +218,7 @@ async function main() {
           + 'letter-spacing:.06em;text-transform:uppercase;color:#b4531f;'
           + 'border:1px solid #b4531f;border-radius:3px;padding:2px 5px}'
           + '</style>' : '<style>.draft-flag{display:none}</style>')
-      + `<script defer src="${up}assets/site.js"></script>`;
+      + `<script defer src="${up}${v('assets/site.js')}"></script>`;
   };
 
   const banner = DRAFTS
@@ -237,12 +265,6 @@ async function main() {
     description: toPlainText(data.profile.summary, 160),
     accent, head: head(0), body: banner + aboutBody(data, ctxFor(0)) + lightboxMarkup(),
   }));
-
-  // --- assets --------------------------------------------------------------
-  for (const f of ['tokens.css', 'site.css']) {
-    await fs.copyFile(path.join(ROOT, 'shared', 'styles', f), path.join(DIST, 'assets', f));
-  }
-  await fs.writeFile(path.join(DIST, 'assets', 'site.js'), siteScript());
 
   // GitHub Pages runs Jekyll over a branch deploy by default, which skips
   // anything whose name starts with an underscore and adds a build step this
