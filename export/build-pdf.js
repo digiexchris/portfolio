@@ -22,7 +22,8 @@ import { ImagePipeline, PRINT_WIDTH, COVER_WIDTH, buildStemMap } from './images.
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const MEDIA_ROOT = path.join(ROOT, 'media');
-const OUT = path.join(ROOT, 'out');
+// PORTFOLIO_BUILD_ROOT: see build-site.js. Tests build under .cache/ with it.
+const OUT = path.join(process.env.PORTFOLIO_BUILD_ROOT ? path.resolve(process.env.PORTFOLIO_BUILD_ROOT) : ROOT, 'out');
 const WORK = path.join(OUT, 'print');
 
 const HTML_ONLY = process.argv.includes('--html-only');
@@ -250,7 +251,7 @@ async function main() {
     });
 
     const size = (await fs.stat(pdfPath)).size;
-    console.log(`\nWrote out/portfolio.pdf — ${pageCount} pages, ${(size / 1048576).toFixed(1)} MB`);
+    console.log(`\nWrote ${path.relative(ROOT, pdfPath)} — ${pageCount} pages, ${(size / 1048576).toFixed(1)} MB`);
     console.log(`Done in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
   } finally {
     await browser.close();

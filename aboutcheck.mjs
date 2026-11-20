@@ -2,6 +2,10 @@
 import puppeteer from 'puppeteer-core';
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { docsSnapshot, docsChanges, buildSite, buildPdf, seedPdf, docsUrl, TEST_DOCS, TEST_OUT } from './testbuild.mjs';
+const docsBefore = docsSnapshot();
 
 const DATA='data/portfolio.json';
 const backup=fs.readFileSync(DATA,'utf8');
@@ -78,15 +82,16 @@ await p.keyboard.down('Control'); await p.keyboard.press('KeyS'); await p.keyboa
 await new Promise(r=>setTimeout(r,1400));
 check('it saves', !!JSON.parse(fs.readFileSync(DATA,'utf8')).profile.photo);
 
-execFileSync('node',['export/build-site.js'],{encoding:'utf8'});
-const about=fs.readFileSync('docs/about.html','utf8');
+seedPdf();
+buildSite();
+const about=fs.readFileSync(path.join(TEST_DOCS,'about.html'),'utf8');
 check('it reaches the exported About page', /<figure class="portrait"><img src="[^"]+"/.test(about));
 const m=about.match(/<figure class="portrait"><img src="([^"]+)"/);
-check('  and the image file exists', m && fs.existsSync('docs/'+m[1]), m? m[1] : '');
+check('  and the image file exists', m && fs.existsSync(path.join(TEST_DOCS, m[1])), m? m[1] : '');
 
 // The photo must span the same column as the text above it -- no narrower cap.
 const ap=await b.newPage();
-await ap.goto('http://127.0.0.1:4321/docs/about.html',{waitUntil:'networkidle0'});
+await ap.goto(docsUrl('about.html'),{waitUntil:'networkidle0'});
 const w=await ap.evaluate(()=>{
   const g=s=>{const e=document.querySelector(s);return e?e.getBoundingClientRect().width:null;};
   return {prose:g('.about .prose'), para:g('.about .prose p'), img:g('figure.portrait img'), about:g('.about')};
@@ -94,7 +99,7 @@ const w=await ap.evaluate(()=>{
 await ap.close();
 // Contact details belong above the prose, not buried after it.
 const order=await b.newPage();
-await order.goto('http://127.0.0.1:4321/docs/about.html',{waitUntil:'networkidle0'});
+await order.goto(docsUrl('about.html'),{waitUntil:'networkidle0'});
 const seq=await order.evaluate(()=>{
   const about=document.querySelector('.about');
   const pick=s=>about.querySelector(s);
@@ -117,17 +122,17 @@ check('  and fills the About column', Math.abs(w.img - w.about) <= 1,
 
 // The PDF builder collects its own image set, and used to leave this one out
 // entirely -- the portrait rendered with an empty src.
-execFileSync('node',['export/build-pdf.js'],{encoding:'utf8'});
-const printDoc=fs.readFileSync('out/print/index.html','utf8');
+buildPdf();
+const printDoc=fs.readFileSync(path.join(TEST_OUT,'print','index.html'),'utf8');
 const pm=printDoc.match(/<figure class="portrait"><img src="([^"]*)"/);
 check('the PDF includes the About photo', !!pm && pm[1].length > 0, pm? `src="${pm[1]}"` : 'no portrait in the print document');
-check('  and its file was produced', !!pm && pm[1] && fs.existsSync('out/print/'+pm[1]));
+check('  and its file was produced', !!pm && pm[1] && fs.existsSync(path.join(TEST_OUT,'print',pm[1])));
 
 // An image cannot split across pages, so one placed after a full page of text
 // gets pushed whole onto the next and lands there alone. Check the paginated
 // document rather than the PDF: it is the same layout, and inspectable.
 const pg=await b.newPage();
-await pg.goto('file://'+process.cwd()+'/out/print/index.html',{waitUntil:'networkidle0'});
+await pg.goto(pathToFileURL(path.join(TEST_OUT,'print','index.html')).href,{waitUntil:'networkidle0'});
 await pg.waitForFunction('window.__PAGED_READY === true',{timeout:60000});
 const pages=await pg.evaluate(()=>[...document.querySelectorAll('.pagedjs_page')].map((box,i)=>{
   const c=box.querySelector('.pagedjs_page_content') || box;
@@ -155,10 +160,9 @@ check('no JavaScript errors', errs.length===0, errs.slice(0,2).join(' | '));
 
 await b.close();
 fs.writeFileSync(DATA, backup);
-// This suite builds a PDF from a temporary About photo. Rebuild it from the
-// real data, or the published docs/portfolio.pdf keeps the test's photo.
-execFileSync('node',['export/build-pdf.js'],{encoding:'utf8'});
-execFileSync('node',['export/build-site.js'],{encoding:'utf8'});
-console.log('\nData restored, docs/ and out/ rebuilt.');
+// Builds went to .cache/test-build/; the real docs/ and out/ were never touched.
+console.log('\nData restored.');
+{ const ch = docsChanges(docsBefore, docsSnapshot());
+  check('docs/ is left untouched', ch.length === 0, ch.slice(0, 4).join(' | ')); }
 console.log(fail?`${fail} FAILED`:'All checks passed.');
 process.exit(fail?1:0);

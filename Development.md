@@ -179,8 +179,10 @@ editor, start).
 
 **About 325 checks in total.** They drive a real headless Chromium against the real
 server, and each restores `data/portfolio.json` when it finishes — safe to run
-on real work. `verify.mjs` rebuilds `docs/` from the restored data rather than
-leaving a test build behind.
+on real work. **Tests never build into `docs/`, `preview/` or `out/`**: they set
+`PORTFOLIO_BUILD_ROOT=.cache/test-build`, which both builders honour, and open
+the result from `file://`. Every suite that builds ends with a
+`docs/ is left untouched` check. Shared helpers are in `testbuild.mjs`.
 
 Run one on its own with `node widthcheck.mjs`.
 

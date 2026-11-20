@@ -16,15 +16,86 @@
   },
   "projects": [
     {
+      "id": "x3hlxosyao62l",
+      "slug": "untitled-project-2",
+      "title": "Kenwood TH-F6 Power Problems",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "",
+      "tags": [
+        "Electronics",
+        "Repair",
+        "Amateur Radio"
+      ],
+      "specs": [],
+      "photos": [
+        {
+          "src": "uploads/IMG_20261118_223525_525.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20261118_220111_804.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20261118_215958_487.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20261118_214406_292.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20261118_211503_503.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20261118_211351_754.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/VID_20261119_152005.mp4",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": false,
+          "poster": ""
+        }
+      ],
+      "published": true,
+      "order": 0
+    },
+    {
       "id": "xue8u0aycv1fj",
       "slug": "cardo-trace-repair",
       "title": "Cardo PackTalk USB Port Repair",
       "subtitle": "",
       "date": "",
       "summary": "",
-      "body": "<p>A friend ripped the usb connector off of his Cardo PackTalk helmet communicator, and asked if I could try fixing it. This is one of those jobs that my stereoscopic microscope really pays off.</p><p><br></p><p>One of the traces was ripped completely off the board under the usb connector, so I had to reroute it using magnet wire from the opposite side of the board, sneaking it through a gap created by the factory separating the boards from the larger panel. It also appeared that there were cold solder joints under the hold down pads, which is probably why it originally failed.<br><br>It's back in service and working great!<br><br>For scale, C104 is a capacitor that is 1mm wide and 2mm long.</p>",
+      "body": "<p>A friend ripped the usb connector off of his Cardo PackTalk helmet communicator, and asked if I could try fixing it. This is one of those jobs that my stereoscopic microscope really pays off.</p><p><br></p><p>One of the traces was ripped completely off the board under the usb connector, so I had to reroute it using magnet wire from the opposite side of the board, sneaking it through a gap created by the factory separating the boards from the larger panel. It also appeared that there were cold solder joints under the hold down pads, which is probably why it originally failed.<br><br>Also changed the battery since it was already apart.<br><br>It's back in service and working great!<br><br>For scale, C104 is a capacitor that is 1mm wide and 2mm long.</p>",
       "tags": [
-        "Electronics"
+        "Electronics",
+        "Repair",
+        "Motorcycles"
       ],
       "specs": [],
       "photos": [
@@ -41,10 +112,138 @@
           "alt": "",
           "feature": false,
           "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20190806_225124139.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20210219_162251.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20241025_192739_076.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20241025_194944_841.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20241025_195724_243.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20210219_102246.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20210219_153042.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20210219_151403.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20210219_102756.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20210219_150234.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
         }
       ],
       "published": true,
-      "order": 0
+      "order": 1
+    },
+    {
+      "id": "x4hcvsm1x91rw",
+      "slug": "untitled-project",
+      "title": "PS4 HDMI Connector Replacement",
+      "subtitle": "",
+      "date": "",
+      "summary": "Tight spaces",
+      "body": "<p>This was a tricky one. The customer noticed damage to the pins inside the connector. They brought me the PS4 and a new connector, which matched up perfectly.</p><p>The hard part was the tight quarters. There are quite tall components on 3 sides of the connector close to the connector so it's hard to get an iron in there and hard to keep hot air off of the more sensitive stuff near by. Careful use of kapton tape saved the day, as well as the trick of wiping the tip of the iron across the pins to pick up excess solder bridging pins. I ended up making a special soldering iron tip on my lathe to reach in there.<br><br>The pins don't line up perfectly, but the locating dowels on the connector shell constrains it in position on the board, and the original was slightly offset like that too. It tested without shorts</p>",
+      "tags": [
+        "Electronics",
+        "Repair"
+      ],
+      "specs": [],
+      "photos": [
+        {
+          "src": "uploads/IMG_20200922_191936414.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true,
+          "pdf": true
+        }
+      ],
+      "published": true,
+      "order": 2
+    },
+    {
+      "id": "xf21vqbdfs5me",
+      "slug": "untitled-project-5",
+      "title": "What a high current amplifier MOSFET looks like inside",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "<p>I was repairing a 100w radio amplifier that fused one of the two mosfets, as indicated by the oscilloscope only reading half of the wave. It failed so bad it popped the epoxy cap off and let us see inside. You can see the Emitter (top black row) Base (Pinkish row at the bottom) and the collector (middle black row). Look at all of those microscopic gold wires!<br><br>You're seeing it at 10x and 30x magnification.</p>",
+      "tags": [
+        "Electronics",
+        "Repair",
+        "Amateur Radio"
+      ],
+      "specs": [],
+      "photos": [
+        {
+          "src": "uploads/IMG_20210424_231321.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20210424_231748.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true,
+          "pdf": true
+        }
+      ],
+      "published": true,
+      "order": 3
     },
     {
       "id": "xfvnu3ezcv1fj",
@@ -54,7 +253,10 @@
       "date": "",
       "summary": "Industrial power supply de-customizing",
       "body": "<p>The customer brought a pair of these PAN 35-20A power supplies that he aquired from EBay. The front panels were non-functional, but if they could be repaired, it would be a steal of a deal.<br><br>It's a laboratory grade adjustable constant current/constant voltage power supply containing a huge transformer, big regulators, and a lot of smoothing capacitance. Two big fans blow a lot of air through the case. Although the fans are loud, it can output 35v@20A all day long without heating up. The handle is interesting. I hope you don't have to carry this too far by the handle, it's VERY heavy!</p><p>Once I had the cover off I noticed some wires that did not match the rest of the OEM wires inside, running to the back panel. The back panel has several terminals used for remote operation of the power supply for industrial or lab usage. The front panel had some traces cut, and wires run from the back panel to the front panel. It looks like they were using the rear terminals to control it, and the front LCD to monitor, but this disabled the front panel potentiometers.</p><p>It was a fairly simple process to remove the modification wires, reinstall some removed resistors, repair the traces, and follow the potentiometer signal back through the circuitry to the regulator feedback circuit. The good old Agilent 54610B scope was overkill, but it was very nice to have a visual measurement of two voltages at the same time.</p>",
-      "tags": [],
+      "tags": [
+        "Electronics",
+        "Modification"
+      ],
       "specs": [],
       "photos": [
         {
@@ -77,10 +279,180 @@
           "alt": "",
           "feature": true,
           "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20201218_140041.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20201218_165316.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20210130_184822.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20210130_184833.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20210130_184918.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20210130_185007.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
         }
       ],
       "published": true,
-      "order": 1
+      "order": 4
+    },
+    {
+      "id": "xnz1aq39m373w",
+      "slug": "untitled-project-3",
+      "title": "Icom 706 MKIIG Intermediate Frequency Tap",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "<p>On a non-SDR radio, you can sometimes tap where the intermediate frequency of the receiver is output. This allows you to get a relatively wide bandwidth view, within the bandwidth of the IF filter anyway. If I remember correctly, on the 706MKIIG it gives you nearly 1/4 of the 20M band in view at once. You can then pass it to an SDR to create a panadapter, or a visual view of the activity on the band. You can also use the output to use the SDR as a final tuner. Some SDRs, like the Airspy HF, have very good decoders, and can sometimes outperform the final stage of the existing receiver.<br><br>The IF is available off of one side of the resistor valued 331 just to the front of the adjustable inductor, on the front-left of the radio with the radio facing you.<br><br>You can attach a low impedance tap of some kind, I went with an IF Tap board purpose designed</p>",
+      "tags": [
+        "Electronics",
+        "Modification",
+        "Amateur Radio"
+      ],
+      "specs": [],
+      "photos": [
+        {
+          "src": "uploads/IMG_20190925_205210019.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20191002_183320243.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20191005_132919067.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20191005_135549271.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20191005_135554259.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20191005_135611948.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20191005_141603925_HDR.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20191005_141615520.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        }
+      ],
+      "published": true,
+      "order": 5
+    },
+    {
+      "id": "xaiuutyc0kacc",
+      "slug": "untitled-project-4",
+      "title": "ESP-Prog power rail repair",
+      "subtitle": "Oops",
+      "date": "",
+      "summary": "",
+      "body": "<p>This one was my fault. I was using an ESP-Prog JTAG board to work on an STM32F103, and crossed my 3v3 and gnd lines. Luckily, the ESP-Prog sacrifices itself by blowing the reverse protection diode. It would have been nice if they used the mosfet trick (won't even conduct in reverse) or at least put a fuse in there.</p><p>I used a FLIR to spot that the diode was unusually hot, then did a multimeter diode test. It was passing current in both directions, which browned out the power rail thankfully, before any reverse voltage could get to the MCU.</p><p>I didn't have a suitable SMD diode on hand, so I used a similarly rated through hole diode.</p>",
+      "tags": [
+        "Electronics",
+        "Repair"
+      ],
+      "specs": [],
+      "photos": [
+        {
+          "src": "uploads/IMG_20230303_212351.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20230303_214725.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20230303_214736.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20230304_114211.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/flir_20230303T200817.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true,
+          "pdf": true
+        }
+      ],
+      "published": true,
+      "order": 6
     },
     {
       "id": "x2m3s54hqv1fi",
@@ -147,7 +519,7 @@
         }
       ],
       "published": true,
-      "order": 2
+      "order": 7
     },
     {
       "id": "xd75ceip6v1fj",
@@ -176,7 +548,7 @@
         }
       ],
       "published": false,
-      "order": 3
+      "order": 8
     },
     {
       "id": "xq7zeqayjv1fj",
@@ -198,7 +570,7 @@
         }
       ],
       "published": false,
-      "order": 4
+      "order": 9
     },
     {
       "id": "xkuqpo694v1fj",
@@ -227,7 +599,7 @@
         }
       ],
       "published": false,
-      "order": 5
+      "order": 10
     },
     {
       "id": "xejw7h4acv1fj",
@@ -249,7 +621,7 @@
         }
       ],
       "published": false,
-      "order": 6
+      "order": 11
     },
     {
       "id": "x9nox6f1qv1fj",
@@ -271,7 +643,7 @@
         }
       ],
       "published": false,
-      "order": 7
+      "order": 12
     },
     {
       "id": "x85u6xkkhv1fj",
@@ -307,7 +679,7 @@
         }
       ],
       "published": false,
-      "order": 8
+      "order": 13
     },
     {
       "id": "xte6ymp3jv1fj",
@@ -339,7 +711,7 @@
         }
       ],
       "published": true,
-      "order": 9
+      "order": 14
     },
     {
       "id": "xg2rizvf0v1fj",
@@ -378,7 +750,7 @@
         }
       ],
       "published": true,
-      "order": 10
+      "order": 15
     },
     {
       "id": "xm3yd0cesv1fj",
@@ -400,7 +772,7 @@
         }
       ],
       "published": false,
-      "order": 11
+      "order": 16
     },
     {
       "id": "xlixp8ldrv1fj",
@@ -422,7 +794,7 @@
         }
       ],
       "published": false,
-      "order": 12
+      "order": 17
     },
     {
       "id": "xwsuausiuv1fj",
@@ -586,7 +958,7 @@
         }
       ],
       "published": true,
-      "order": 13
+      "order": 18
     },
     {
       "id": "xgeuguzh8v1fj",
@@ -608,7 +980,7 @@
         }
       ],
       "published": false,
-      "order": 14
+      "order": 19
     },
     {
       "id": "xyidvif9wv1fj",
@@ -630,7 +1002,7 @@
         }
       ],
       "published": false,
-      "order": 15
+      "order": 20
     },
     {
       "id": "xoblhbii7v1fj",
@@ -654,7 +1026,7 @@
         }
       ],
       "published": true,
-      "order": 16
+      "order": 21
     },
     {
       "id": "x0qv8quuxv1fj",
@@ -683,7 +1055,7 @@
         }
       ],
       "published": false,
-      "order": 17
+      "order": 22
     },
     {
       "id": "xxu5obelnv1fj",
@@ -705,7 +1077,7 @@
         }
       ],
       "published": false,
-      "order": 18
+      "order": 23
     },
     {
       "id": "xotu8lbcxv1fj",
@@ -734,7 +1106,7 @@
         }
       ],
       "published": false,
-      "order": 19
+      "order": 24
     },
     {
       "id": "xvqlegx0zv1fj",
@@ -756,7 +1128,7 @@
         }
       ],
       "published": false,
-      "order": 20
+      "order": 25
     },
     {
       "id": "xzu772shtv1fj",
@@ -785,7 +1157,7 @@
         }
       ],
       "published": false,
-      "order": 21
+      "order": 26
     },
     {
       "id": "xf6k2e9qbv1fj",
@@ -807,7 +1179,7 @@
         }
       ],
       "published": false,
-      "order": 22
+      "order": 27
     },
     {
       "id": "xvrffogxxv1fj",
@@ -838,7 +1210,7 @@
         }
       ],
       "published": true,
-      "order": 23
+      "order": 28
     },
     {
       "id": "x6brkgmu4v1fj",
@@ -876,7 +1248,7 @@
         }
       ],
       "published": true,
-      "order": 24
+      "order": 29
     },
     {
       "id": "x25y4ov3wv1fj",
@@ -898,7 +1270,7 @@
         }
       ],
       "published": false,
-      "order": 25
+      "order": 30
     },
     {
       "id": "xqh8bouacv1fj",
@@ -951,7 +1323,7 @@
         }
       ],
       "published": true,
-      "order": 26
+      "order": 31
     },
     {
       "id": "xzletpmhzv1fj",
@@ -973,7 +1345,7 @@
         }
       ],
       "published": false,
-      "order": 27
+      "order": 32
     },
     {
       "id": "xtbn25khxv1fj",
@@ -995,7 +1367,7 @@
         }
       ],
       "published": false,
-      "order": 28
+      "order": 33
     },
     {
       "id": "xgh2huo62v1fj",
@@ -1059,7 +1431,7 @@
         }
       ],
       "published": false,
-      "order": 29
+      "order": 34
     },
     {
       "id": "x7mw6hqh1v1fj",
@@ -1081,7 +1453,7 @@
         }
       ],
       "published": false,
-      "order": 30
+      "order": 35
     },
     {
       "id": "xgx8slgbcv1fj",
@@ -1110,7 +1482,7 @@
         }
       ],
       "published": false,
-      "order": 31
+      "order": 36
     },
     {
       "id": "xxqov9vriv1fj",
@@ -1134,7 +1506,7 @@
         }
       ],
       "published": true,
-      "order": 32
+      "order": 37
     },
     {
       "id": "x63fkwcs5v1fj",
@@ -1156,7 +1528,7 @@
         }
       ],
       "published": false,
-      "order": 33
+      "order": 38
     },
     {
       "id": "xw6665nywv1fj",
@@ -1178,7 +1550,7 @@
         }
       ],
       "published": false,
-      "order": 34
+      "order": 39
     },
     {
       "id": "xa8ug233ov1fj",
@@ -1200,7 +1572,7 @@
         }
       ],
       "published": false,
-      "order": 35
+      "order": 40
     },
     {
       "id": "xpq01dsigv1fj",
@@ -1236,7 +1608,7 @@
         }
       ],
       "published": false,
-      "order": 36
+      "order": 41
     },
     {
       "id": "xpuphasgpv1fj",
@@ -1258,7 +1630,7 @@
         }
       ],
       "published": false,
-      "order": 37
+      "order": 42
     },
     {
       "id": "xe77nbzwjv1fj",
@@ -1280,7 +1652,7 @@
         }
       ],
       "published": false,
-      "order": 38
+      "order": 43
     },
     {
       "id": "xxb4wglvlv1fj",
@@ -1302,7 +1674,7 @@
         }
       ],
       "published": false,
-      "order": 39
+      "order": 44
     },
     {
       "id": "x5eaojmjxv1fj",
@@ -1324,7 +1696,7 @@
         }
       ],
       "published": false,
-      "order": 40
+      "order": 45
     },
     {
       "id": "xj4h584fvv1fj",
@@ -1346,7 +1718,7 @@
         }
       ],
       "published": false,
-      "order": 41
+      "order": 46
     },
     {
       "id": "xflkxn3nqv1fj",
@@ -1368,7 +1740,7 @@
         }
       ],
       "published": false,
-      "order": 42
+      "order": 47
     },
     {
       "id": "x6l5vrggvv1fj",
@@ -1390,7 +1762,7 @@
         }
       ],
       "published": false,
-      "order": 43
+      "order": 48
     },
     {
       "id": "xd733nedav1fj",
@@ -1421,7 +1793,7 @@
         }
       ],
       "published": true,
-      "order": 44
+      "order": 49
     },
     {
       "id": "xj6rog1gcv1fj",
@@ -1443,7 +1815,7 @@
         }
       ],
       "published": false,
-      "order": 45
+      "order": 50
     },
     {
       "id": "xvpsm8gaxv1fj",
@@ -1465,7 +1837,7 @@
         }
       ],
       "published": false,
-      "order": 46
+      "order": 51
     },
     {
       "id": "xx82k8hf8v1fj",
@@ -1487,7 +1859,7 @@
         }
       ],
       "published": false,
-      "order": 47
+      "order": 52
     },
     {
       "id": "x3c82ykpwv1fj",
@@ -1509,7 +1881,7 @@
         }
       ],
       "published": false,
-      "order": 48
+      "order": 53
     },
     {
       "id": "xah5ghr2zv1fj",
@@ -1533,7 +1905,7 @@
         }
       ],
       "published": true,
-      "order": 49
+      "order": 54
     },
     {
       "id": "xkhc5chfov1fj",
@@ -1569,7 +1941,7 @@
         }
       ],
       "published": false,
-      "order": 50
+      "order": 55
     },
     {
       "id": "xdd698yxkv1fj",
@@ -1591,7 +1963,7 @@
         }
       ],
       "published": false,
-      "order": 51
+      "order": 56
     },
     {
       "id": "x5aidgho6v1fj",
@@ -1620,7 +1992,7 @@
         }
       ],
       "published": false,
-      "order": 52
+      "order": 57
     },
     {
       "id": "xsk8qclttv1fj",
@@ -1656,7 +2028,7 @@
         }
       ],
       "published": false,
-      "order": 53
+      "order": 58
     },
     {
       "id": "xap7pele3v1fj",
@@ -1678,7 +2050,7 @@
         }
       ],
       "published": false,
-      "order": 54
+      "order": 59
     },
     {
       "id": "x033pfwccv1fj",
@@ -1728,7 +2100,7 @@
         }
       ],
       "published": false,
-      "order": 55
+      "order": 60
     },
     {
       "id": "x86wgk4e7v1fj",
@@ -1766,7 +2138,7 @@
         }
       ],
       "published": true,
-      "order": 56
+      "order": 61
     },
     {
       "id": "xz2a59kpdv1fj",
@@ -1788,7 +2160,7 @@
         }
       ],
       "published": false,
-      "order": 57
+      "order": 62
     },
     {
       "id": "xqgt48w6iv1fj",
@@ -1810,7 +2182,7 @@
         }
       ],
       "published": false,
-      "order": 58
+      "order": 63
     },
     {
       "id": "xgho20p1jv1fj",
@@ -1883,7 +2255,7 @@
         }
       ],
       "published": true,
-      "order": 59
+      "order": 64
     },
     {
       "id": "xsym81q2iv1fj",
@@ -1905,7 +2277,7 @@
         }
       ],
       "published": false,
-      "order": 60
+      "order": 65
     }
   ],
   "testimonials": [],
@@ -1916,7 +2288,7 @@
     "pdf": {
       "paper": "Letter",
       "includeTestimonials": true,
-      "coverPhoto": "1cu_assembled.jpg"
+      "coverPhoto": "uploads/IMG_20210424_231748.jpg"
     }
   }
 }

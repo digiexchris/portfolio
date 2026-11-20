@@ -9,6 +9,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync, spawn } from 'node:child_process';
 import httpMod from 'node:http';
+import { docsSnapshot, docsChanges, TEST_PREVIEW, previewUrl, BUILD_ROOT } from './testbuild.mjs';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
@@ -20,6 +21,7 @@ const WORK = path.join(ROOT, '.cache', 'videocheck');
 const ONLY = process.argv[2] || '';          // run one section: node videocheck.mjs server
 
 const backup = fs.readFileSync(DATA, 'utf8');
+const docsBefore = docsSnapshot();
 const uploadsBefore = new Set(fs.existsSync(UPLOADS) ? fs.readdirSync(UPLOADS) : []);
 let failures = 0;
 const check = (name, ok, detail = '') => {
@@ -217,15 +219,16 @@ try {
     const proj = data.projects.slice().sort((a, b) => a.order - b.order).find((p) => (p.photos || []).length >= 1);
     proj.photos.push({ src: vsrc, caption: 'VC chosen', poster: lib }, { src: vsrc, caption: 'VC gone', poster: 'vc-deleted.jpg' });
     fs.writeFileSync(DATA, JSON.stringify(data, null, 2));
-    const build = spawnSync(process.execPath, ['export/build-site.js', '--drafts'], { cwd: ROOT, encoding: 'utf8' });
+    const build = spawnSync(process.execPath, ['export/build-site.js', '--drafts'],
+      { cwd: ROOT, encoding: 'utf8', env: { ...process.env, PORTFOLIO_BUILD_ROOT: BUILD_ROOT } });
     fs.writeFileSync(DATA, backup);                  // restore at once: the file is shared with a running editor
     check('the drafts build succeeds', build.status === 0, (build.stderr || '').trim().split('\n').pop());
 
     const slug = proj.slug;
-    const html = fs.readFileSync(path.join(ROOT, 'preview', 'projects', `${slug}.html`), 'utf8');
+    const html = fs.readFileSync(path.join(TEST_PREVIEW, 'projects', `${slug}.html`), 'utf8');
     const hrefs = [...html.matchAll(/href="([^"]+\.mp4\?v=[0-9a-f]+)"[^>]*data-video/g)].map((m) => m[1]);
     check('video tiles link to a versioned relative mp4', hrefs.length === 2 && hrefs[0].startsWith('../video/'), hrefs.join(' '));
-    const shipped = path.join(ROOT, 'preview', hrefs[0]?.replace(/^\.\.\//, '').replace(/\?.*/, '') || 'x');
+    const shipped = path.join(TEST_PREVIEW, hrefs[0]?.replace(/^\.\.\//, '').replace(/\?.*/, '') || 'x');
     check('the mp4 is copied byte-for-byte', fs.existsSync(shipped)
       && fs.readFileSync(shipped).equals(fs.readFileSync(path.join(UPLOADS, path.basename(vsrc)))));
     const tiles = [...html.matchAll(/<figure class="photo video"[\s\S]*?<\/figure>/g)].map((m) => m[0]);
@@ -240,7 +243,7 @@ try {
       const page = await b.newPage();
       const asked = [];
       page.on('request', (rq) => asked.push(rq.url()));
-      await page.goto(`${BASE}/preview/projects/${slug}.html`, { waitUntil: 'networkidle0' });
+      await page.goto(previewUrl(`projects/${slug}.html`), { waitUntil: 'networkidle0' });
       await page.evaluate(async () => {           // pull every lazy poster in
         for (let y = 0; y < document.body.scrollHeight; y += 500) { scrollTo(0, y); await new Promise((r) => setTimeout(r, 40)); }
       });
@@ -548,5 +551,7 @@ try {
   fs.rmSync(WORK, { recursive: true, force: true });
 }
 
+{ const ch = docsChanges(docsBefore, docsSnapshot());
+  check('docs/ is left untouched', ch.length === 0, ch.slice(0, 4).join(' | ')); }
 console.log(failures ? `\n${failures} FAILED` : '\nAll checks passed.');
 process.exit(failures ? 1 : 0);

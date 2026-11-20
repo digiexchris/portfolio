@@ -24,8 +24,12 @@ const MEDIA_ROOT = path.join(ROOT, 'media');
 // to preview/ on purpose, and stays gitignored: a preview containing
 // half-written entries must never be published.
 const DRAFTS = process.argv.includes('--drafts');
-const DIST = path.join(ROOT, DRAFTS ? 'preview' : 'docs');
-const PDF_SOURCE = path.join(ROOT, 'out', 'portfolio.pdf');
+// PORTFOLIO_BUILD_ROOT moves every output (docs/, preview/, out/) under
+// another folder. The test suites use it so they never touch the real docs/,
+// which only ever holds the author's own builds.
+const BUILD_ROOT = process.env.PORTFOLIO_BUILD_ROOT ? path.resolve(process.env.PORTFOLIO_BUILD_ROOT) : ROOT;
+const DIST = path.join(BUILD_ROOT, DRAFTS ? 'preview' : 'docs');
+const PDF_SOURCE = path.join(BUILD_ROOT, 'out', 'portfolio.pdf');
 
 // Anything in public/ is copied verbatim into the published folder. That is
 // where files the host needs but this builder does not generate belong -- a

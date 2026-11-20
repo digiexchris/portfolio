@@ -5,6 +5,9 @@
 import puppeteer from 'puppeteer-core';
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
+import path from 'node:path';
+import { docsSnapshot, docsChanges, buildSite, buildPdf, TEST_DOCS, TEST_OUT } from './testbuild.mjs';
+const docsBefore = docsSnapshot();
 
 const DATA = 'data/portfolio.json';
 const backup = fs.readFileSync(DATA, 'utf8');
@@ -117,17 +120,17 @@ await b.close();
 // --- exports ----------------------------------------------------------------
 
 console.log('\n--- exports ---');
-const site = execFileSync('node', ['export/build-site.js'], { encoding: 'utf8' });
+const site = buildSite();
 console.log(site.trim().split('\n').slice(-3).join('\n'));
-check('site export succeeded', fs.existsSync('docs/index.html'));
+check('site export succeeded', fs.existsSync(path.join(TEST_DOCS, 'index.html')));
 
-const idx = fs.readFileSync('docs/index.html', 'utf8');
+const idx = fs.readFileSync(path.join(TEST_DOCS, 'index.html'), 'utf8');
 check('site uses relative paths only', !/(src|href)="\//.test(idx));
 check('site index lists the published work', /class="card"/.test(idx));
 
-const pdf = execFileSync('node', ['export/build-pdf.js'], { encoding: 'utf8' });
+const pdf = buildPdf();
 console.log(pdf.trim().split('\n').slice(-3).join('\n'));
-check('PDF export succeeded', fs.existsSync('out/portfolio.pdf'));
+check('PDF export succeeded', fs.existsSync(path.join(TEST_OUT, 'portfolio.pdf')));
 check('every contents entry resolved to a page', /(\d+)\/\1 contents entries numbered/.test(pdf),
   (pdf.match(/\d+\/\d+ contents entries numbered/) || [''])[0]);
 
@@ -135,7 +138,7 @@ check('every contents entry resolved to a page', /(\d+)\/\1 contents entries num
 // headline feature, so verify it against the rendered PDF rather than trusting
 // the builder's own report.
 const pageText = (n) => execFileSync('gs',
-  ['-q','-dNOPAUSE','-dBATCH','-sDEVICE=txtwrite',`-dFirstPage=${n}`,`-dLastPage=${n}`,'-sOutputFile=-','out/portfolio.pdf'],
+  ['-q','-dNOPAUSE','-dBATCH','-sDEVICE=txtwrite',`-dFirstPage=${n}`,`-dLastPage=${n}`,'-sOutputFile=-',path.join(TEST_OUT, 'portfolio.pdf')],
   { encoding: 'utf8' }).replace(/[ \t]+/g, ' ');
 
 const total = Number((pdf.match(/laid out (\d+) pages/) || [])[1]);
@@ -172,13 +175,10 @@ check('every contents page number points at its section',
 
 // --- restore ----------------------------------------------------------------
 fs.writeFileSync(DATA, backup);
-// docs/ is committed content, so it must not be left holding a test build --
-// nor simply deleted. Rebuild it from the restored data instead.
-// Rebuild BOTH: this suite exports a PDF from temporary test data, and
-// leaving that behind would publish the wrong document -- docs/portfolio.pdf
-// is committed.
-execFileSync('node', ['export/build-pdf.js'], { encoding: 'utf8' });
-execFileSync('node', ['export/build-site.js'], { encoding: 'utf8' });
-console.log('\nData file restored; docs/ and out/ rebuilt from it.');
+// The exports went to .cache/test-build/; the real docs/ and out/ were never
+// touched, so there is nothing to rebuild.
+console.log('\nData file restored.');
+{ const ch = docsChanges(docsBefore, docsSnapshot());
+  check('docs/ is left untouched', ch.length === 0, ch.slice(0, 4).join(' | ')); }
 console.log(failures ? `\n${failures} CHECK(S) FAILED` : '\nAll checks passed.');
 process.exit(failures ? 1 : 0);

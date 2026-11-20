@@ -3,6 +3,9 @@
 import puppeteer from 'puppeteer-core';
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
+import path from 'node:path';
+import { docsSnapshot, docsChanges, buildSite, seedPdf, docsUrl, TEST_DOCS } from './testbuild.mjs';
+const docsBefore = docsSnapshot();
 
 const DATA='data/portfolio.json';
 const backup=fs.readFileSync(DATA,'utf8');
@@ -51,9 +54,10 @@ check('  and does not touch the About text',
 check('the About text is not on the Work page',
   !(inPreview.text.includes('rural Alberta') || inPreview.text.includes('Standard Aero')));
 
-execFileSync('node',['export/build-site.js'],{encoding:'utf8'});
-const idx=fs.readFileSync('docs/index.html','utf8');
-const about=fs.readFileSync('docs/about.html','utf8');
+seedPdf();
+buildSite();
+const idx=fs.readFileSync(path.join(TEST_DOCS,'index.html'),'utf8');
+const about=fs.readFileSync(path.join(TEST_DOCS,'about.html'),'utf8');
 check('the exported index carries the Work intro', idx.includes('Shop work'));
 check('the exported About page does not', !about.includes('Shop work'));
 const aboutText=JSON.parse(backup).profile.summary.replace(/<[^>]+>/g,'').slice(0,40);
@@ -61,7 +65,7 @@ check('the About text stays on the About page', !aboutText || about.includes(abo
 // Check the rendered page, not the raw file: a meta description legitimately
 // mentions the site, and matching on raw HTML would confuse the two.
 const ip=await b.newPage();
-await ip.goto('http://127.0.0.1:4321/docs/index.html',{waitUntil:'networkidle0'});
+await ip.goto(docsUrl('index.html'),{waitUntil:'networkidle0'});
 const shown=await ip.evaluate(()=>document.querySelector('main').innerText.replace(/\s+/g,' '));
 const meta=await ip.evaluate(()=>document.querySelector('meta[name=description]')?.content||'');
 await ip.close();
@@ -73,7 +77,8 @@ check('no JavaScript errors', errs.length===0, errs.slice(0,2).join(' | '));
 
 await b.close();
 fs.writeFileSync(DATA, backup);
-execFileSync('node',['export/build-site.js'],{encoding:'utf8'});
-console.log('\nData restored, docs/ rebuilt.');
+console.log('\nData restored.');
+{ const ch = docsChanges(docsBefore, docsSnapshot());
+  check('docs/ is left untouched', ch.length === 0, ch.slice(0, 4).join(' | ')); }
 console.log(fail?`${fail} FAILED`:'All checks passed.');
 process.exit(fail?1:0);

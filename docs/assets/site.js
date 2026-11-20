@@ -43,17 +43,41 @@
   }
 
   // --- lightbox ---
+  // Photos and videos share one viewer and one prev/next order. A video gets
+  // its src only while it is showing, so nothing of it downloads until then.
   var lb = document.getElementById('lb');
   if (!lb) return;
   var img = document.getElementById('lb-img');
+  var vid = document.getElementById('lb-video');
   var cap = document.getElementById('lb-cap');
   var links = [].slice.call(document.querySelectorAll('a[data-lightbox]'));
   var at = 0;
 
+  function stopVideo() {
+    if (!vid || !vid.hasAttribute('src')) return;
+    vid.pause();
+    vid.removeAttribute('src');
+    vid.load();                                 // drops the buffered download
+  }
+
   function show(i) {
     at = (i + links.length) % links.length;
     var a = links[at];
-    img.src = a.getAttribute('href');
+    stopVideo();
+    if (a.hasAttribute('data-video') && vid) {
+      img.hidden = true;
+      img.src = '';
+      var poster = a.querySelector('img');
+      vid.poster = poster ? (poster.currentSrc || poster.src) : '';
+      vid.src = a.getAttribute('href');
+      vid.hidden = false;
+      var p = vid.play();
+      if (p && p.catch) p.catch(function () {});  // refused: the controls are there
+    } else {
+      if (vid) vid.hidden = true;
+      img.hidden = false;
+      img.src = a.getAttribute('href');
+    }
     var fig = a.closest('figure');
     var c = fig && fig.querySelector('figcaption');
     cap.textContent = c ? c.textContent : '';
@@ -61,6 +85,8 @@
     document.body.style.overflow = 'hidden';
   }
   function hide() {
+    stopVideo();
+    if (vid) vid.hidden = true;
     lb.classList.remove('is-open');
     img.src = '';
     document.body.style.overflow = '';
@@ -74,10 +100,12 @@
   });
   lb.querySelector('.lb-prev').addEventListener('click', function (e) { e.stopPropagation(); show(at - 1); });
   lb.querySelector('.lb-next').addEventListener('click', function (e) { e.stopPropagation(); show(at + 1); });
+  // Arrow keys navigate even while the player has focus; space and the
+  // player's other keys stay with the player.
   document.addEventListener('keydown', function (e) {
     if (!lb.classList.contains('is-open')) return;
     if (e.key === 'Escape') hide();
-    if (e.key === 'ArrowLeft') show(at - 1);
-    if (e.key === 'ArrowRight') show(at + 1);
-  });
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(at - 1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); show(at + 1); }
+  }, true);
 })();

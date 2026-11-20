@@ -27,3 +27,5 @@ Node ≥ 22.12, plain ES modules, no bundler. Dev machine is Windows; PDF export
 ## Tests
 
 `npm start` in one terminal, `npm run check` in another. Suites drive headless Chromium against the real server and restore `data/portfolio.json` afterwards. `SKIP` for empty sections is expected.
+
+Tests must never write to `docs/` (or `preview/`, `out/`) — those hold the author's own builds. Build via `testbuild.mjs` (`PORTFOLIO_BUILD_ROOT=.cache/test-build`) and end with the `docs/ is left untouched` check.
