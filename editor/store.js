@@ -31,7 +31,9 @@ export class Store extends EventTarget {
     ]);
     if (!dataRes.ok) throw new Error('Could not load portfolio.json');
     this.data = normalise(await dataRes.json());
-    this.media = (await mediaRes.json()).media || [];
+    const mediaJson = await mediaRes.json();
+    this.media = mediaJson.media || [];
+    this.videoSupport = mediaJson.video !== false;
     if (!this.selection.id && this.data.projects.length) {
       this.selection.id = this.data.projects[0].id;
     }
@@ -211,15 +213,8 @@ export class Store extends EventTarget {
     return keep;
   }
 
-  reorderProjects(fromId, toIndex) {
-    const list = this.data.projects;
-    const from = list.findIndex((p) => p.id === fromId);
-    if (from === -1) return;
-    this.update((d) => {
-      const [item] = d.projects.splice(from, 1);
-      d.projects.splice(Math.max(0, Math.min(toIndex, d.projects.length)), 0, item);
-      d.projects.forEach((p, n) => { p.order = n; });
-    });
+  reorderProjects(fromId, toId) {
+    this.update((d) => { moveById(d.projects, fromId, toId); });
   }
 
   // --- testimonials --------------------------------------------------------
@@ -239,21 +234,17 @@ export class Store extends EventTarget {
     this.select('testimonials', next ? next.id : null);
   }
 
-  reorderTestimonials(fromId, toIndex) {
-    const from = this.data.testimonials.findIndex((t) => t.id === fromId);
-    if (from === -1) return;
-    this.update((d) => {
-      const [item] = d.testimonials.splice(from, 1);
-      d.testimonials.splice(Math.max(0, Math.min(toIndex, d.testimonials.length)), 0, item);
-      d.testimonials.forEach((t, n) => { t.order = n; });
-    });
+  reorderTestimonials(fromId, toId) {
+    this.update((d) => { moveById(d.testimonials, fromId, toId); });
   }
 
   // --- media ---------------------------------------------------------------
 
   async refreshMedia() {
     const res = await fetch('/api/media');
-    this.media = (await res.json()).media || [];
+    const body = await res.json();
+    this.media = body.media || [];
+    this.videoSupport = body.video !== false;
     this.emit('media');
   }
 
@@ -265,6 +256,34 @@ export class Store extends EventTarget {
     const { src } = await res.json();
     await this.refreshMedia();
     return src;
+  }
+
+  // Videos and zips: the server answers one JSON object per line while it
+  // works. Resolves with the last one; rejects on an error.
+  async uploadStreaming(file, kind, onEvent = () => {}) {
+    const res = await fetch(`/api/media/upload-${kind}?name=${encodeURIComponent(file.name)}`, {
+      method: 'POST', body: file,
+    });
+    const reader = res.body.getReader();
+    const dec = new TextDecoder();
+    let buf = '';
+    let last = null;
+    for (;;) {
+      const { value, done } = await reader.read();
+      if (value) buf += dec.decode(value, { stream: true });
+      const lines = buf.split('\n');
+      buf = done ? '' : lines.pop();
+      for (const line of lines) {
+        if (!line.trim()) continue;
+        last = JSON.parse(line);
+        onEvent(last);
+      }
+      if (done) break;
+    }
+    await this.refreshMedia();
+    if (!last) throw new Error('No answer from the server');
+    if (last.error) throw new Error(last.error);
+    return last;
   }
 
   // Which project each photo is used by, for the "already used" badge in the
@@ -284,4 +303,16 @@ export class Store extends EventTarget {
     }
     return map;
   }
+}
+
+// Move the item `fromId` into the slot held by `toId`, then renumber `order`.
+// Dragging down lands just after the target, dragging up just before it — the
+// same result whether or not other items are hidden by the sidebar filter.
+function moveById(list, fromId, toId) {
+  const from = list.findIndex((x) => x.id === fromId);
+  const to = list.findIndex((x) => x.id === toId);
+  if (from === -1 || to === -1 || from === to) return;
+  const [item] = list.splice(from, 1);
+  list.splice(to, 0, item);
+  list.forEach((x, n) => { x.order = n; });
 }

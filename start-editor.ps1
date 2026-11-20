@@ -1,7 +1,11 @@
-# Start the portfolio editor and open it in Firefox.
-# Usage: .\start-editor.ps1            (.\start-editor.ps1 -Port 8080 for another port)
+# Start the portfolio editor and print the address to open in a browser.
+# Usage: .\start-editor.ps1 [-NoFfmpeg]   (-Port 8080 for another port)
+#   -NoFfmpeg   start even without ffmpeg (video uploads will then fail)
 # Ctrl+C stops the server.
-param([int]$Port = $(if ($env:PORT) { [int]$env:PORT } else { 4321 }))
+param(
+    [int]$Port = $(if ($env:PORT) { [int]$env:PORT } else { 4321 }),
+    [switch]$NoFfmpeg
+)
 
 $ErrorActionPreference = 'Stop'
 Set-Location $PSScriptRoot
@@ -10,7 +14,25 @@ $Url = "http://127.0.0.1:$Port/editor/"
 $env:PORT = "$Port"
 
 if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
-    Write-Error 'Node.js is not installed (need 20+).'
+    Write-Error 'Node.js is not installed (need 22.12+).'
+}
+
+# Video uploads are converted with ffmpeg; without it they would only fail
+# later, inside the editor.
+function Test-Tool([string]$Path) {
+    try { & $Path -version *> $null; return $LASTEXITCODE -eq 0 } catch { return $false }
+}
+if (-not $NoFfmpeg) {
+    $ff = if ($env:FFMPEG_PATH) { $env:FFMPEG_PATH } else { 'ffmpeg' }
+    $fp = if ($env:FFPROBE_PATH) { $env:FFPROBE_PATH } else { 'ffprobe' }
+    if (-not (Test-Tool $ff) -or -not (Test-Tool $fp)) {
+        Write-Host 'ffmpeg/ffprobe not found - needed to convert video uploads.'
+        Write-Host '  Windows:        winget install Gyan.FFmpeg'
+        Write-Host '  Debian/Ubuntu:  sudo apt install ffmpeg'
+        Write-Host 'Or set FFMPEG_PATH / FFPROBE_PATH, or start without video support:'
+        Write-Host '  .\start-editor.ps1 -NoFfmpeg'
+        exit 1
+    }
 }
 
 if (-not (Test-Path node_modules)) {
@@ -26,32 +48,9 @@ function Test-Editor {
     } catch { return $false }
 }
 
-function Find-Firefox {
-    $cmd = Get-Command firefox -ErrorAction SilentlyContinue
-    if ($cmd) { return $cmd.Source }
-    $candidates = @(
-        "$env:ProgramFiles\Mozilla Firefox\firefox.exe",
-        "${env:ProgramFiles(x86)}\Mozilla Firefox\firefox.exe",
-        "$env:LOCALAPPDATA\Mozilla Firefox\firefox.exe"
-    )
-    foreach ($p in $candidates) { if ($p -and (Test-Path $p)) { return $p } }
-    foreach ($key in 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\firefox.exe',
-                     'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\firefox.exe') {
-        try { $p = (Get-ItemProperty $key).'(default)'; if ($p -and (Test-Path $p)) { return $p } } catch {}
-    }
-    return $null
-}
-
-function Open-Firefox {
-    $ff = Find-Firefox
-    if ($ff) { Start-Process -FilePath $ff -ArgumentList '--new-window', $Url }
-    else { Write-Warning "Firefox not found; open $Url manually." }
-}
-
-# Already running (e.g. another terminal)? Just open the browser.
+# Already running (e.g. another terminal)? Just say where.
 if (Test-Editor) {
     Write-Host "Editor already running at $Url"
-    Open-Firefox
     exit 0
 }
 
@@ -63,8 +62,8 @@ try {
         if ($server.HasExited) { Write-Error 'Server exited before it was ready.' }
         Start-Sleep -Milliseconds 500
     }
-    if ($ready) { Open-Firefox }
-    else { Write-Warning "Server did not respond at $Url yet; open it manually when ready." }
+    if ($ready) { Write-Host ''; Write-Host "Open $Url in your browser. Ctrl+C stops the editor." }
+    else { Write-Warning "Server did not respond at $Url yet; open it when ready." }
 
     $server.WaitForExit()
 } finally {

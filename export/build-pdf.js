@@ -15,7 +15,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
-import { normalise, publishedProjects, publishedTestimonials, pdfPhotos } from '../shared/model.js';
+import { normalise, publishedProjects, publishedTestimonials, pdfPhotos, isVideo, posterOf } from '../shared/model.js';
 import { htmlDocument, printBody } from '../shared/render.js';
 import sharp from 'sharp';
 import { ImagePipeline, PRINT_WIDTH, COVER_WIDTH, buildStemMap } from './images.js';
@@ -93,7 +93,10 @@ async function main() {
     || (projects[0].photos.find((p) => p.feature) || projects[0].photos[0] || {}).src || '';
 
   const wanted = new Set();
-  for (const p of projects) for (const ph of pdfPhotos(p)) wanted.add(ph.src);
+  // A video in the PDF prints as its poster (the chosen one if it still
+  // exists, else the frame grabbed at upload).
+  const has = (src) => !!src && fsSync.existsSync(pipe.resolve(src));
+  for (const p of projects) for (const ph of pdfPhotos(p)) wanted.add(isVideo(ph.src) ? posterOf(ph, has) : ph.src);
   for (const t of testimonials) if (t.image) wanted.add(t.image);
   if (cover) wanted.add(cover);
   if (data.profile.photo) wanted.add(data.profile.photo);
@@ -129,6 +132,7 @@ async function main() {
     // Explicit width/height then lets every page be measured in one pass.
     lazy: false,
     dims: (src) => dims.get(src),
+    has,
     // Fallback for the "more photos at…" links when Settings has no site
     // address: the custom domain GitHub Pages serves docs/ under.
     siteUrl: cnameUrl(),

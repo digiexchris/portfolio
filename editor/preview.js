@@ -25,6 +25,9 @@ export class Preview {
   ctx() {
     return previewCtx({
       img: (src) => (src ? '/media/' + encodeURI(src) : ''),
+      video: (src) => '/media/' + encodeURI(src),
+      // A chosen poster deleted from the library falls back to the frame.
+      has: (src) => this.store.media.some((m) => m.src === src),
       // Links resolve to an internal scheme the click handler below routes,
       // so the preview navigates like the real site instead of being inert.
       href: (kind, arg) =>
@@ -40,7 +43,9 @@ export class Preview {
     const ctx = this.ctx();
     const sel = store.selection;
 
-    if (this.view === 'print') return printBody(store.data, this.ctx());
+    // No lazy images in print: Paged.js parks them off-screen where they never
+    // load, and _runPaged waits on them (see shared/render.js).
+    if (this.view === 'print') return printBody(store.data, { ...this.ctx(), lazy: false });
 
     // An explicit page wins; otherwise the preview follows the sidebar.
     if (this.page === 'index') return indexBody(store.data, ctx);

@@ -10,6 +10,10 @@
 //   ctx.projects        -> override which projects a page lists (draft preview)
 //   ctx.testimonials    -> likewise for testimonials
 //   ctx.dims(src)       -> {width, height} for explicit image sizing, optional
+//   ctx.video(src)      -> URL of a video file (site + editor preview)
+//   ctx.has(src)        -> does this library file exist? Optional; lets a
+//                          video whose chosen poster was deleted fall back to
+//                          its own frame
 //
 // loading="lazy" MUST be off for the PDF. Paged.js chunks the document by
 // moving nodes into off-screen page containers; a lazy image parked there
@@ -19,7 +23,7 @@
 import {
   escapeText as esc, escapeAttr as attr, toPlainText,
   publishedProjects, publishedTestimonials, featurePhoto, allTags,
-  pdfPhotos, projectUrl,
+  pdfPhotos, projectUrl, isVideo, posterOf,
 } from './model.js';
 
 // --- context helpers --------------------------------------------------------
@@ -57,19 +61,44 @@ const join = (arr, fn) => arr.map(fn).join('');
 
 // --- pieces -----------------------------------------------------------------
 
-export function photoFigure(photo, ctx, { size = 'full', index = 0, path = '', ratio = 0 } = {}) {
-  const alt = photo.alt || photo.caption || '';
-  const src = ctx.img(photo.src, size);
-  let img;
+// The <img> for a gallery item, built the same way for a photo and for a
+// video's poster: responsive srcset on the site, plain src elsewhere.
+function galleryImg(src, alt, ctx, size) {
   if (ctx.srcset && ctx.imgSet) {
-    const set = ctx.imgSet(photo.src);
-    img = `<img src="${attr(set.fallback)}" srcset="${attr(set.srcset)}" sizes="${attr(set.sizes)}"`
+    const set = ctx.imgSet(src);
+    return `<img src="${attr(set.fallback)}" srcset="${attr(set.srcset)}" sizes="${attr(set.sizes)}"`
         + ` alt="${attr(alt)}"`
         + (set.width ? ` width="${set.width}" height="${set.height}"` : '')
         + (ctx.lazy !== false ? ' loading="lazy" decoding="async"' : '') + '>';
-  } else {
-    img = `<img src="${attr(src)}" alt="${attr(alt)}"${imgAttrs(ctx, photo.src)}>`;
   }
+  return `<img src="${attr(ctx.img(src, size))}" alt="${attr(alt)}"${imgAttrs(ctx, src)}>`;
+}
+
+// A video shows as its poster with a play badge and opens in the lightbox,
+// so nothing of the video loads until someone asks for it. In print it is
+// the poster plus a note pointing at the web page (videoHref).
+function videoFigure(item, ctx, { size, index, ratio, videoHref }) {
+  const alt = item.alt || item.caption || '';
+  const img = galleryImg(posterOf(item, ctx.has), alt, ctx, size);
+  const cap = when(item.caption, () => `<figcaption>${esc(item.caption)}</figcaption>`);
+  const open = `<figure class="photo video" data-index="${index}"${ratio ? ` style="--r:${ratio.toFixed(4)}"` : ''}>`;
+  if (ctx.photoLinks === false) {
+    const note = '▶ Video — watch online';
+    return open + img
+      + `<p class="video-note">${videoHref ? `<a href="${attr(videoHref)}">${note}</a>` : note}</p>`
+      + cap + '</figure>';
+  }
+  const href = ctx.video ? ctx.video(item.src) : ctx.img(item.src, 'full');
+  return open
+    + `<a class="photo-link" href="${attr(href)}" data-lightbox data-video aria-label="${attr('Play video: ' + (alt || 'video'))}">`
+    + img + '<span class="play-badge" aria-hidden="true">▶</span></a>'
+    + cap + '</figure>';
+}
+
+export function photoFigure(photo, ctx, { size = 'full', index = 0, path = '', ratio = 0, videoHref = '' } = {}) {
+  if (isVideo(photo.src)) return videoFigure(photo, ctx, { size, index, ratio, videoHref });
+  const alt = photo.alt || photo.caption || '';
+  const img = galleryImg(photo.src, alt, ctx, size);
   // --r is the aspect ratio, used by the PDF's photo rows (see printPhotoGrid).
   return `<figure class="photo" data-index="${index}"${ratio ? ` style="--r:${ratio.toFixed(4)}"` : ''}>`
     // No link in the PDF: it would point at a file on the build machine.
@@ -106,7 +135,7 @@ export function photoGrid(project, ctx, { skipFeature = false, size = 'full' } =
 // bottom of the writeup.
 export const PDF_GALLERY_OWN_PAGE = 4;
 
-export function printPhotoGrid(project, ctx, { skipFeature = false } = {}) {
+export function printPhotoGrid(project, ctx, { skipFeature = false, videoHref = '' } = {}) {
   const feature = featurePhoto(project);
   const photos = project.photos
     .map((p, i) => ({ p, i }))
@@ -116,7 +145,11 @@ export function printPhotoGrid(project, ctx, { skipFeature = false } = {}) {
     const d = ctx.dims?.(src);
     return d && d.width && d.height ? d.width / d.height : 0;
   };
-  const fig = ({ p, i }) => photoFigure(p, ctx, { index: i, path: `photos.${i}`, ratio: ratio(p.src) });
+  // A video's shape in print is its poster's.
+  const fig = ({ p, i }) => photoFigure(p, ctx, {
+    index: i, path: `photos.${i}`, videoHref,
+    ratio: ratio(isVideo(p.src) ? posterOf(p, ctx.has) : p.src),
+  });
 
   const rows = [];
   let rest = photos;
@@ -178,9 +211,12 @@ export function projectCard(project, ctx) {
 // The PDF's line above every project's writeup: a link to its page on the site,
 // which carries the full-size images, plus a count of any photos left out of
 // the PDF. Without a known site address there is nothing to link to.
-function morePhotosNote(hidden, url) {
-  const extra = !hidden ? ''
-    : (hidden === 1 ? 'One more photo of this project is online. ' : `${hidden} more photos of this project are online. `);
+export function morePhotosNote(hiddenPhotos, hiddenVideos, url) {
+  const photos = !hiddenPhotos ? '' : hiddenPhotos === 1 ? 'One more photo' : `${hiddenPhotos} more photos`;
+  const videos = !hiddenVideos ? ''
+    : hiddenVideos === 1 ? (photos ? '1 video' : 'One video') : `${hiddenVideos} videos`;
+  const what = [photos, videos].filter(Boolean).join(' and ');
+  const extra = what ? `${what} of this project ${hiddenPhotos + hiddenVideos > 1 ? 'are' : 'is'} online. ` : '';
   if (!url) return extra ? `<p class="more-photos">${extra.trim()}</p>` : '';
   const shown = url.replace(/^https?:\/\//, '');
   return '<p class="more-photos">'
@@ -188,7 +224,7 @@ function morePhotosNote(hidden, url) {
     + '</p>';
 }
 
-export function projectArticle(project, ctx, { heading = 'h1', showFeature = true, beforeBody = '', print = false } = {}) {
+export function projectArticle(project, ctx, { heading = 'h1', showFeature = true, beforeBody = '', print = false, videoHref = '' } = {}) {
   const feature = showFeature ? featurePhoto(project) : null;
   return `<article class="project" id="project-${attr(project.slug)}" data-project-id="${attr(project.id)}">`
     + '<header class="project-head">'
@@ -202,7 +238,8 @@ export function projectArticle(project, ctx, { heading = 'h1', showFeature = tru
     + specTable(project, ctx)
     + beforeBody
     + when(project.body, () => `<div class="body prose">${project.body}</div>`)
-    + (print ? printPhotoGrid : photoGrid)(project, ctx, { skipFeature: showFeature })
+    + (print ? printPhotoGrid(project, ctx, { skipFeature: showFeature, videoHref })
+             : photoGrid(project, ctx, { skipFeature: showFeature }))
     + '</article>';
 }
 
@@ -445,10 +482,13 @@ export function printBody(data, ctx) {
     + join(projects, (pr) => {
         const photos = pdfPhotos(pr);
         const url = projectUrl(data.settings.siteUrl || ctx.siteUrl, pr);
+        const left = pr.photos.filter((x) => !photos.includes(x));
+        const leftVideos = left.filter((x) => isVideo(x.src)).length;
         return projectArticle({ ...pr, photos }, ctx, {
           heading: 'h2',
           print: true,
-          beforeBody: morePhotosNote(pr.photos.length - photos.length, url),
+          videoHref: url,
+          beforeBody: morePhotosNote(left.length - leftVideos, leftVideos, url),
         });
       })
     + '</section>'

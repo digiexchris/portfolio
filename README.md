@@ -58,6 +58,20 @@ one. `Ctrl+Z` undoes it.
 Running `node scripts/seed.js --dry` prints a list of likely merge candidates
 without touching anything.
 
+### Videos and zip files
+
+The photo drawer's **Upload…** also takes videos and `.zip` files. A video is
+converted to a web-friendly MP4 (1080p at most) and the original is thrown
+away; anything over 50 MB once converted is refused — trim it and try again.
+A zip is unpacked and every photo and video in it imported, in name order;
+the drawer lists anything it skipped or couldn't import.
+
+In a gallery a video shows as a still with a ▶ badge and plays in the
+lightbox. **Poster…** under it chooses which photo that still is; without one,
+it's a frame from a second in. Videos are never the lead photo, and stay out
+of the PDF unless you tick **PDF** — then they print as their still, with a
+link to the web page.
+
 ### Photos in the PDF
 
 Every photo goes on the website. Projects with many photos print too small to

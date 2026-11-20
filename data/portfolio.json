@@ -16,6 +16,73 @@
   },
   "projects": [
     {
+      "id": "xue8u0aycv1fj",
+      "slug": "cardo-trace-repair",
+      "title": "Cardo Trace Repair",
+      "subtitle": "",
+      "date": "",
+      "summary": "",
+      "body": "<p>A friend ripped the usb connector off of his Cardo PackTalk helmet communicator, and asked if I could try fixing it. This is one of those jobs that my stereoscopic microscope really pays off.</p><p><br></p><p>One of the traces was ripped completely off the board under the usb connector, so I had to reroute it using magnet wire from the opposite side of the board, sneaking it through a gap created by the factory separating the boards from the larger panel. It also appeared that there were cold solder joints under the hold down pads, which is probably why it originally failed.<br><br>It's back in service and working great!<br><br>For scale, C140 is a capacitor that is 2mm wide and 2mm long.</p>",
+      "tags": [
+        "Electronics"
+      ],
+      "specs": [],
+      "photos": [
+        {
+          "src": "cardo_trace_repair.png",
+          "caption": "",
+          "alt": "",
+          "feature": true,
+          "pdf": true
+        },
+        {
+          "src": "cardo_trace_repair_2.png",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        }
+      ],
+      "published": true,
+      "order": 0
+    },
+    {
+      "id": "xfvnu3ezcv1fj",
+      "slug": "power-supply-mod",
+      "title": "Power Supply Demodding",
+      "subtitle": "",
+      "date": "",
+      "summary": "Industrial power supply de-customizing",
+      "body": "<p>The customer brought a pair of these PAN 35-20A power supplies that he aquired from EBay. The front panels were non-functional, but if they could be repaired, it would be a steal of a deal.<br><br>It's a laboratory grade adjustable constant current/constant voltage power supply containing a huge transformer, big regulators, and a lot of smoothing capacitance. Two big fans blow a lot of air through the case. Although the fans are loud, it can output 35v@20A all day long without heating up. The handle is interesting. I hope you don't have to carry this too far by the handle, it's VERY heavy!</p><p>Once I had the cover off I noticed some wires that did not match the rest of the OEM wires inside, running to the back panel. The back panel has several terminals used for remote operation of the power supply for industrial or lab usage. The front panel had some traces cut, and wires run from the back panel to the front panel. It looks like they were using the rear terminals to control it, and the front LCD to monitor, but this disabled the front panel potentiometers.</p><p>It was a fairly simple process to remove the modification wires, reinstall some removed resistors, repair the traces, and follow the potentiometer signal back through the circuitry to the regulator feedback circuit. The good old Agilent 54610B scope was overkill, but it was very nice to have a visual measurement of two voltages at the same time.</p>",
+      "tags": [],
+      "specs": [],
+      "photos": [
+        {
+          "src": "power_supply_mod.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "electronics_1.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": false,
+          "pdf": true
+        },
+        {
+          "src": "uploads/IMG_20261119_193007_956.jpg",
+          "caption": "",
+          "alt": "",
+          "feature": true,
+          "pdf": true
+        }
+      ],
+      "published": true,
+      "order": 1
+    },
+    {
       "id": "x2m3s54hqv1fi",
       "slug": "1cu-assembled",
       "title": "1 Cubic Inch 4 stroke",
@@ -80,7 +147,7 @@
         }
       ],
       "published": true,
-      "order": 0
+      "order": 2
     },
     {
       "id": "xd75ceip6v1fj",
@@ -109,7 +176,7 @@
         }
       ],
       "published": false,
-      "order": 1
+      "order": 3
     },
     {
       "id": "xq7zeqayjv1fj",
@@ -131,7 +198,7 @@
         }
       ],
       "published": false,
-      "order": 2
+      "order": 4
     },
     {
       "id": "xkuqpo694v1fj",
@@ -160,7 +227,7 @@
         }
       ],
       "published": false,
-      "order": 3
+      "order": 5
     },
     {
       "id": "xejw7h4acv1fj",
@@ -182,7 +249,7 @@
         }
       ],
       "published": false,
-      "order": 4
+      "order": 6
     },
     {
       "id": "x9nox6f1qv1fj",
@@ -204,7 +271,7 @@
         }
       ],
       "published": false,
-      "order": 5
+      "order": 7
     },
     {
       "id": "x85u6xkkhv1fj",
@@ -240,7 +307,7 @@
         }
       ],
       "published": false,
-      "order": 6
+      "order": 8
     },
     {
       "id": "xte6ymp3jv1fj",
@@ -272,7 +339,7 @@
         }
       ],
       "published": true,
-      "order": 7
+      "order": 9
     },
     {
       "id": "xg2rizvf0v1fj",
@@ -311,7 +378,7 @@
         }
       ],
       "published": true,
-      "order": 8
+      "order": 10
     },
     {
       "id": "xm3yd0cesv1fj",
@@ -333,7 +400,7 @@
         }
       ],
       "published": false,
-      "order": 9
+      "order": 11
     },
     {
       "id": "xlixp8ldrv1fj",
@@ -355,7 +422,7 @@
         }
       ],
       "published": false,
-      "order": 10
+      "order": 12
     },
     {
       "id": "xwsuausiuv1fj",
@@ -519,7 +586,7 @@
         }
       ],
       "published": true,
-      "order": 11
+      "order": 13
     },
     {
       "id": "xgeuguzh8v1fj",
@@ -541,7 +608,7 @@
         }
       ],
       "published": false,
-      "order": 12
+      "order": 14
     },
     {
       "id": "xyidvif9wv1fj",
@@ -563,7 +630,7 @@
         }
       ],
       "published": false,
-      "order": 13
+      "order": 15
     },
     {
       "id": "xoblhbii7v1fj",
@@ -587,7 +654,7 @@
         }
       ],
       "published": true,
-      "order": 14
+      "order": 16
     },
     {
       "id": "x0qv8quuxv1fj",
@@ -616,7 +683,7 @@
         }
       ],
       "published": false,
-      "order": 15
+      "order": 17
     },
     {
       "id": "xxu5obelnv1fj",
@@ -638,7 +705,7 @@
         }
       ],
       "published": false,
-      "order": 16
+      "order": 18
     },
     {
       "id": "xotu8lbcxv1fj",
@@ -667,38 +734,7 @@
         }
       ],
       "published": false,
-      "order": 17
-    },
-    {
-      "id": "xue8u0aycv1fj",
-      "slug": "cardo-trace-repair",
-      "title": "Cardo Trace Repair",
-      "subtitle": "",
-      "date": "",
-      "summary": "",
-      "body": "<p>A friend ripped the usb connector off of his Cardo PackTalk helmet communicator, and asked if I could try fixing it. This is one of those jobs that my stereoscopic microscope really pays off.</p><p><br></p><p>One of the traces was ripped completely off the board under the usb connector, so I had to reroute it using magnet wire from the opposite side of the board, sneaking it through a gap created by the factory separating the boards from the larger panel. It also appeared that there were cold solder joints under the hold down pads, which is probably why it originally failed.<br><br>It's back in service and working great!<br><br>For scale, C140 is a capacitor that is 2mm wide and 2mm long.</p>",
-      "tags": [
-        "Electronics"
-      ],
-      "specs": [],
-      "photos": [
-        {
-          "src": "cardo_trace_repair.png",
-          "caption": "",
-          "alt": "",
-          "feature": true,
-          "pdf": true
-        },
-        {
-          "src": "cardo_trace_repair_2.png",
-          "caption": "",
-          "alt": "",
-          "feature": false,
-          "pdf": true
-        }
-      ],
-      "published": true,
-      "order": 18
+      "order": 19
     },
     {
       "id": "xvqlegx0zv1fj",
@@ -720,7 +756,7 @@
         }
       ],
       "published": false,
-      "order": 19
+      "order": 20
     },
     {
       "id": "xzu772shtv1fj",
@@ -749,7 +785,7 @@
         }
       ],
       "published": false,
-      "order": 20
+      "order": 21
     },
     {
       "id": "xf6k2e9qbv1fj",
@@ -771,7 +807,7 @@
         }
       ],
       "published": false,
-      "order": 21
+      "order": 22
     },
     {
       "id": "xvrffogxxv1fj",
@@ -802,7 +838,7 @@
         }
       ],
       "published": true,
-      "order": 22
+      "order": 23
     },
     {
       "id": "x6brkgmu4v1fj",
@@ -840,7 +876,7 @@
         }
       ],
       "published": true,
-      "order": 23
+      "order": 24
     },
     {
       "id": "x25y4ov3wv1fj",
@@ -862,7 +898,7 @@
         }
       ],
       "published": false,
-      "order": 24
+      "order": 25
     },
     {
       "id": "xqh8bouacv1fj",
@@ -915,7 +951,7 @@
         }
       ],
       "published": true,
-      "order": 25
+      "order": 26
     },
     {
       "id": "xzletpmhzv1fj",
@@ -937,7 +973,7 @@
         }
       ],
       "published": false,
-      "order": 26
+      "order": 27
     },
     {
       "id": "xtbn25khxv1fj",
@@ -952,28 +988,6 @@
       "photos": [
         {
           "src": "document_normal_abnormal_wear.jpg",
-          "caption": "",
-          "alt": "",
-          "feature": true,
-          "pdf": true
-        }
-      ],
-      "published": false,
-      "order": 27
-    },
-    {
-      "id": "x4hay7zy9v1fj",
-      "slug": "electronics",
-      "title": "Electronics",
-      "subtitle": "",
-      "date": "",
-      "summary": "",
-      "body": "",
-      "tags": [],
-      "specs": [],
-      "photos": [
-        {
-          "src": "electronics_1.jpg",
           "caption": "",
           "alt": "",
           "feature": true,
@@ -1379,28 +1393,6 @@
       "order": 43
     },
     {
-      "id": "xfvnu3ezcv1fj",
-      "slug": "power-supply-mod",
-      "title": "Power Supply Mod",
-      "subtitle": "",
-      "date": "",
-      "summary": "",
-      "body": "",
-      "tags": [],
-      "specs": [],
-      "photos": [
-        {
-          "src": "power_supply_mod.jpg",
-          "caption": "",
-          "alt": "",
-          "feature": true,
-          "pdf": true
-        }
-      ],
-      "published": false,
-      "order": 44
-    },
-    {
       "id": "xd733nedav1fj",
       "slug": "ranger-wheel-bearing",
       "title": "Ranger Wheel Bearing",
@@ -1429,7 +1421,7 @@
         }
       ],
       "published": true,
-      "order": 45
+      "order": 44
     },
     {
       "id": "xj6rog1gcv1fj",
@@ -1451,7 +1443,7 @@
         }
       ],
       "published": false,
-      "order": 46
+      "order": 45
     },
     {
       "id": "xvpsm8gaxv1fj",
@@ -1473,7 +1465,7 @@
         }
       ],
       "published": false,
-      "order": 47
+      "order": 46
     },
     {
       "id": "xx82k8hf8v1fj",
@@ -1495,7 +1487,7 @@
         }
       ],
       "published": false,
-      "order": 48
+      "order": 47
     },
     {
       "id": "x3c82ykpwv1fj",
@@ -1517,7 +1509,7 @@
         }
       ],
       "published": false,
-      "order": 49
+      "order": 48
     },
     {
       "id": "xah5ghr2zv1fj",
@@ -1541,7 +1533,7 @@
         }
       ],
       "published": true,
-      "order": 50
+      "order": 49
     },
     {
       "id": "xkhc5chfov1fj",
@@ -1577,7 +1569,7 @@
         }
       ],
       "published": false,
-      "order": 51
+      "order": 50
     },
     {
       "id": "xdd698yxkv1fj",
@@ -1599,7 +1591,7 @@
         }
       ],
       "published": false,
-      "order": 52
+      "order": 51
     },
     {
       "id": "x5aidgho6v1fj",
@@ -1628,7 +1620,7 @@
         }
       ],
       "published": false,
-      "order": 53
+      "order": 52
     },
     {
       "id": "xsk8qclttv1fj",
@@ -1664,7 +1656,7 @@
         }
       ],
       "published": false,
-      "order": 54
+      "order": 53
     },
     {
       "id": "xap7pele3v1fj",
@@ -1686,7 +1678,7 @@
         }
       ],
       "published": false,
-      "order": 55
+      "order": 54
     },
     {
       "id": "x033pfwccv1fj",
@@ -1736,7 +1728,7 @@
         }
       ],
       "published": false,
-      "order": 56
+      "order": 55
     },
     {
       "id": "x86wgk4e7v1fj",
@@ -1774,7 +1766,7 @@
         }
       ],
       "published": true,
-      "order": 57
+      "order": 56
     },
     {
       "id": "xz2a59kpdv1fj",
@@ -1796,7 +1788,7 @@
         }
       ],
       "published": false,
-      "order": 58
+      "order": 57
     },
     {
       "id": "xqgt48w6iv1fj",
@@ -1818,7 +1810,7 @@
         }
       ],
       "published": false,
-      "order": 59
+      "order": 58
     },
     {
       "id": "xgho20p1jv1fj",
@@ -1891,7 +1883,7 @@
         }
       ],
       "published": true,
-      "order": 60
+      "order": 59
     },
     {
       "id": "xsym81q2iv1fj",
@@ -1913,7 +1905,7 @@
         }
       ],
       "published": false,
-      "order": 61
+      "order": 60
     }
   ],
   "testimonials": [],

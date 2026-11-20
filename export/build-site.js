@@ -10,7 +10,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
-import { normalise, publishedProjects, publishedTestimonials, toPlainText } from '../shared/model.js';
+import { normalise, publishedProjects, publishedTestimonials, toPlainText, isVideo, posterOf } from '../shared/model.js';
 import { htmlDocument, indexBody, projectBody, testimonialsBody, aboutBody } from '../shared/render.js';
 import { ImagePipeline, SITE_WIDTHS, buildStemMap } from './images.js';
 
@@ -85,8 +85,17 @@ async function main() {
   // dist/img/ under a name derived from the source file.
   const emitted = new Map();     // src -> { widths: {w: file}, dims }
 
+  // A chosen poster that has since been deleted falls back to the frame
+  // grabbed at upload.
+  const has = (src) => !!src && fsSync.existsSync(pipe.resolve(src));
   const wanted = new Set();
-  for (const p of projects) for (const ph of p.photos) wanted.add(ph.src);
+  const videos = new Set();
+  for (const p of projects) {
+    for (const ph of p.photos) {
+      if (isVideo(ph.src)) { videos.add(ph.src); wanted.add(posterOf(ph, has)); }
+      else wanted.add(ph.src);
+    }
+  }
   for (const t of testimonials) if (t.image) wanted.add(t.image);
   if (data.profile.photo) wanted.add(data.profile.photo);
 
@@ -109,6 +118,21 @@ async function main() {
     if (Object.keys(widths).length) emitted.set(src, { widths, dims });
   }
   pipe.report('Images');
+
+  // --- videos -------------------------------------------------------------
+  // Copied byte-for-byte: the file in docs/ is then identical to the one in
+  // data/uploads/, and git stores it once. Never re-encode here.
+  const videoStems = buildStemMap(videos);
+  const videoFiles = new Map();                 // src -> 'video/<stem>.mp4'
+  for (const src of videos) {
+    const from = pipe.resolve(src);
+    if (!fsSync.existsSync(from)) { console.warn(`  ! missing video: ${src}`); continue; }
+    const rel = `video/${videoStems.get(src)}.mp4`;
+    await fs.mkdir(path.join(DIST, 'video'), { recursive: true });
+    await fs.copyFile(from, path.join(DIST, rel));
+    videoFiles.set(src, rel);
+  }
+  if (videos.size) console.log(`Videos: ${videoFiles.size} copied`);
 
   // The printable version ships with the site, so someone browsing it can grab
   // the PDF without being sent anywhere else. Built separately, so it is only
@@ -175,6 +199,8 @@ async function main() {
     };
     return {
       img: pick,
+      video: (src) => (videoFiles.has(src) ? up + v(videoFiles.get(src)) : ''),
+      has,
       srcset: true,
       imgSet: (src, size) => {
         const e = src ? emitted.get(src) : null;
@@ -325,6 +351,7 @@ function lightboxMarkup() {
     + '<button class="lb-close" aria-label="Close">&times;</button>'
     + '<button class="lb-nav lb-prev" aria-label="Previous">&lsaquo;</button>'
     + '<img id="lb-img" alt="">'
+    + '<video id="lb-video" controls playsinline preload="none" hidden></video>'
     + '<button class="lb-nav lb-next" aria-label="Next">&rsaquo;</button>'
     + '<p class="lb-cap" id="lb-cap"></p></div>';
 }
@@ -376,17 +403,41 @@ function siteScript() {
   }
 
   // --- lightbox ---
+  // Photos and videos share one viewer and one prev/next order. A video gets
+  // its src only while it is showing, so nothing of it downloads until then.
   var lb = document.getElementById('lb');
   if (!lb) return;
   var img = document.getElementById('lb-img');
+  var vid = document.getElementById('lb-video');
   var cap = document.getElementById('lb-cap');
   var links = [].slice.call(document.querySelectorAll('a[data-lightbox]'));
   var at = 0;
 
+  function stopVideo() {
+    if (!vid || !vid.hasAttribute('src')) return;
+    vid.pause();
+    vid.removeAttribute('src');
+    vid.load();                                 // drops the buffered download
+  }
+
   function show(i) {
     at = (i + links.length) % links.length;
     var a = links[at];
-    img.src = a.getAttribute('href');
+    stopVideo();
+    if (a.hasAttribute('data-video') && vid) {
+      img.hidden = true;
+      img.src = '';
+      var poster = a.querySelector('img');
+      vid.poster = poster ? (poster.currentSrc || poster.src) : '';
+      vid.src = a.getAttribute('href');
+      vid.hidden = false;
+      var p = vid.play();
+      if (p && p.catch) p.catch(function () {});  // refused: the controls are there
+    } else {
+      if (vid) vid.hidden = true;
+      img.hidden = false;
+      img.src = a.getAttribute('href');
+    }
     var fig = a.closest('figure');
     var c = fig && fig.querySelector('figcaption');
     cap.textContent = c ? c.textContent : '';
@@ -394,6 +445,8 @@ function siteScript() {
     document.body.style.overflow = 'hidden';
   }
   function hide() {
+    stopVideo();
+    if (vid) vid.hidden = true;
     lb.classList.remove('is-open');
     img.src = '';
     document.body.style.overflow = '';
@@ -407,12 +460,14 @@ function siteScript() {
   });
   lb.querySelector('.lb-prev').addEventListener('click', function (e) { e.stopPropagation(); show(at - 1); });
   lb.querySelector('.lb-next').addEventListener('click', function (e) { e.stopPropagation(); show(at + 1); });
+  // Arrow keys navigate even while the player has focus; space and the
+  // player's other keys stay with the player.
   document.addEventListener('keydown', function (e) {
     if (!lb.classList.contains('is-open')) return;
     if (e.key === 'Escape') hide();
-    if (e.key === 'ArrowLeft') show(at - 1);
-    if (e.key === 'ArrowRight') show(at + 1);
-  });
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(at - 1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); show(at + 1); }
+  }, true);
 })();
 `;
 }

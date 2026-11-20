@@ -7,9 +7,13 @@ import fsSync from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
+import crypto from 'node:crypto';
 import sharp from 'sharp';
 
-import { normalise, emptyPortfolio } from './shared/model.js';
+import { normalise, emptyPortfolio, isVideo, autoPosterOf } from './shared/model.js';
+import { cleanName, uniqueName } from './server/uploads.js';
+import { convertVideo, findTools, VIDEO_IN_RE } from './server/video.js';
+import { importZip } from './server/importzip.js';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 // The photo library lives inside the project so the whole thing can be cloned
@@ -19,6 +23,9 @@ const UPLOADS = path.join(ROOT, 'data', 'uploads');
 const DATA_FILE = path.join(ROOT, 'data', 'portfolio.json');
 const BACKUPS = path.join(ROOT, 'data', 'backups');
 const THUMBS = path.join(ROOT, '.cache', 'thumbs');
+// Uploads land here first; videos and zips are processed from here, and the
+// originals are always deleted afterwards.
+const INCOMING = path.join(ROOT, '.cache', 'incoming');
 
 const PORT = Number(process.env.PORT) || 4321;
 const HOST = '127.0.0.1';
@@ -31,6 +38,7 @@ const MIME = {
   '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png',
   '.webp': 'image/webp', '.gif': 'image/gif', '.avif': 'image/avif',
   '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.map': 'application/json',
+  '.mp4': 'video/mp4',
 };
 
 // --- helpers ----------------------------------------------------------------
@@ -63,7 +71,7 @@ async function readBody(req, limit = 32 * 1024 * 1024) {
   return Buffer.concat(chunks);
 }
 
-async function serveFile(res, file, { download = false } = {}) {
+async function serveFile(res, file, { download = false, req = null } = {}) {
   try {
     const stat = await fs.stat(file);
     if (!stat.isFile()) return send(res, 404, 'Not found');
@@ -78,6 +86,25 @@ async function serveFile(res, file, { download = false } = {}) {
       'Cache-Control': 'no-cache',
     };
     if (download) headers['Content-Disposition'] = `attachment; filename="${path.basename(file)}"`;
+    headers['Accept-Ranges'] = 'bytes';
+
+    // Byte ranges: browsers need them to seek in a video.
+    const range = req?.headers.range;
+    if (range) {
+      const m = /^bytes=(\d*)-(\d*)$/.exec(range.trim());
+      let start = m && m[1] !== '' ? Number(m[1]) : null;
+      let end = m && m[2] !== '' ? Number(m[2]) : null;
+      if (m && start === null && end !== null) { start = Math.max(0, stat.size - end); end = stat.size - 1; }
+      if (m && end === null) end = stat.size - 1;
+      if (!m || start === null || start > end || start >= stat.size) {
+        res.writeHead(416, { 'Content-Range': `bytes */${stat.size}`, 'Cache-Control': 'no-cache' });
+        return res.end();
+      }
+      end = Math.min(end, stat.size - 1);
+      res.writeHead(206, { ...headers, 'Content-Length': end - start + 1,
+        'Content-Range': `bytes ${start}-${end}/${stat.size}` });
+      return fsSync.createReadStream(file, { start, end }).pipe(res);
+    }
     res.writeHead(200, headers);
     fsSync.createReadStream(file).pipe(res);
   } catch {
@@ -144,9 +171,14 @@ async function listMedia() {
     for (const e of entries) {
       if (e.name.startsWith('.')) continue;
       if (e.isDirectory()) continue;                     // the library is flat
-      if (!IMAGE_RE.test(e.name)) continue;
+      // A video's poster frame travels with the video, not as a photo.
+      if (/\.poster\.jpg$/i.test(e.name)) continue;
+      const video = isVideo(e.name);
+      if (!video && !IMAGE_RE.test(e.name)) continue;
       const stat = await fs.stat(path.join(dir, e.name));
-      out.push({ src: prefix + e.name, size: stat.size, mtime: stat.mtimeMs });
+      const src = prefix + e.name;
+      out.push({ src, size: stat.size, mtime: stat.mtimeMs, kind: video ? 'video' : 'image',
+        ...(video ? { poster: autoPosterOf(src) } : {}) });
     }
   };
   await walk(MEDIA_ROOT, '');
@@ -158,7 +190,9 @@ async function listMedia() {
 // On-demand thumbnails, cached to disk. Without this the media picker would
 // pull 120 MB of full-resolution photos and be unusable.
 async function serveThumb(res, rel) {
-  const source = resolveMedia(rel);
+  // A video's thumbnail is made from its poster frame.
+  const decoded = decodeURIComponent(rel);
+  const source = resolveMedia(isVideo(decoded) ? autoPosterOf(decoded) : decoded);
   if (!source) return send(res, 400, 'Bad path');
   let stat;
   try { stat = await fs.stat(source); } catch { return send(res, 404, 'Not found'); }
@@ -180,6 +214,78 @@ async function serveThumb(res, rel) {
   } catch (err) {
     send(res, 500, 'Thumbnail failed: ' + err.message);
   }
+}
+
+// --- streaming uploads ------------------------------------------------------
+
+// Write a request body straight to disk. Videos and zips can be gigabytes, so
+// they never pass through memory. A dropped connection removes the file.
+function streamToFile(req, dest, limit = 2 * 1024 ** 3) {
+  return new Promise((resolve, reject) => {
+    const out = fsSync.createWriteStream(dest);
+    let size = 0;
+    let done = false;
+    const fail = (err) => {
+      if (done) return;
+      done = true;
+      out.destroy();
+      fs.rm(dest, { force: true }).finally(() => reject(err));
+    };
+    req.on('data', (c) => {
+      size += c.length;
+      if (size > limit) { req.destroy(); fail(new Error('Upload too large')); }
+    });
+    req.on('aborted', () => fail(new Error('Upload interrupted')));
+    req.on('close', () => { if (!req.complete) fail(new Error('Upload interrupted')); });
+    req.on('error', fail);
+    out.on('error', fail);
+    out.on('finish', () => { if (!done) { done = true; resolve(size); } });
+    req.pipe(out);
+  });
+}
+
+// Long-running uploads answer with one JSON object per line, so the editor
+// can show progress as it happens.
+function ndjson(res) {
+  res.writeHead(200, { 'Content-Type': 'application/x-ndjson; charset=utf-8', 'Cache-Control': 'no-cache' });
+  return (obj) => { if (!res.writableEnded) res.write(JSON.stringify(obj) + '\n'); };
+}
+
+async function handleVideoUpload(req, res, name) {
+  const send = ndjson(res);
+  const clean = cleanName(name);
+  if (!clean || !VIDEO_IN_RE.test(clean)) {
+    req.resume();
+    send({ error: 'Unsupported video type' });
+    return res.end();
+  }
+  await fs.mkdir(INCOMING, { recursive: true });
+  const tmp = path.join(INCOMING, crypto.randomBytes(6).toString('hex') + path.extname(clean));
+  try {
+    await streamToFile(req, tmp);
+    const r = await convertVideo(tmp, { uploadsDir: UPLOADS, name: clean, onProgress: (f) => send({ progress: f }) });
+    send({ src: r.src, poster: r.poster });
+  } catch (err) {
+    await fs.rm(tmp, { force: true });
+    send({ error: err.message });
+  }
+  res.end();
+}
+
+async function handleZipUpload(req, res) {
+  const send = ndjson(res);
+  await fs.mkdir(INCOMING, { recursive: true });
+  const tmp = path.join(INCOMING, crypto.randomBytes(6).toString('hex') + '.zip');
+  try {
+    // A zip's index is at its end, so the whole upload has to land first.
+    await streamToFile(req, tmp, 16 * 1024 ** 3);
+    send(await importZip(tmp, { uploadsDir: UPLOADS, incomingDir: INCOMING, onEvent: send }));
+  } catch (err) {
+    send({ error: err.message });
+  } finally {
+    await fs.rm(tmp, { force: true });
+  }
+  res.end();
 }
 
 // --- exporters --------------------------------------------------------------
@@ -218,22 +324,22 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (p === '/api/media' && req.method === 'GET') {
-      return json(res, 200, { media: await listMedia() });
+      // `video`: can this server convert video uploads (is ffmpeg here)?
+      return json(res, 200, { media: await listMedia(), video: !!(await findTools()) });
     }
 
     if (p === '/api/media/upload' && req.method === 'POST') {
-      const name = url.searchParams.get('name') || '';
-      const clean = path.basename(name).replace(/[^a-zA-Z0-9._-]/g, '_');
+      const clean = cleanName(url.searchParams.get('name') || '');
       if (!clean || !IMAGE_RE.test(clean)) return json(res, 400, { error: 'Unsupported file type' });
       await fs.mkdir(UPLOADS, { recursive: true });
-      let target = path.join(UPLOADS, clean);
-      let n = 2;
-      while (fsSync.existsSync(target)) {
-        const ext = path.extname(clean);
-        target = path.join(UPLOADS, `${path.basename(clean, ext)}-${n++}${ext}`);
-      }
+      const target = path.join(UPLOADS, uniqueName(UPLOADS, clean));
       await fs.writeFile(target, await readBody(req));
       return json(res, 200, { src: 'uploads/' + path.basename(target) });
+    }
+
+    if (p === '/api/media/upload-zip' && req.method === 'POST') return handleZipUpload(req, res);
+    if (p === '/api/media/upload-video' && req.method === 'POST') {
+      return handleVideoUpload(req, res, url.searchParams.get('name') || '');
     }
 
     if (p === '/api/export/site' && req.method === 'POST') return runBuilder(res, 'build-site.js');
@@ -255,7 +361,7 @@ const server = http.createServer(async (req, res) => {
     if (p.startsWith('/media/')) {
       const file = resolveMedia(p.slice('/media/'.length));
       if (!file) return send(res, 400, 'Bad path');
-      return serveFile(res, file);
+      return serveFile(res, file, { req });
     }
 
     // --- generated output, browsable from the editor ---

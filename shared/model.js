@@ -104,12 +104,24 @@ export function normalise(raw) {
     photos: asArray(p.photos)
       .map((ph) => (typeof ph === 'string' ? { src: ph } : ph))
       .filter((ph) => ph && ph.src)
-      .map((ph) => ({
-        src: str(ph.src), caption: str(ph.caption),
-        alt: str(ph.alt), feature: !!ph.feature,
-        // Shown in the PDF unless explicitly left out. The site always shows all.
-        pdf: ph.pdf !== false,
-      })),
+      .map((ph) => {
+        const src = str(ph.src);
+        const video = isVideo(src);
+        const poster = str(ph.poster);
+        return {
+          src, caption: str(ph.caption),
+          alt: str(ph.alt),
+          // Videos are never the lead photo, card thumbnail or social image.
+          feature: !video && !!ph.feature,
+          // Photos are in the PDF unless left out; videos only when opted in
+          // (they print as their poster). The site always shows everything.
+          pdf: video ? ph.pdf === true : ph.pdf !== false,
+          // A video's chosen poster: any library image. Empty = the frame
+          // grabbed at upload (autoPosterOf). Photos carry no such field, so
+          // existing data does not change on save.
+          ...(video ? { poster: IMAGE_SRC_RE.test(poster) ? poster : '' } : {}),
+        };
+      }),
     body: sanitiseHtml(p.body),
     summary: str(p.summary),
     published: !!p.published,
@@ -390,7 +402,30 @@ export function projectUrl(siteUrl, project) {
 }
 
 export function featurePhoto(project) {
-  return project.photos.find((p) => p.feature) || project.photos[0] || null;
+  const photos = project.photos.filter((p) => !isVideo(p.src));
+  return photos.find((p) => p.feature) || photos[0] || null;
+}
+
+// --- video items --------------------------------------------------------------
+// Videos live in project.photos[] beside photos and are told apart by
+// extension: uploads are always converted to .mp4.
+
+export const IMAGE_SRC_RE = /\.(jpe?g|png|webp|gif|avif)$/i;
+
+export function isVideo(src) {
+  return /\.mp4$/i.test(String(src || ''));
+}
+
+// The frame grabbed at upload, stored beside the video.
+export function autoPosterOf(src) {
+  return String(src).replace(/\.mp4$/i, '.poster.jpg');
+}
+
+// The poster to show: the chosen image if it still exists, else the frame.
+// `has` lets callers that can see the library (build, editor) check the
+// chosen file is still there.
+export function posterOf(item, has = () => true) {
+  return item.poster && has(item.poster) ? item.poster : autoPosterOf(item.src);
 }
 
 export function allTags(projects) {

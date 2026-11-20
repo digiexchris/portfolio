@@ -5,8 +5,10 @@ import {
   sanitiseHtml, slugify, ensureSlugs, toPlainText, normalise,
   publishedProjects, allTags, featurePhoto,
 } from './shared/model.js';
+import * as M from './shared/model.js';
 import { buildStemMap } from './export/images.js';
 import { testimonialCard, projectCard, previewCtx } from './shared/render.js';
+import * as R from './shared/render.js';
 
 let fail = 0;
 const eq = (name, got, want) => {
@@ -148,6 +150,60 @@ const bare = { id: 'x', slug: 'x', title: 'No Photos', summary: '', tags: [], ph
 let card = null;
 try { card = projectCard(bare, ctx); } catch (e) { card = 'THREW: ' + e.message; }
 eq('a photoless project still makes a card', /No Photos/.test(card) && !/THREW/.test(card), true);
+
+console.log('\n--- video items ---');
+const call = (fn, ...args) => { try { return M[fn](...args); } catch (e) { return 'THREW: ' + e.message; } };
+eq('isVideo spots an mp4', call('isVideo', 'uploads/a.MP4'), true);
+eq('isVideo ignores a photo', call('isVideo', 'a.jpg'), false);
+eq('auto poster sits beside the video', call('autoPosterOf', 'uploads/a.mp4'), 'uploads/a.poster.jpg');
+eq('a chosen poster wins', call('posterOf', { src: 'uploads/a.mp4', poster: 'b.jpg' }), 'b.jpg');
+eq('a missing chosen poster falls back',
+  call('posterOf', { src: 'uploads/a.mp4', poster: 'b.jpg' }, () => false), 'uploads/a.poster.jpg');
+eq('no chosen poster uses the frame', call('posterOf', { src: 'uploads/a.mp4', poster: '' }), 'uploads/a.poster.jpg');
+
+const vidProj = normalise({ projects: [{ title: 'V', photos: [
+  { src: 'uploads/v.mp4', feature: true, poster: 'x.txt' }, { src: 'p.jpg', poster: 'q.jpg' }] }] }).projects[0];
+eq('a video is never the lead', vidProj.photos[0].feature, false);
+eq('a video stays out of the PDF by default', vidProj.photos[0].pdf, false);
+eq('a non-image poster is dropped', vidProj.photos[0].poster, '');
+eq('a photo carries no poster field', 'poster' in vidProj.photos[1], false);
+eq('the lead skips the video', (featurePhoto(vidProj) || {}).src, 'p.jpg');
+const optIn = normalise({ projects: [{ title: 'O', photos: [{ src: 'uploads/v.mp4', pdf: true, poster: 'q.jpg' }] }] }).projects[0];
+eq('a video can opt into the PDF', optIn.photos[0].pdf, true);
+eq('an image poster is kept', optIn.photos[0].poster, 'q.jpg');
+eq('a video-only project has no lead', featurePhoto(optIn), null);
+
+console.log('\n--- video rendering ---');
+const rcall = (fn, ...args) => { try { return R[fn](...args); } catch (e) { return 'THREW: ' + e.message; } };
+const vctx = previewCtx({ video: (s) => '/media/' + s });
+const vitem = { src: 'uploads/v.mp4', poster: 'p.jpg', caption: 'Running', alt: '', feature: false, pdf: false };
+const tile = String(rcall('photoFigure', vitem, vctx));
+eq('a video tile opens the lightbox', /data-lightbox/.test(tile) && /data-video/.test(tile), true);
+eq('  links to the mp4', tile.includes('href="/media/uploads/v.mp4"'), true);
+eq('  shows the chosen poster', tile.includes('src="/media/p.jpg"'), true);
+eq('  carries a play badge', /class="play-badge"/.test(tile), true);
+eq('  and no inline player', /<video/.test(tile), false);
+const auto = String(rcall('photoFigure', { ...vitem, poster: '' }, vctx));
+eq('no chosen poster shows the frame', auto.includes('src="/media/uploads/v.poster.jpg"'), true);
+const gone = String(rcall('photoFigure', vitem, { ...vctx, has: () => false }));
+eq('a deleted poster falls back to the frame', gone.includes('src="/media/uploads/v.poster.jpg"'), true);
+const ptile = String(rcall('photoFigure', vitem, { ...vctx, photoLinks: false, lazy: false }));
+eq('in print a video is its poster and a note', /video-note/.test(ptile) && !/data-lightbox/.test(ptile), true);
+eq('more-note: photos and a video', rcall('morePhotosNote', 2, 1, ''),
+  '<p class="more-photos">2 more photos and 1 video of this project are online.</p>');
+eq('more-note: one video', rcall('morePhotosNote', 0, 1, ''),
+  '<p class="more-photos">One video of this project is online.</p>');
+eq('more-note: one photo unchanged', rcall('morePhotosNote', 1, 0, ''),
+  '<p class="more-photos">One more photo of this project is online.</p>');
+const vdata = normalise({ settings: { siteUrl: 'https://x.ca' }, projects: [{ title: 'V', slug: 'v', published: true,
+  photos: [{ src: 'a.jpg' }, { src: 'uploads/v.mp4' }] }] });
+const pdfDefault = String(rcall('printBody', vdata, { ...vctx, photoLinks: false, lazy: false }));
+eq('the PDF leaves videos out by default', /video-note/.test(pdfDefault), false);
+eq('  and counts them online', /One video of this project is online/.test(pdfDefault), true);
+vdata.projects[0].photos[1].pdf = true;
+const pdfIn = String(rcall('printBody', vdata, { ...vctx, photoLinks: false, lazy: false }));
+eq('an opted-in video prints as poster + note', /video-note/.test(pdfIn), true);
+eq('  linked to the project page', /<a href="https:\/\/x.ca\/projects\/v.html"[^>]*>[^<]*<p class="video-note"|class="video-note"><a href="https:\/\/x.ca\/projects\/v.html"/.test(pdfIn), true);
 
 console.log('\n--- export filenames ---');
 // Export names drop the extension for readability, so two sources could

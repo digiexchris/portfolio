@@ -10,8 +10,9 @@ For what the portfolio *is* and how to write in it, see [README.md](README.md).
 
 | | |
 |---|---|
-| **Node** | 20 or newer (`node --version`) |
+| **Node** | 22.12 or newer (`node --version`) |
 | **Browser** | only for PDF export — Microsoft Edge on Windows 11 (built in), Chromium on Linux (`sudo apt install chromium`) |
+| **ffmpeg** | for video uploads — `winget install Gyan.FFmpeg` on Windows, `sudo apt install ffmpeg` on Linux. `FFMPEG_PATH` / `FFPROBE_PATH` point at a specific install. The start scripts refuse to run without it unless given `--no-ffmpeg` (`-NoFfmpeg` in PowerShell). |
 | **Everything else** | three npm packages, no build step, no framework |
 
 There is no bundler, transpiler or watch process. The editor is plain ES modules
@@ -156,7 +157,7 @@ npm run check    # in another
 
 | Suite | Checks | Needs the server | Covers |
 |---|---|---|---|
-| `modelcheck.mjs` | 70 | no | sanitiser, paragraph handling, slugs, export filenames, render edge cases |
+| `modelcheck.mjs` | 99 | no | sanitiser, paragraph handling, slugs, export filenames, render edge cases, video items |
 | `verify.mjs` | 17 | yes | editing, merge, undo, both exports, TOC page numbers |
 | `navcheck.mjs` | 12 | yes | preview navigation, the draft preview |
 | `savecheck.mjs` | 10 | yes | manual saving, the unsaved-changes guard |
@@ -165,8 +166,16 @@ npm run check    # in another
 | `nbspcheck.mjs` | 8 | yes | typing in the real editor produces clean markup, stable across saves |
 | `aboutcheck.mjs` | 25 | yes | the About photo through preview/save/export; picker thumbnail geometry |
 | `workcheck.mjs` | 13 | yes | the Work intro is separate from the About text, and lands above the gallery |
+| `dragcheck.mjs` | 5 | yes | sidebar drag-to-reorder, with and without the filter |
+| `zipcheck.mjs` | 15 | no | the zip reader: stored/deflate, ZIP64, CP437 names, CRC and size guards |
+| `videocheck.mjs` | 66 | yes | video conversion, range requests, zip import, the lightbox player, the editor's video UI, the start script |
 
-**185 checks in total.** They drive a real headless Chromium against the real
+`videocheck.mjs` sections that need ffmpeg report `SKIP` without it. Point it
+at a server on another port with `EDITOR_URL=http://127.0.0.1:4329`, and run
+one section with `node videocheck.mjs zip` (conversion, server, site, zip,
+editor, start).
+
+**About 300 checks in total.** They drive a real headless Chromium against the real
 server, and each restores `data/portfolio.json` when it finishes — safe to run
 on real work. `verify.mjs` rebuilds `docs/` from the restored data rather than
 leaving a test build behind.
@@ -208,7 +217,7 @@ and PDF export works without a network.
 ```
 media/               the 136 source photos — committed, never modified
 data/portfolio.json  everything you write
-data/uploads/        testimonial scans and the profile photo
+data/uploads/        uploaded photos, converted videos (+ .poster.jpg frames)
 data/backups/        a snapshot per save (last 60), gitignored
 
 shared/render.js     the templates — ONE source of markup for all three outputs
@@ -216,6 +225,7 @@ shared/model.js      data shape, normalisation, HTML sanitiser
 shared/styles/       tokens.css + site.css (screen) + print.css (paged)
 
 server.js            local API, media library, cached thumbnails
+server/              video conversion (ffmpeg), zip reader + import, upload naming
 editor/              the WYSIWYG — plain ES modules, no build step
 export/              build-site.js, build-pdf.js, images.js
 scripts/seed.js      one-time photo-to-drafts bootstrap
@@ -240,8 +250,10 @@ The editor talks to the server over a small JSON API. Useful for scripting.
 | `GET/PUT /api/portfolio` | load / save the whole document |
 | `GET /api/media` | list the photo library |
 | `POST /api/media/upload?name=…` | upload a scan or photo (raw body) |
+| `POST /api/media/upload-video?name=…` | upload a video; converted to MP4 + poster, original deleted. Answers NDJSON: `{progress}`… then `{src, poster}` or `{error}` |
+| `POST /api/media/upload-zip?name=…` | import every photo and video in a zip. NDJSON: `{entry, index, total}`, `{progress}`… then `{imported, skipped, failed}` |
 | `POST /api/export/site` \| `/api/export/pdf` \| `/api/preview/site` | run a builder, streaming its output |
-| `GET /media/…` `/thumbs/…` | originals, and 400px cached thumbnails |
+| `GET /media/…` `/thumbs/…` | originals (with byte ranges, for video seeking), and 400px cached thumbnails |
 | `GET /docs/…` `/preview/…` `/out/…` | the build folders |
 
 ```bash
@@ -252,6 +264,17 @@ curl -X POST localhost:4321/api/export/pdf             # build, streaming
 ---
 
 ## Troubleshooting
+
+**The drawer's Upload button shows ⚠, or a video upload fails with "ffmpeg not found".**
+The server can't find ffmpeg (hover the button for details). Install it (see
+Requirements), or set `FFMPEG_PATH` and `FFPROBE_PATH`, then reload the editor
+page. The server notices a newly installed ffmpeg without a restart; a changed
+`FFMPEG_PATH` needs one.
+
+**A video upload says "too large once converted".**
+Converted videos are capped at 50 MB to stay well under GitHub's 100 MB file
+limit — at the editor's 1080p setting that is roughly 3–4 minutes. Trim the
+clip and upload it again.
 
 **PDF export says no Chromium found.**
 Linux: `sudo apt install chromium`. Windows: Microsoft Edge is used automatically. Or point at one you have:

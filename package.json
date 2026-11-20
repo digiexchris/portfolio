@@ -13,14 +13,14 @@
     "vendor": "cp -f node_modules/pagedjs/dist/paged.polyfill.js vendor/",
     "verify": "node verify.mjs",
     "preview:site": "node export/build-site.js --drafts",
-    "check": "node modelcheck.mjs && node verify.mjs && node navcheck.mjs && node savecheck.mjs && node widthcheck.mjs && node pagescheck.mjs && node nbspcheck.mjs && node aboutcheck.mjs && node workcheck.mjs"
+    "check": "node modelcheck.mjs && node zipcheck.mjs && node verify.mjs && node navcheck.mjs && node savecheck.mjs && node widthcheck.mjs && node pagescheck.mjs && node nbspcheck.mjs && node aboutcheck.mjs && node workcheck.mjs && node dragcheck.mjs && node videocheck.mjs"
   },
   "dependencies": {
     "pagedjs": "0.4.3",
-    "puppeteer-core": "25.9.0",
-    "sharp": "0.35.4"
+    "puppeteer-core": "25.18.1",
+    "sharp": "0.35.5"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.12"
   }
 }

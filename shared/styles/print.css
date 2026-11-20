@@ -286,6 +286,10 @@ img { max-width: 100%; height: auto; }
 }
 .more-photos a { color: var(--accent); text-decoration: underline; font-style: normal; }
 
+/* A video in print: its poster, then a pointer to the web page. */
+.video-note { margin: 1.5mm 0 0; font-size: 8.5pt; color: var(--ink-3); }
+.video-note a { color: var(--accent); text-decoration: underline; }
+
 /* --- testimonials --------------------------------------------------------- */
 
 .testimonials { break-before: page; }

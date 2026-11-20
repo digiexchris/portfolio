@@ -5,7 +5,7 @@ import { Store } from './store.js';
 import { Preview } from './preview.js';
 import { MediaPicker } from './media.js';
 import { el, textField, checkField, richField, listField, repeatField } from './forms.js';
-import { featurePhoto, toPlainText } from '../shared/model.js';
+import { featurePhoto, toPlainText, isVideo, posterOf } from '../shared/model.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -256,7 +256,7 @@ function renderProjectList(list) {
       el('span', { class: 'n' }, String(p.photos.length)),
       el('span', { class: 'dot' + (p.published ? ' live' : ''), title: p.published ? 'Published' : 'Draft' }));
 
-    wireDrag(item, p.id, items, (fromId, toIndex) => store.reorderProjects(fromId, toIndex));
+    wireDrag(item, p.id, (fromId, toId) => store.reorderProjects(fromId, toId));
     list.append(item);
   });
 
@@ -275,16 +275,17 @@ function renderTestimonialList(list) {
     },
       el('span', { class: 'label' }, t.author || toPlainText(t.quote, 30) || 'New testimonial'),
       el('span', { class: 'dot' + (t.published ? ' live' : '') }));
-    wireDrag(item, t.id, items, (fromId, toIndex) => store.reorderTestimonials(fromId, toIndex));
+    wireDrag(item, t.id, (fromId, toId) => store.reorderTestimonials(fromId, toId));
     list.append(item);
   });
 
   if (!items.length) list.append(el('li', { class: 'side-foot' }, 'No testimonials yet'));
 }
 
-// Drag-to-reorder. Reordering is only meaningful on the unfiltered list, so
-// the drop index is resolved against the full array.
-function wireDrag(item, id, items, apply) {
+// Drag-to-reorder. The drop is identified by the target's id, not its index:
+// the sidebar may be filtered, so an index into the visible list would land
+// at the wrong place in the full array. The store resolves the id instead.
+function wireDrag(item, id, apply) {
   item.addEventListener('dragstart', (e) => {
     e.dataTransfer.setData('text/plain', id);
     e.dataTransfer.effectAllowed = 'move';
@@ -296,8 +297,7 @@ function wireDrag(item, id, items, apply) {
     item.classList.remove('drag-over');
     const fromId = e.dataTransfer.getData('text/plain');
     if (!fromId || fromId === id) return;
-    const target = items.findIndex((x) => x.id === id);
-    apply(fromId, target);
+    apply(fromId, id);
   });
 }
 
@@ -364,6 +364,13 @@ function projectForm() {
   return frag;
 }
 
+// Keep a lead photo whenever the project has a photo. Videos never lead.
+function ensureLead(p) {
+  if (p.photos.some((x) => x.feature)) return;
+  const first = p.photos.find((x) => !isVideo(x.src));
+  if (first) first.feature = true;
+}
+
 function photoStrip(p) {
   const grid = el('div', { class: 'photo-strip' });
   p.photos.forEach((ph, i) => {
@@ -377,16 +384,35 @@ function photoStrip(p) {
     cap.addEventListener('blur', () => store.emit('change'));
 
     const inPdf = ph.pdf !== false;
+    const video = isVideo(ph.src);
+    // A video shows its poster: the chosen photo if it is still in the
+    // library, else the frame grabbed at upload.
+    const thumb = video ? posterOf(ph, (src) => store.media.some((m) => m.src === src)) : ph.src;
     const item = el('div', {
-      class: 'strip-item' + (ph.feature ? ' is-feature' : '') + (inPdf ? '' : ' no-pdf'), draggable: 'true',
+      class: 'strip-item' + (ph.feature ? ' is-feature' : '') + (inPdf ? '' : ' no-pdf') + (video ? ' is-video' : ''),
+      draggable: 'true',
     },
-      el('img', { src: '/thumbs/' + encodeURI(ph.src), alt: ph.alt || '', loading: 'lazy', title: ph.src }),
+      el('img', { src: '/thumbs/' + encodeURI(thumb), alt: ph.alt || '', loading: 'lazy', title: ph.src }),
+      video ? el('span', { class: 'play-badge', 'aria-hidden': 'true' }, '▶') : null,
       cap,
       el('div', { class: 'strip-tools' },
-        el('button', {
+        // Videos are never the lead photo; they get a poster choice instead.
+        video ? el('button', {
+          title: 'Choose a photo to show for this video',
+          onclick: () => media.open({
+            title: 'Poster for this video',
+            selected: ph.poster ? [ph.poster] : [],
+            single: true, imagesOnly: true,
+            onToggle: (src, on) => store.update(() => { ph.poster = on ? src : ''; }),
+          }),
+        }, 'Poster…') : el('button', {
           class: ph.feature ? 'on' : '', title: 'Use as the lead photo',
           onclick: () => store.update(() => { p.photos.forEach((x) => { x.feature = false; }); ph.feature = true; }),
         }, ph.feature ? '★ Lead' : '☆ Lead'),
+        video && ph.poster ? el('button', {
+          title: 'Show the frame from the video instead',
+          onclick: () => store.update(() => { ph.poster = ''; }),
+        }, 'Use frame from video') : null,
         el('button', {
           class: inPdf ? 'on' : '',
           title: inPdf ? 'In the PDF — click to leave it out (it stays on the website)'
@@ -398,7 +424,7 @@ function photoStrip(p) {
           title: 'Remove from this project',
           onclick: () => store.update(() => {
             p.photos.splice(i, 1);
-            if (!p.photos.some((x) => x.feature) && p.photos[0]) p.photos[0].feature = true;
+            ensureLead(p);
           }),
         }, 'Remove')));
 
@@ -427,12 +453,15 @@ function photoStrip(p) {
         store.update(() => {
           if (on) {
             if (!p.photos.some((x) => x.src === src)) {
-              p.photos.push({ src, caption: '', alt: '', feature: p.photos.length === 0 });
+              p.photos.push(isVideo(src)
+                ? { src, caption: '', alt: '', feature: false, pdf: false, poster: '' }
+                : { src, caption: '', alt: '', feature: false });
+              ensureLead(p);
             }
           } else {
             const idx = p.photos.findIndex((x) => x.src === src);
             if (idx > -1) p.photos.splice(idx, 1);
-            if (!p.photos.some((x) => x.feature) && p.photos[0]) p.photos[0].feature = true;
+            ensureLead(p);
           }
         });
       },
@@ -489,7 +518,7 @@ function testimonialForm() {
     onclick: () => media.open({
       title: 'Scan or screenshot of the note',
       selected: t.image ? [t.image] : [],
-      single: true,
+      single: true, imagesOnly: true,
       onToggle: (src, on) => store.update(() => { t.image = on ? src : null; }),
     }),
   }, t.image ? 'Replace image' : '+ Add scan'));
@@ -535,7 +564,7 @@ function profileForm() {
       onclick: () => media.open({
         title: 'Photo for the About page',
         selected: p.photo ? [p.photo] : [],
-        single: true,
+        single: true, imagesOnly: true,
         onToggle: (src, on) => { store.update(() => { p.photo = on ? src : ''; }); drawPortrait(); },
       }),
     }, p.photo ? 'Replace photo' : '+ Choose photo'));
@@ -619,7 +648,7 @@ function settingsForm() {
   cover.append(el('button', {
     class: 'strip-add', type: 'button',
     onclick: () => media.open({
-      title: 'PDF cover photo', selected: s.pdf.coverPhoto ? [s.pdf.coverPhoto] : [], single: true,
+      title: 'PDF cover photo', selected: s.pdf.coverPhoto ? [s.pdf.coverPhoto] : [], single: true, imagesOnly: true,
       onToggle: (src, on) => store.update(() => { s.pdf.coverPhoto = on ? src : ''; }),
     }),
   }, s.pdf.coverPhoto ? 'Replace' : '+ Choose cover'));

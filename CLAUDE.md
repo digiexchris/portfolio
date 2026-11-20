@@ -6,12 +6,12 @@ Full reference: [Development.md](Development.md) (commands, tests, API, troubles
 
 ## Workflow
 
-1. `npm ci` then `npm start` → local WYSIWYG editor at http://127.0.0.1:4321/editor/ (loopback only). Shortcut: `start-editor.ps1` (Windows) / `start-editor.sh` (Linux) starts the server and opens Firefox.
+1. `npm ci` then `npm start` → local WYSIWYG editor at http://127.0.0.1:4321/editor/ (loopback only). Shortcut: `start-editor.ps1` (Windows) / `start-editor.sh` (Linux) starts the server and prints the editor's address (it does not open a browser).
 2. Edit content in the editor; it saves to `data/portfolio.json` (manual save, Ctrl+S; snapshots to `data/backups/`).
 3. `npm run build` (PDF first, then site — order matters, the site embeds the PDF) → regenerates `docs/`.
 4. Commit and push to `main`. GitHub Pages serves `main` → `/docs`.
 
-Node ≥ 20, plain ES modules, no bundler. Dev machine is Windows; PDF export uses Microsoft Edge on Windows, Chromium on Linux (`CHROME_PATH=...` overrides).
+Node ≥ 22.12, plain ES modules, no bundler. Dev machine is Windows; PDF export uses Microsoft Edge on Windows, Chromium on Linux (`CHROME_PATH=...` overrides). Video uploads need system `ffmpeg`/`ffprobe` (`FFMPEG_PATH`/`FFPROBE_PATH` override); the start scripts refuse to run without it unless given `--no-ffmpeg` / `-NoFfmpeg`.
 
 ## Hard rules
 
@@ -21,6 +21,7 @@ Node ≥ 20, plain ES modules, no bundler. Dev machine is Windows; PDF export us
 - `docs/` paths must stay relative (site works from `file://` and any subpath).
 - Use `npm ci`, not `npm install`; `.npmrc` sets `ignore-scripts` and `save-exact`. Don't add dependencies casually.
 - `media/` (source photos) is committed and never modified.
+- Videos are converted once at upload and only the converted `.mp4` + `.poster.jpg` are kept (`data/uploads/`). The site build copies the MP4 byte-for-byte into `docs/video/` — never re-encode there, or git stores every video twice. Videos are never a project's lead photo.
 - Nothing reads or writes outside this repo directory.
 
 ## Tests

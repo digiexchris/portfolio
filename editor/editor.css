@@ -292,3 +292,25 @@ legend { font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; co
   .layout { grid-template-columns: 13rem 1fr; }
   .preview-pane { display: none; }
 }
+
+/* --- video + upload progress ---------------------------------------------- */
+
+.play-badge {
+  position: absolute; top: 2.75rem; left: 50%; transform: translate(-50%, -50%);
+  width: 2rem; height: 2rem; border-radius: 50%; padding-left: .15rem;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(20, 18, 16, .62); color: #fff; font-size: .85rem; line-height: 1;
+  pointer-events: none;
+}
+.media-item .play-badge { top: 3.25rem; }
+.media-item.is-busy { cursor: default; display: flex; flex-direction: column; justify-content: flex-end; min-height: 8rem; }
+.media-item.is-busy:hover { border-color: var(--rule); }
+.busy-bar { height: .4rem; margin: auto .5rem .4rem; background: var(--rule-2); border-radius: 3px; overflow: hidden; }
+.busy-bar span { display: block; height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+.media-report { padding: .5rem .8rem; border-bottom: 1px solid var(--rule); font-size: .8rem; background: var(--paper-2); }
+.media-report ul { margin: 0 0 .4rem; padding-left: 1.1rem; }
+.media-report li { margin: .1rem 0; }
+
+/* Upload button when the server has no ffmpeg (tooltip says why). */
+.btn.warn { border-color: #c98a1b; color: #8a5a00; background: #fff6e0; }
+.btn.warn::before { content: '⚠ '; }
