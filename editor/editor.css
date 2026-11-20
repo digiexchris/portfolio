@@ -314,3 +314,19 @@ legend { font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; co
 /* Upload button when the server has no ffmpeg (tooltip says why). */
 .btn.warn { border-color: #c98a1b; color: #8a5a00; background: #fff6e0; }
 .btn.warn::before { content: '⚠ '; }
+
+/* --- server stop / restart -------------------------------------------------- */
+
+.btn.ghost { background: transparent; border-color: transparent; color: var(--ink-3); }
+.btn.ghost:hover { border-color: var(--rule); color: var(--ink); }
+.server-notice {
+  position: fixed; inset: 0; z-index: 300; display: flex; align-items: center; justify-content: center;
+  background: rgba(20, 18, 16, .55);
+}
+.server-notice[hidden] { display: none; }
+.server-notice-box {
+  background: var(--paper); border-radius: 8px; padding: 1.2rem 1.5rem; max-width: 26rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .3);
+}
+.server-notice-box strong { font-size: 1rem; }
+.server-notice-box p { margin: .5rem 0 0; font-size: .88rem; color: var(--ink-2, var(--ink-3)); }

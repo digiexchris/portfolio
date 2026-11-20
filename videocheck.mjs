@@ -52,9 +52,15 @@ fs.mkdirSync(WORK, { recursive: true });
 const FIX = path.join(WORK, 'clip.mov');
 const FIX_ROT = path.join(WORK, 'portrait.mov');
 if (hasTools) {
+  // A phone-style location tag, so stripping metadata can be checked.
   ff(['-f', 'lavfi', '-i', 'testsrc=size=1280x720:rate=30', '-f', 'lavfi', '-i', 'sine=frequency=440',
-    '-t', '3', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-c:a', 'aac', FIX]);
-  ff(['-display_rotation:v:0', '90', '-i', FIX, '-c', 'copy', FIX_ROT]);
+    '-t', '3', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-c:a', 'aac',
+    '-metadata', 'location=+49.8951-097.1384/', FIX]);
+  // Full-size 1920x1080 flagged as rotated: comes out 1080x1920 only if the
+  // portrait size cap is applied (a landscape cap would shrink it to 608x1080).
+  const big = path.join(WORK, 'big-landscape.mov');
+  ff(['-f', 'lavfi', '-i', 'testsrc=size=1920x1080:rate=30', '-t', '2', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', big]);
+  ff(['-display_rotation:v:0', '90', '-i', big, '-c', 'copy', FIX_ROT]);
 }
 const copyFixture = (to) => { fs.copyFileSync(FIX, to); return to; };
 
@@ -82,7 +88,9 @@ try {
       check('size stays within 1920x1080', v.width <= 1920 && v.height <= 1080, `${v.width}x${v.height}`);
       const buf = fs.readFileSync(mp4);
       check('faststart: index before data', buf.indexOf('moov') > -1 && buf.indexOf('moov') < buf.indexOf('mdat'));
-      check('metadata is stripped', !(info.format?.tags?.location || info.format?.tags?.['com.apple.quicktime.location.ISO6709']));
+      const tagged = JSON.stringify(probe(FIX).format?.tags || {});
+      check('metadata is stripped', /49\.8951/.test(tagged) && !/49\.8951/.test(JSON.stringify(info.format?.tags || {})),
+        `fixture ${tagged.slice(0, 60)} → ${JSON.stringify(info.format?.tags || {}).slice(0, 60)}`);
       const poster = fs.readFileSync(path.join(out, 'clip.poster.jpg'));
       check('a poster frame is written', poster[0] === 0xff && poster[1] === 0xd8);
       check('the original is deleted', !fs.existsSync(input));
@@ -98,7 +106,7 @@ try {
       fs.copyFileSync(FIX_ROT, rotIn);
       const rot = await convertVideo(rotIn, { uploadsDir: out, name: 'portrait.mov' });
       const rv = (probe(path.join(out, 'portrait.mp4')).streams || []).find((s) => s.codec_type === 'video') || {};
-      check('a rotated phone clip comes out upright', rv.width < rv.height && rv.height <= 1920, `${rv.width}x${rv.height} (${rot.src})`);
+      check('a rotated phone clip comes out upright at full size', rv.width === 1080 && rv.height === 1920, `${rv.width}x${rv.height} (${rot.src})`);
 
       const junk = path.join(WORK, 'notes.mov');
       fs.writeFileSync(junk, 'not a video');

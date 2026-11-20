@@ -52,7 +52,9 @@ if is_up; then
   exit 0
 fi
 
-node server.js &
+# Through the supervisor, so the editor's Restart button keeps it attached
+# to this terminal.
+node scripts/editor.js &
 SERVER_PID=$!
 trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT INT TERM
 
@@ -60,7 +62,7 @@ trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT INT TERM
 for _ in $(seq 1 30); do
   if is_up; then
     echo
-    echo "Open $URL in your browser. Ctrl+C stops the editor."
+    echo "Open $URL in your browser. Ctrl+C (or ./stop-editor.sh) stops the editor."
     break
   fi
   if ! kill -0 "$SERVER_PID" 2>/dev/null; then

@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Local WYSIWYG portfolio editor with static HTML and PDF export",
   "scripts": {
-    "start": "node server.js",
+    "start": "node scripts/editor.js",
     "seed": "node scripts/seed.js",
     "build:site": "node export/build-site.js",
     "build:pdf": "node export/build-pdf.js",
@@ -13,7 +13,7 @@
     "vendor": "cp -f node_modules/pagedjs/dist/paged.polyfill.js vendor/",
     "verify": "node verify.mjs",
     "preview:site": "node export/build-site.js --drafts",
-    "check": "node modelcheck.mjs && node zipcheck.mjs && node verify.mjs && node navcheck.mjs && node savecheck.mjs && node widthcheck.mjs && node pagescheck.mjs && node nbspcheck.mjs && node aboutcheck.mjs && node workcheck.mjs && node dragcheck.mjs && node videocheck.mjs"
+    "check": "node modelcheck.mjs && node zipcheck.mjs && node verify.mjs && node navcheck.mjs && node savecheck.mjs && node widthcheck.mjs && node pagescheck.mjs && node nbspcheck.mjs && node aboutcheck.mjs && node workcheck.mjs && node dragcheck.mjs && node videocheck.mjs && node lifecheck.mjs"
   },
   "dependencies": {
     "pagedjs": "0.4.3",

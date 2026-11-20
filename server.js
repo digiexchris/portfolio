@@ -216,6 +216,24 @@ async function serveThumb(res, rel) {
   }
 }
 
+// --- lifecycle guard ------------------------------------------------------------
+
+// Shutdown and restart may only come from the editor's own page or a local
+// script. Other websites open in the browser can still send requests to
+// 127.0.0.1, so:
+//   - Host must be this server (defeats DNS-rebinding tricks),
+//   - Origin, which browsers always send on a POST, must be this server,
+//   - and a custom header is required: a cross-site page can't add one
+//     without a CORS preflight, which this server never approves.
+// Local scripts send no Origin and set the header themselves.
+function fromEditor(req) {
+  const ok = new Set([`127.0.0.1:${PORT}`, `localhost:${PORT}`]);
+  if (!ok.has(String(req.headers.host || '').toLowerCase())) return false;
+  const origin = req.headers.origin;
+  if (origin && !ok.has(origin.toLowerCase().replace(/^http:\/\//, ''))) return false;
+  return req.headers['x-portfolio-editor'] === '1';
+}
+
 // --- streaming uploads ------------------------------------------------------
 
 // Write a request body straight to disk. Videos and zips can be gigabytes, so
@@ -313,6 +331,19 @@ const server = http.createServer(async (req, res) => {
   try {
     if (p === '/') return send(res, 302, '', { Location: '/editor/' });
 
+    // --- lifecycle: the editor's Stop and Restart buttons, and stop-editor ---
+    if (p === '/api/shutdown' || p === '/api/restart') {
+      if (req.method !== 'POST') return json(res, 405, { error: 'Method not allowed' });
+      if (!fromEditor(req)) return json(res, 403, { error: 'Only the editor can do that' });
+      if (p === '/api/restart' && !process.env.PORTFOLIO_SUPERVISED) {
+        return json(res, 409, { error: 'Restart needs the editor started with npm start or a start script; '
+          + 'this one was started with node server.js. Stop it and start it again instead.' });
+      }
+      const code = p === '/api/restart' ? RESTART_CODE : 0;
+      res.on('finish', () => stopServer(code));
+      return json(res, 200, { ok: true, pid: process.pid });
+    }
+
     // --- API ---
     if (p === '/api/portfolio') {
       if (req.method === 'GET') return json(res, 200, await loadPortfolio());
@@ -402,7 +433,48 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, HOST, () => {
+  writeState();
   console.log(`\n  Portfolio editor  ->  http://${HOST}:${PORT}/editor/`);
   console.log(`  Media library     ->  ${MEDIA_ROOT}`);
   console.log(`  Data file         ->  ${DATA_FILE}\n`);
 });
+
+// --- lifecycle ----------------------------------------------------------------
+//
+// While running, the server records itself in .cache/editor-<port>.json so
+// stop-editor.sh / .ps1 can find it however it was started. The file goes
+// when the server stops; a leftover one (after a crash) is recognised as
+// stale by its PID.
+
+const STATE_FILE = path.join(ROOT, '.cache', `editor-${PORT}.json`);
+const RESTART_CODE = 75;          // scripts/editor.js starts us again on this
+
+function writeState() {
+  fsSync.mkdirSync(path.dirname(STATE_FILE), { recursive: true });
+  fsSync.writeFileSync(STATE_FILE, JSON.stringify({
+    pid: process.pid, port: PORT, root: ROOT, startedAt: new Date().toISOString(),
+    supervised: !!process.env.PORTFOLIO_SUPERVISED,
+  }, null, 2));
+}
+
+function clearState() {
+  try {
+    const st = JSON.parse(fsSync.readFileSync(STATE_FILE, 'utf8'));
+    if (st.pid === process.pid) fsSync.rmSync(STATE_FILE, { force: true });
+  } catch { /* already gone */ }
+}
+
+let exiting = false;
+function stopServer(code) {
+  if (exiting) return;
+  exiting = true;
+  clearState();
+  server.close(() => process.exit(code));
+  server.closeAllConnections();         // browsers hold keep-alive sockets open
+  setTimeout(() => process.exit(code), 2000).unref();
+}
+
+process.on('SIGINT', () => stopServer(0));
+process.on('SIGTERM', () => stopServer(0));
+process.on('SIGHUP', () => stopServer(0));
+process.on('exit', clearState);

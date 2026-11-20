@@ -18,11 +18,11 @@
     {
       "id": "xue8u0aycv1fj",
       "slug": "cardo-trace-repair",
-      "title": "Cardo Trace Repair",
+      "title": "Cardo PackTalk USB Port Repair",
       "subtitle": "",
       "date": "",
       "summary": "",
-      "body": "<p>A friend ripped the usb connector off of his Cardo PackTalk helmet communicator, and asked if I could try fixing it. This is one of those jobs that my stereoscopic microscope really pays off.</p><p><br></p><p>One of the traces was ripped completely off the board under the usb connector, so I had to reroute it using magnet wire from the opposite side of the board, sneaking it through a gap created by the factory separating the boards from the larger panel. It also appeared that there were cold solder joints under the hold down pads, which is probably why it originally failed.<br><br>It's back in service and working great!<br><br>For scale, C140 is a capacitor that is 2mm wide and 2mm long.</p>",
+      "body": "<p>A friend ripped the usb connector off of his Cardo PackTalk helmet communicator, and asked if I could try fixing it. This is one of those jobs that my stereoscopic microscope really pays off.</p><p><br></p><p>One of the traces was ripped completely off the board under the usb connector, so I had to reroute it using magnet wire from the opposite side of the board, sneaking it through a gap created by the factory separating the boards from the larger panel. It also appeared that there were cold solder joints under the hold down pads, which is probably why it originally failed.<br><br>It's back in service and working great!<br><br>For scale, C104 is a capacitor that is 1mm wide and 2mm long.</p>",
       "tags": [
         "Electronics"
       ],

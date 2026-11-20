@@ -48,13 +48,14 @@ browser-side code (`editor/`, `shared/styles/`) just needs a page reload.
 
 | Command | What it does |
 |---|---|
-| `npm start` | Run the editor at http://127.0.0.1:4321/editor/ |
+| `npm start` | Run the editor at http://127.0.0.1:4321/editor/ (via `scripts/editor.js`, which restarts it when asked) |
+| `./stop-editor.sh` / `.\stop-editor.ps1` | Stop the editor on `PORT` (default 4321), however it was started; `--all` / `-All` stops every one |
 | `npm run build` | PDF then site — the order matters, the site embeds the PDF |
 | `npm run build:site` | Publish `docs/` (published projects only) |
 | `npm run build:pdf` | Build `out/portfolio.pdf` |
 | `npm run preview:site` | Build `preview/` **including drafts**, for local review |
 | `npm run seed` | Create projects from the photo library (first-time bootstrap) |
-| `npm run check` | Run all six test suites |
+| `npm run check` | Run every test suite |
 | `npm run vendor` | Refresh `vendor/paged.polyfill.js` from node_modules |
 
 ### Flags worth knowing
@@ -166,6 +167,7 @@ npm run check    # in another
 | `nbspcheck.mjs` | 8 | yes | typing in the real editor produces clean markup, stable across saves |
 | `aboutcheck.mjs` | 25 | yes | the About photo through preview/save/export; picker thumbnail geometry |
 | `workcheck.mjs` | 13 | yes | the Work intro is separate from the About text, and lands above the gallery |
+| `lifecheck.mjs` | 23 | no (starts its own on 4390–4394) | state file, who may stop/restart, the Stop/Restart buttons, stop-editor.sh incl. a hung server and a stale record |
 | `dragcheck.mjs` | 5 | yes | sidebar drag-to-reorder, with and without the filter |
 | `zipcheck.mjs` | 15 | no | the zip reader: stored/deflate, ZIP64, CP437 names, CRC and size guards |
 | `videocheck.mjs` | 66 | yes | video conversion, range requests, zip import, the lightbox player, the editor's video UI, the start script |
@@ -175,7 +177,7 @@ at a server on another port with `EDITOR_URL=http://127.0.0.1:4329`, and run
 one section with `node videocheck.mjs zip` (conversion, server, site, zip,
 editor, start).
 
-**About 300 checks in total.** They drive a real headless Chromium against the real
+**About 325 checks in total.** They drive a real headless Chromium against the real
 server, and each restores `data/portfolio.json` when it finishes — safe to run
 on real work. `verify.mjs` rebuilds `docs/` from the restored data rather than
 leaving a test build behind.
@@ -253,6 +255,7 @@ The editor talks to the server over a small JSON API. Useful for scripting.
 | `POST /api/media/upload-video?name=…` | upload a video; converted to MP4 + poster, original deleted. Answers NDJSON: `{progress}`… then `{src, poster}` or `{error}` |
 | `POST /api/media/upload-zip?name=…` | import every photo and video in a zip. NDJSON: `{entry, index, total}`, `{progress}`… then `{imported, skipped, failed}` |
 | `POST /api/export/site` \| `/api/export/pdf` \| `/api/preview/site` | run a builder, streaming its output |
+| `POST /api/shutdown` \| `/api/restart` | stop or restart the server. Only from the editor's own page or a local script: Host and Origin must be this server, and the `X-Portfolio-Editor: 1` header is required. Restart needs the supervisor (`npm start` / start scripts) |
 | `GET /media/…` `/thumbs/…` | originals (with byte ranges, for video seeking), and 400px cached thumbnails |
 | `GET /docs/…` `/preview/…` `/out/…` | the build folders |
 
@@ -283,7 +286,16 @@ Linux: `sudo apt install chromium`. Windows: Microsoft Edge is used automaticall
 `out/print/index.html` — open it in any browser and use Print → Save as PDF.
 The table of contents already has its real page numbers.
 
-**Port 4321 in use.** `PORT=8080 npm start`.
+**Port 4321 in use.** Usually an editor that is still running: `./stop-editor.sh`
+(or `--all`). A running editor records itself in `.cache/editor-<port>.json`
+(PID, port, folder). If something else holds the port, `PORT=8080 npm start`.
+
+To find whatever is on the port by hand (Linux): `ss -ltnp 'sport = :4321'`
+shows the PID; `ps -o pid,cmd -p <PID>` and `readlink /proc/<PID>/cwd` confirm
+it is `node server.js` in this folder; then `kill <PID>`. Windows:
+`Get-NetTCPConnection -LocalPort 4321 | Select OwningProcess`, then
+`Get-CimInstance Win32_Process -Filter "ProcessId=<PID>" | Select CommandLine`
+and `Stop-Process -Id <PID>`.
 
 **The editor shows stale styling or behaviour.** Browser-side files are served
 with `Cache-Control: no-cache`, so an ordinary reload picks up changes to

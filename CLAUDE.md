@@ -6,7 +6,7 @@ Full reference: [Development.md](Development.md) (commands, tests, API, troubles
 
 ## Workflow
 
-1. `npm ci` then `npm start` → local WYSIWYG editor at http://127.0.0.1:4321/editor/ (loopback only). Shortcut: `start-editor.ps1` (Windows) / `start-editor.sh` (Linux) starts the server and prints the editor's address (it does not open a browser).
+1. `npm ci` then `npm start` → local WYSIWYG editor at http://127.0.0.1:4321/editor/ (loopback only). Shortcut: `start-editor.ps1` (Windows) / `start-editor.sh` (Linux) starts the server and prints the editor's address (it does not open a browser). Stop it with Ctrl+C, the editor's **Stop** button, or `stop-editor.sh` / `stop-editor.ps1` (`--all` / `-All`); a running server records itself in `.cache/editor-<port>.json`. `npm start` runs `scripts/editor.js`, a supervisor that restarts `server.js` when it exits with code 75 (the **Restart** button).
 2. Edit content in the editor; it saves to `data/portfolio.json` (manual save, Ctrl+S; snapshots to `data/backups/`).
 3. `npm run build` (PDF first, then site — order matters, the site embeds the PDF) → regenerates `docs/`.
 4. Commit and push to `main`. GitHub Pages serves `main` → `/docs`.

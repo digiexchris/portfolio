@@ -54,7 +54,9 @@ if (Test-Editor) {
     exit 0
 }
 
-$server = Start-Process -FilePath node -ArgumentList 'server.js' -NoNewWindow -PassThru
+# Through the supervisor, so the editor's Restart button keeps it attached
+# to this window.
+$server = Start-Process -FilePath node -ArgumentList 'scripts/editor.js' -NoNewWindow -PassThru
 try {
     $ready = $false
     for ($i = 0; $i -lt 30; $i++) {
@@ -62,10 +64,19 @@ try {
         if ($server.HasExited) { Write-Error 'Server exited before it was ready.' }
         Start-Sleep -Milliseconds 500
     }
-    if ($ready) { Write-Host ''; Write-Host "Open $Url in your browser. Ctrl+C stops the editor." }
+    if ($ready) { Write-Host ''; Write-Host "Open $Url in your browser. Ctrl+C (or .\stop-editor.ps1) stops the editor." }
     else { Write-Warning "Server did not respond at $Url yet; open it when ready." }
 
     $server.WaitForExit()
 } finally {
-    if (-not $server.HasExited) { Stop-Process -Id $server.Id -Force }
+    # Windows has no signal to pass on, so stopping the supervisor alone would
+    # leave the server running: ask the server to stop first.
+    if (-not $server.HasExited) {
+        try {
+            Invoke-WebRequest -Uri "http://127.0.0.1:$Port/api/shutdown" -Method Post -UseBasicParsing `
+                -Headers @{ 'X-Portfolio-Editor' = '1' } -TimeoutSec 3 | Out-Null
+        } catch {}
+        Start-Sleep -Milliseconds 500
+        if (-not $server.HasExited) { Stop-Process -Id $server.Id -Force }
+    }
 }

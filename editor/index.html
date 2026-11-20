@@ -14,6 +14,8 @@
   <div class="topbar-left">
     <strong class="app-name">Portfolio</strong>
     <span class="status" id="status">Loading…</span>
+    <button class="btn small ghost" id="btn-restart" title="Restart the editor server (reloads this page)">Restart</button>
+    <button class="btn small ghost" id="btn-stop" title="Stop the editor server">Stop</button>
   </div>
 
   <div class="topbar-mid">
@@ -83,6 +85,13 @@
   </div>
   <div class="media-report" id="media-report" hidden></div>
   <div class="media-grid" id="media-grid"></div>
+</div>
+
+<div class="server-notice" id="server-notice" hidden>
+  <div class="server-notice-box">
+    <strong id="server-notice-title"></strong>
+    <p id="server-notice-text"></p>
+  </div>
 </div>
 
 <div class="console" id="console" hidden>

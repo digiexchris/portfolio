@@ -139,6 +139,8 @@ function wireTopbar() {
     const ok = await store.save();
     toast(ok ? 'Saved' : 'Save failed: ' + store.error, !ok);
   });
+  $('btn-restart').addEventListener('click', () => serverControl('restart'));
+  $('btn-stop').addEventListener('click', () => serverControl('stop'));
   $('btn-preview-site').addEventListener('click', () => runExport('preview'));
   $('btn-export-site').addEventListener('click', () => runExport('site'));
   $('btn-export-pdf').addEventListener('click', () => runExport('pdf'));
@@ -743,6 +745,62 @@ function handleShortcut(e) {
   }
 }
 
+// --- stopping / restarting the server -----------------------------------------
+
+let leaving = false;          // set once the user has agreed to drop unsaved edits
+
+function serverNotice(title, text) {
+  $('server-notice-title').textContent = title;
+  $('server-notice-text').textContent = text;
+  $('server-notice').hidden = false;
+}
+
+async function serverControl(action) {
+  const unsaved = store.dirty
+    ? '\n\nYou have unsaved changes. They will be lost — Cancel and press Ctrl+S to keep them.' : '';
+  const question = action === 'stop'
+    ? 'Stop the editor server? This page stops working until it is started again.' + unsaved
+    : 'Restart the editor server? This page reloads.' + unsaved;
+  if (!confirm(question)) return;
+  leaving = true;
+
+  let res;
+  try {
+    res = await fetch(`/api/${action === 'stop' ? 'shutdown' : 'restart'}`, {
+      method: 'POST', headers: { 'X-Portfolio-Editor': '1' },
+    });
+  } catch {
+    res = null;
+  }
+  if (!res || !res.ok) {
+    leaving = false;
+    const msg = res ? (await res.json().catch(() => ({}))).error : 'the server did not answer';
+    toast(`Could not ${action}: ${msg}`, true);
+    return;
+  }
+
+  if (action === 'stop') {
+    serverNotice('The editor has stopped.',
+      'Start it again with npm start, start-editor.sh or start-editor.ps1, then reload this page.');
+    return;
+  }
+
+  // Wait for the old server to go and the new one to answer, then reload.
+  const { pid } = await res.json();
+  serverNotice('Restarting…', 'This page reloads when the editor is back.');
+  for (let i = 0; i < 100; i++) {
+    await new Promise((r) => setTimeout(r, 300));
+    try {
+      const r = await fetch('/api/media', { cache: 'no-store' });
+      if (r.ok && (await fetch('/editor/', { cache: 'no-store' })).ok && i > 1) {
+        location.reload();
+        return;
+      }
+    } catch { /* still down */ }
+  }
+  serverNotice('The editor did not come back.', `Check the terminal it was started from (old process ${pid}).`);
+}
+
 function wireShortcuts() {
   window.addEventListener('keydown', handleShortcut);
   preview.onShortcut = handleShortcut;
@@ -750,7 +808,7 @@ function wireShortcuts() {
   // Nothing is saved automatically, so leaving with pending edits would lose
   // them. The browser shows its own confirmation dialog for this.
   window.addEventListener('beforeunload', (e) => {
-    if (!store.dirty) return;
+    if (!store.dirty || leaving) return;
     e.preventDefault();
     e.returnValue = 'You have unsaved changes.';
     return e.returnValue;
